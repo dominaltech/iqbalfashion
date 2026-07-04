@@ -2387,10 +2387,22 @@
         }
       }
 
-      // Check fallbacks
-      if (homepageSlides.length === 0) homepageSlides = defaultSlides;
-      if (menuCategories.length === 0) menuCategories = defaultMenuCategories;
-      if (!brandVideoAsset) brandVideoAsset = defaultBrandVideo;
+      // Smart slot-by-slot fallback (if database asset is missing or has empty URL, use default)
+      const mergedSlides = defaultSlides.map(def => {
+        const db = homepageSlides.find(s => s.slot === def.slot);
+        return (db && db.file_url) ? db : def;
+      });
+      homepageSlides = mergedSlides;
+
+      const mergedMenu = defaultMenuCategories.map(def => {
+        const db = menuCategories.find(m => m.slot === def.slot);
+        return (db && db.file_url) ? db : def;
+      });
+      menuCategories = mergedMenu;
+
+      if (!brandVideoAsset || !brandVideoAsset.file_url) {
+        brandVideoAsset = defaultBrandVideo;
+      }
 
       // Ensure slides sorted by slot
       homepageSlides.sort((a,b) => a.slot.localeCompare(b.slot));
