@@ -174,7 +174,9 @@
     header {
       position: sticky;
       top: 0;
-      z-index: 900;
+      z-index: 9999;
+      transform: translate3d(0, 0, 999px);
+      -webkit-transform: translate3d(0, 0, 999px);
       background-color: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
@@ -2313,13 +2315,13 @@
     // Supabase Configuration
     const SUPABASE_URL = "https://zquafonundzyqumukmbb.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpxdWFmb251bmR6eXF1bXVrbWJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxNDgyMzksImV4cCI6MjA5ODcyNDIzOX0.XuO3ytv6om95CegooXclAQUHHC6FCHLlbY4xJTks9Kk";
-    let supabase = null;
+    let supabaseClient = null;
     let isMockMode = true;
 
     // Check if Supabase URL is set
     if (SUPABASE_URL && SUPABASE_URL.startsWith('http')) {
       try {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         isMockMode = false;
         console.log("Supabase linked successfully.");
       } catch (err) {
@@ -2362,8 +2364,8 @@
         menuCategories = stored.filter(a => a.slot && a.slot.startsWith('menu_'));
       } else {
         try {
-          const { data, error } = await supabase
-            .from('homepage_assets')
+          const { data, error } = await supabaseClient
+              .from('homepage_assets')
             .select('*');
           
           if (error) throw error;
@@ -2502,8 +2504,8 @@
         }
       } else {
         try {
-          const { data, error } = await supabase
-            .from('products')
+          const { data, error } = await supabaseClient
+              .from('products')
             .select('*')
             .eq('is_featured', true)
             .order('featured_order', { ascending: true });
@@ -2513,7 +2515,7 @@
           featuredProducts = data || [];
           if (featuredProducts.length === 0) {
             // fallback: query first 5 products
-            const { data: fallbackData } = await supabase.from('products').select('*').limit(5);
+            const { data: fallbackData } = await supabaseClient.from('products').select('*').limit(5);
             featuredProducts = fallbackData || [];
           }
         } catch (err) {
@@ -2710,10 +2712,10 @@
           updateProfileUI();
         }
       } else {
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { user } } = await supabaseClient.auth.getUser();
         if (user) {
-          const { data: profile } = await supabase
-            .from('profiles')
+          const { data: profile } = await supabaseClient
+              .from('profiles')
             .select('*')
             .eq('id', user.id)
             .single();
@@ -2780,15 +2782,43 @@
       document.body.style.overflow = '';
     }
 
-    menuToggle.addEventListener('click', () => openDrawer(menuDrawer));
-    menuClose.addEventListener('click', closeAllDrawers);
+    // Use touchstart and click events together (preventing default behavior where needed to avoid double-triggering)
+    const handleMenuToggle = (e) => {
+      e.preventDefault();
+      openDrawer(menuDrawer);
+    };
+    menuToggle.addEventListener('click', handleMenuToggle);
+    menuToggle.addEventListener('touchstart', handleMenuToggle, { passive: false });
+
+    const handleMenuClose = (e) => {
+      e.preventDefault();
+      closeAllDrawers();
+    };
+    menuClose.addEventListener('click', handleMenuClose);
+    menuClose.addEventListener('touchstart', handleMenuClose, { passive: false });
     
-    cartToggle.addEventListener('click', () => {
+    const handleCartToggle = (e) => {
+      e.preventDefault();
       openDrawer(cartDrawer);
       renderCartDrawerItems();
-    });
-    cartClose.addEventListener('click', closeAllDrawers);
-    drawerOverlay.addEventListener('click', closeAllDrawers);
+    };
+    cartToggle.addEventListener('click', handleCartToggle);
+    cartToggle.addEventListener('touchstart', handleCartToggle, { passive: false });
+
+    const handleCartClose = (e) => {
+      e.preventDefault();
+      closeAllDrawers();
+    };
+    cartClose.addEventListener('click', handleCartClose);
+    cartClose.addEventListener('touchstart', handleCartClose, { passive: false });
+
+    // Close on overlay tap
+    const handleOverlayTap = (e) => {
+      e.preventDefault();
+      closeAllDrawers();
+    };
+    drawerOverlay.addEventListener('click', handleOverlayTap);
+    drawerOverlay.addEventListener('touchstart', handleOverlayTap, { passive: false });
 
     // --- SHOPPING CART LOGIC ---
     let cart = [];
@@ -2940,8 +2970,8 @@
         window.location.href = 'profile.html';
       } else {
         try {
-          const { data, error } = await supabase
-            .from('orders')
+          const { data, error } = await supabaseClient
+              .from('orders')
             .insert([{
               user_id: currentUserProfile.id,
               items: cart,
