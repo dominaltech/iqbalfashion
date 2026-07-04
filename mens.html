@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Men's Collection - Iqbal Fashion Solapur</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1C2B21">
+  
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    /* SHARED STYLING FROM INDEX.HTML */
+    :root {
+      --bg-primary: #FFFFFF;
+      --bg-secondary: #F8FAFC;
+      --text-primary: #0F172A;
+      --text-muted: #64748B;
+      --accent: #2563EB; /* 30% Fresh Blue */
+      --accent-hover: #1D4ED8;
+      --border-color: #E2E8F0;
+      --white: #FFFFFF;
+      
+      --font-serif: 'Plus Jakarta Sans', sans-serif;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-fast: all 0.2s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 3px;
+    }
+
+    h1, h2, h3, .serif-font {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .announcement-bar {
+      background-color: var(--text-primary);
+      color: var(--bg-primary);
+      text-align: center;
+      padding: 8px 16px;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    /* HEADER */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background-color: rgba(250, 248, 245, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    @media (max-width: 768px) {
+      .header-container { padding: 0 20px; height: 60px; }
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-primary);
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-fast);
+      position: relative;
+    }
+
+    .icon-btn:hover { color: var(--accent); }
+    .icon-btn svg { width: 24px; height: 24px; stroke-width: 1.5; }
+    .logo-container a { text-decoration: none; color: var(--text-primary); display: flex; align-items: center; }
+    .logo-img {
+      height: 45px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+    @media (max-width: 768px) {
+      .logo-img {
+        height: 35px;
+      }
+    }
+
+    .desktop-nav { display: flex; gap: 30px; }
+    .desktop-nav a {
+      text-decoration: none;
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      transition: var(--transition-fast);
+      position: relative;
+      padding: 5px 0;
+    }
+
+    .desktop-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--accent);
+      transition: var(--transition-fast);
+    }
+
+    .desktop-nav a:hover { color: var(--accent); }
+    .desktop-nav a:hover::after { width: 100%; }
+
+    @media (max-width: 992px) { .desktop-nav { display: none; } }
+
+    .right-actions { display: flex; align-items: center; gap: 10px; }
+    .cart-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: var(--accent);
+      color: var(--bg-primary);
+      font-size: 0.65rem;
+      font-weight: 700;
+      border-radius: 50%;
+      min-width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+    }
+
+    .profile-avatar-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--bg-secondary);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .profile-avatar-btn img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* DRAWERS */
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(28, 43, 33, 0.4);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      backdrop-filter: blur(4px);
+      transition: var(--transition-smooth);
+    }
+    .drawer-overlay.active { opacity: 1; visibility: visible; }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      max-width: 400px;
+      height: 100vh;
+      background-color: var(--bg-primary);
+      z-index: 1001;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #menu-drawer { left: 0; transform: translateX(-100%); }
+    #menu-drawer.active { transform: translateX(0); }
+    #cart-drawer { right: 0; transform: translateX(100%); }
+    #cart-drawer.active { transform: translateX(0); }
+
+    .drawer-header {
+      padding: 24px 30px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .drawer-title { font-size: 1.3rem; font-weight: 500; }
+    .drawer-close-btn { background: none; border: none; cursor: pointer; color: var(--text-primary); }
+    .drawer-close-btn svg { width: 24px; height: 24px; }
+
+    .menu-drawer-body { padding: 40px 30px; display: flex; flex-direction: column; gap: 24px; flex-grow: 1; }
+    .menu-link {
+      text-decoration: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      font-family: var(--font-serif);
+      transition: var(--transition-fast);
+      display: block;
+      padding-bottom: 5px;
+    }
+    .menu-link:hover { color: var(--accent); padding-left: 8px; }
+
+    /* CART ITEMS */
+    .cart-drawer-body { flex-grow: 1; overflow-y: auto; padding: 30px; display: flex; flex-direction: column; gap: 20px; }
+    .cart-empty-message { text-align: center; color: var(--text-muted); margin: auto 0; }
+    
+    .cart-item { display: flex; gap: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; }
+    .cart-item-image { width: 80px; height: 100px; object-fit: cover; background-color: var(--bg-secondary); }
+    .cart-item-info { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .cart-item-title { font-size: 0.95rem; font-weight: 600; }
+    .cart-item-meta { font-size: 0.8rem; color: var(--text-muted); }
+    
+    .cart-item-qty-price { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+    .qty-controls { display: flex; align-items: center; border: 1px solid var(--border-color); }
+    .qty-btn { background: none; border: none; width: 26px; height: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .qty-val { width: 30px; text-align: center; font-size: 0.85rem; font-weight: 600; }
+    .cart-item-price { font-size: 0.95rem; font-weight: 600; }
+    .cart-item-remove { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.75rem; text-decoration: underline; margin-top: 4px; align-self: flex-start; }
+    .cart-item-remove:hover { color: var(--accent); }
+
+    .cart-drawer-footer { padding: 30px; border-top: 1px solid var(--border-color); background-color: var(--bg-secondary); }
+    .cart-totals { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .cart-total-row { display: flex; justify-content: space-between; font-size: 0.9rem; }
+    .cart-total-row.grand-total { font-size: 1.15rem; font-weight: 600; border-top: 1px solid var(--border-color); padding-top: 10px; }
+    
+    .checkout-btn {
+      width: 100%; padding: 16px 20px; background-color: var(--accent); color: var(--bg-primary); border: none;
+      font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; cursor: pointer;
+      transition: var(--transition-smooth); text-align: center; text-decoration: none; display: block;
+    }
+    .checkout-btn:hover { background-color: var(--accent-hover); }
+
+    /* CATALOG HEADER & FILTER TABS */
+    .catalog-header {
+      padding: 60px 40px 20px 40px;
+      max-width: 1400px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .catalog-title {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+    }
+
+    .catalog-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 35px auto;
+    }
+
+    .filter-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 15px;
+    }
+
+    .filter-btn {
+      background: none;
+      border: none;
+      padding: 8px 24px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition-fast);
+      position: relative;
+    }
+
+    .filter-btn:hover {
+      color: var(--text-primary);
+    }
+
+    .filter-btn.active {
+      color: var(--text-primary);
+    }
+
+    .filter-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--text-primary);
+    }
+
+    /* PRODUCT GRID */
+    .catalog-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px 80px 40px;
+    }
+
+    @media (max-width: 768px) {
+      .catalog-container { padding: 0 20px 60px 20px; }
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+
+    @media (max-width: 1200px) {
+      .product-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    }
+    @media (max-width: 480px) {
+      .product-grid { grid-template-columns: 1fr; }
+    }
+
+    /* PRODUCT CARD */
+    .product-card {
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(28, 43, 33, 0.05);
+    }
+
+    .product-card-img-wrap {
+      width: 100%;
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      background-color: var(--bg-secondary);
+      position: relative;
+    }
+
+    .product-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .product-card:hover .product-card-img {
+      transform: scale(1.04);
+    }
+
+    .tag-badge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      z-index: 10;
+      background-color: var(--text-primary);
+      color: var(--bg-primary);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 2px;
+    }
+
+    .product-card-info {
+      padding: 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card-title {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .product-card-material {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .product-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+    }
+
+    .product-card-price {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .product-card-btn {
+      background: none;
+      border: none;
+      color: var(--text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+      transition: var(--transition-fast);
+    }
+
+    .product-card-btn:hover {
+      color: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .product-card-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* QUICK VIEW MODAL */
+    .quickview-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(28, 43, 33, 0.4);
+      z-index: 1500;
+      opacity: 0;
+      visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+      transition: var(--transition-smooth);
+    }
+
+    .quickview-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .quickview-box {
+      background-color: var(--bg-primary);
+      width: 100%;
+      max-width: 900px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      border: 1px solid var(--border-color);
+      border-radius: 2px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+      transform: translateY(30px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .quickview-overlay.active .quickview-box {
+      transform: translateY(0);
+    }
+
+    .quickview-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-primary);
+      z-index: 20;
+      transition: var(--transition-fast);
+    }
+
+    .quickview-close:hover {
+      background-color: var(--text-primary);
+      color: var(--white);
+    }
+
+    .quickview-close svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .quickview-gallery {
+      width: 100%;
+      height: 550px;
+      background-color: var(--bg-secondary);
+    }
+
+    .quickview-gallery img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .quickview-details {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      max-height: 550px;
+    }
+
+    @media (max-width: 768px) {
+      .quickview-box {
+        grid-template-columns: 1fr;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      .quickview-gallery {
+        height: 300px;
+      }
+      .quickview-details {
+        padding: 24px;
+        max-height: none;
+      }
+    }
+
+    .qv-title {
+      font-size: 1.8rem;
+      margin-bottom: 8px;
+    }
+
+    .qv-material {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 15px;
+    }
+
+    .qv-price {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .qv-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 20px;
+    }
+
+    .qv-selector-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 10px;
+    }
+
+    .size-selector {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .size-option-btn {
+      background: none;
+      border: 1px solid var(--border-color);
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      min-width: 48px;
+      border-radius: 2px;
+    }
+
+    .size-option-btn:hover {
+      border-color: var(--text-primary);
+    }
+
+    .size-option-btn.active {
+      background-color: var(--text-primary);
+      color: var(--bg-primary);
+      border-color: var(--text-primary);
+    }
+
+    .qv-add-btn {
+      width: 100%;
+      padding: 16px 20px;
+      background-color: var(--text-primary);
+      color: var(--bg-primary);
+      border: none;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .qv-add-btn:hover {
+      background-color: var(--accent);
+    }
+
+    .qv-add-btn svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    /* CUSTOM PROFILE COMPLETION MODAL & TOAST */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background-color: rgba(28, 43, 33, 0.4);
+      z-index: 2000; opacity: 0; visibility: hidden;
+      display: flex; align-items: center; justify-content: center; padding: 20px;
+      backdrop-filter: blur(4px); transition: var(--transition-smooth);
+    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-box {
+      background-color: var(--bg-primary); width: 100%; max-width: 480px; padding: 40px;
+      border: 1px solid var(--border-color); text-align: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      transform: translateY(20px); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .modal-overlay.active .modal-box { transform: translateY(0); }
+    .modal-icon { color: var(--accent); margin-bottom: 20px; }
+    .modal-icon svg { width: 48px; height: 48px; }
+    .modal-title { font-size: 1.5rem; margin-bottom: 15px; }
+    .modal-message { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 30px; }
+    .modal-actions { display: flex; flex-direction: column; gap: 10px; }
+    .modal-btn-primary { width: 100%; padding: 14px 20px; background-color: var(--accent); color: var(--bg-primary); border: none; font-size: 0.85rem; text-transform: uppercase; font-weight: 600; cursor: pointer; }
+    .modal-btn-primary:hover { background-color: var(--accent-hover); }
+    .modal-btn-secondary { width: 100%; padding: 14px 20px; background: none; border: 1px solid var(--border-color); color: var(--text-primary); font-size: 0.85rem; text-transform: uppercase; font-weight: 600; cursor: pointer; }
+
+    .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px; }
+    .toast {
+      background-color: var(--text-primary); color: var(--bg-primary); padding: 12px 24px; border-radius: 2px;
+      font-size: 0.85rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); display: flex; align-items: center; gap: 10px;
+      transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.show { transform: translateX(0); }
+  </style>
+</head>
+<body>
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    Free shipping on orders above ₹999 | Minimalist Apparel
+  </div>
+
+  <!-- STICKY HEADER -->
+  <header>
+    <div class="header-container">
+      <button class="icon-btn" id="menu-toggle" aria-label="Open Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+        </svg>
+      </button>
+
+      <div class="logo-container">
+        <a href="index.html">
+          <img class="logo-img" src="iqballogo.png" alt="Iqbal Fashion">
+        </a>
+      </div>
+
+      <nav class="desktop-nav">
+        <a href="mens.html" style="color: var(--accent);">Men</a>
+        <a href="kids.html">Kids</a>
+        <a href="cloth-piece.html">Cloth Piece</a>
+        <a href="profile.html">Profile</a>
+      </nav>
+
+      <div class="right-actions">
+        <button class="icon-btn" id="profile-btn" aria-label="View Profile">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+          </svg>
+        </button>
+        <button class="icon-btn" id="cart-toggle" aria-label="View Cart">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+          </svg>
+          <span class="cart-badge" id="global-cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DRAWERS OVERLAY -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+
+  <!-- MENU DRAWER (LEFT) -->
+  <div class="drawer" id="menu-drawer">
+    <div class="drawer-header">
+      <span class="drawer-title serif-font">Menu</span>
+      <button class="drawer-close-btn" id="menu-close" aria-label="Close Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="menu-drawer-body">
+      <a href="index.html" class="menu-link">Home</a>
+      <a href="mens.html" class="menu-link" style="color: var(--accent);">Men's Collection</a>
+      <a href="kids.html" class="menu-link">Kids' Collection</a>
+      <a href="cloth-piece.html" class="menu-link">Cloth Piece</a>
+      <a href="profile.html" class="menu-link">My Profile</a>
+    </div>
+  </div>
+
+  <!-- CART DRAWER (RIGHT) -->
+  <div class="drawer" id="cart-drawer">
+    <div class="drawer-header">
+      <span class="drawer-title serif-font">Your Bag</span>
+      <button class="drawer-close-btn" id="cart-close" aria-label="Close Cart">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="cart-drawer-body" id="cart-drawer-items">
+      <div class="cart-empty-message">Your bag is empty</div>
+    </div>
+    <div class="cart-drawer-footer">
+      <div class="cart-totals">
+        <div class="cart-total-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">₹0</span>
+        </div>
+        <div class="cart-total-row">
+          <span>Shipping</span>
+          <span id="cart-shipping">Calculated next</span>
+        </div>
+        <div class="cart-total-row grand-total">
+          <span>Total</span>
+          <span id="cart-grand-total">₹0</span>
+        </div>
+      </div>
+      <button class="checkout-btn" id="cart-checkout-btn">Checkout</button>
+    </div>
+  </div>
+
+  <!-- CATALOG HEADER -->
+  <div class="catalog-header">
+    <h1 class="catalog-title serif-font">Men's Collection</h1>
+    <p class="catalog-desc">Meticulously tailored traditional wear and high-quality casual staples designed around comfort, breathability, and structure.</p>
+    
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="filter-btn active" onclick="filterCatalog('all', this)">All</button>
+      <button class="filter-btn" onclick="filterCatalog('traditional', this)">Traditional</button>
+      <button class="filter-btn" onclick="filterCatalog('jeans', this)">Jeans & Casuals</button>
+    </div>
+  </div>
+
+  <!-- CATALOG GRID -->
+  <div class="catalog-container">
+    <div class="product-grid" id="product-grid">
+      <!-- Cards rendered by JS -->
+    </div>
+  </div>
+
+  <!-- QUICK VIEW MODAL OVERLAY -->
+  <div class="quickview-overlay" id="quick-view-overlay">
+    <div class="quickview-box" id="quickview-box">
+      <!-- Rendered dynamically by JS -->
+    </div>
+  </div>
+
+  <!-- PROFILE COMPLETION POPUP MODAL -->
+  <div class="modal-overlay" id="profile-modal">
+    <div class="modal-box">
+      <div class="modal-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+        </svg>
+      </div>
+      <h3 class="modal-title serif-font">Profile Verification Required</h3>
+      <p class="modal-message">To add items to your cart or purchase, you must complete your profile by signing in via Google and adding your Phone Number and Shipping Address.</p>
+      <div class="modal-actions">
+        <button class="modal-btn-primary" id="modal-go-profile">Go to Profile</button>
+        <button class="modal-btn-secondary" id="modal-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Supabase Configuration
+    const SUPABASE_URL = "https://zquafonundzyqumukmbb.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpxdWFmb251bmR6eXF1bXVrbWJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxNDgyMzksImV4cCI6MjA5ODcyNDIzOX0.XuO3ytv6om95CegooXclAQUHHC6FCHLlbY4xJTks9Kk";
+    let supabase = null;
+    let isMockMode = true;
+
+    if (SUPABASE_URL && SUPABASE_URL.startsWith('http')) {
+      try {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        isMockMode = false;
+      } catch (err) {
+        console.error("Supabase failed to initialize", err);
+      }
+    }
+
+    // --- FALLBACK MEN'S PRODUCTS DATA ---
+    const defaultProducts = [
+      {
+        id: "m-prod-1",
+        title: "Royal Indigo Cotton Kurta",
+        price: 1499,
+        category: "mens",
+        subcategory: "traditional",
+        material: "100% Organic Cotton",
+        sizes: ["S", "M", "L", "XL"],
+        images: ["https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?q=80&w=600&auto=format&fit=crop"],
+        description: "Woven in premium cotton, this deep indigo kurta features a clean, hidden-button placket and minimal mandarin collar. Extremely breathable and tailored to fall elegantly.",
+        tag: "Best Seller"
+      },
+      {
+        id: "m-prod-2",
+        title: "Ivory Linen Sherwani Set",
+        price: 3999,
+        category: "mens",
+        subcategory: "traditional",
+        material: "Pure Irish Linen",
+        sizes: ["M", "L", "XL"],
+        images: ["https://images.unsplash.com/photo-1597983073492-bc24058b37be?q=80&w=600&auto=format&fit=crop"],
+        description: "A premium Ivory Linen Sherwani designed for weddings and special traditional gatherings. Tailored details with brass statement buttons, paired with matching light pajama trousers.",
+        tag: "Premium Weave"
+      },
+      {
+        id: "m-prod-3",
+        title: "Olive Handloomed Nehru Jacket",
+        price: 1899,
+        category: "mens",
+        subcategory: "traditional",
+        material: "Handloomed Khadi Cotton",
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        images: ["https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?q=80&w=600&auto=format&fit=crop"],
+        description: "A classic sleeveless Nehru jacket in structured olive khadi fabric. Adds a clean layer of luxury to any standard traditional kurta.",
+        tag: "New Arrival"
+      },
+      {
+        id: "m-prod-4",
+        title: "Raw Indigo Denim Jeans",
+        price: 2199,
+        category: "mens",
+        subcategory: "jeans",
+        material: "Heavy Selvedge Denim",
+        sizes: ["30", "32", "34", "36"],
+        images: ["https://images.unsplash.com/photo-1542272604-787c3835535d?q=80&w=600&auto=format&fit=crop"],
+        description: "Raw selvedge denim jeans cut in a straight, comfortable shape. Clean minimal look, no wash fading or artificial tearing.",
+        tag: "Classics"
+      },
+      {
+        id: "m-prod-5",
+        title: "Minimalist Grey Linen Shirt",
+        price: 1699,
+        category: "mens",
+        subcategory: "jeans",
+        material: "Linen Cotton Blend",
+        sizes: ["S", "M", "L", "XL"],
+        images: ["https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=600&auto=format&fit=crop"],
+        description: "A lightweight grey summer shirt. Perfect structured fit, minimal collar, and natural texture finish.",
+        tag: "Daily Essential"
+      },
+      {
+        id: "m-prod-6",
+        title: "Earthy Sage Cotton Tee",
+        price: 899,
+        category: "mens",
+        subcategory: "jeans",
+        material: "240 GSM Heavy Cotton",
+        sizes: ["S", "M", "L", "XL"],
+        images: ["https://images.unsplash.com/photo-1521572267360-ee0c2909d518?q=80&w=600&auto=format&fit=crop"],
+        description: "Heavyweight organic cotton t-shirt with a premium relaxed silhouette. Pre-washed to prevent shrinkage and retain soft handfeel.",
+        tag: ""
+      }
+    ];
+
+    let productsList = [];
+    let currentFilter = 'all';
+
+    // Fetch and Load Products
+    async function loadProducts() {
+      if (isMockMode) {
+        // Load default products + any added by admin
+        const adminAdded = JSON.parse(localStorage.getItem('iqbal_mock_products') || '[]');
+        const filteredAdmin = adminAdded.filter(p => p.category === 'mens');
+        productsList = [...filteredAdmin, ...defaultProducts];
+        renderProductGrid();
+      } else {
+        try {
+          const { data, error } = await supabase
+            .from('products')
+            .select('*')
+            .eq('category', 'mens');
+          
+          if (error) throw error;
+          
+          // Merge default products as fallback if DB is empty
+          productsList = (data && data.length > 0) ? data : defaultProducts;
+          renderProductGrid();
+        } catch (err) {
+          console.error("Failed to load products from Supabase. Falling back to default list.", err);
+          productsList = defaultProducts;
+          renderProductGrid();
+        }
+      }
+    }
+
+    function renderProductGrid() {
+      const grid = document.getElementById('product-grid');
+      grid.innerHTML = '';
+      
+      const filtered = productsList.filter(p => {
+        if (currentFilter === 'all') return true;
+        return p.subcategory === currentFilter;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px 0;">No items found in this section.</div>`;
+        return;
+      }
+
+      filtered.forEach(product => {
+        const cardHtml = `
+          <div class="product-card" onclick="openQuickView('${product.id}')">
+            <div class="product-card-img-wrap">
+              ${product.tag ? `<span class="tag-badge">${product.tag}</span>` : ''}
+              <img class="product-card-img" src="${product.images && product.images[0] ? product.images[0] : 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=600'}" alt="${product.title}">
+            </div>
+            <div class="product-card-info">
+              <h3 class="product-card-title">${product.title}</h3>
+              <div class="product-card-material">${product.material || 'Premium Fabric'}</div>
+              <div class="product-card-footer">
+                <span class="product-card-price">₹${product.price.toLocaleString('en-IN')}</span>
+                <button class="product-card-btn" aria-label="Quick Add" onclick="event.stopPropagation(); quickAdd('${product.id}')">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.insertAdjacentHTML('beforeend', cardHtml);
+      });
+    }
+
+    window.filterCatalog = function(subcategory, btnElement) {
+      currentFilter = subcategory;
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+      renderProductGrid();
+    };
+
+    // --- QUICK VIEW LOGIC ---
+    let selectedSize = '';
+
+    window.openQuickView = function(productId) {
+      const product = productsList.find(p => p.id === productId);
+      if (!product) return;
+      
+      selectedSize = product.sizes && product.sizes.length > 0 ? product.sizes[0] : '';
+      
+      const sizesHtml = product.sizes && product.sizes.length > 0 ? `
+        <div class="qv-selector-title">Select Size</div>
+        <div class="size-selector">
+          ${product.sizes.map((s, idx) => `
+            <button class="size-option-btn ${idx === 0 ? 'active' : ''}" onclick="selectSizeOption('${s}', this)">${s}</button>
+          `).join('')}
+        </div>
+      ` : '';
+
+      const modalBox = document.getElementById('quickview-box');
+      modalBox.innerHTML = `
+        <button class="quickview-close" onclick="closeQuickView()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <div class="quickview-gallery">
+          <img src="${product.images && product.images[0] ? product.images[0] : 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=600'}" alt="${product.title}">
+        </div>
+        <div class="quickview-details">
+          <h2 class="qv-title serif-font">${product.title}</h2>
+          <div class="qv-material">${product.material || 'Premium fabric'}</div>
+          <div class="qv-price">₹${product.price.toLocaleString('en-IN')}</div>
+          <p class="qv-desc">${product.description || ''}</p>
+          
+          ${sizesHtml}
+          
+          <button class="qv-add-btn" onclick="addSelectedToCart('${product.id}')">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+            </svg>
+            Add to Bag
+          </button>
+        </div>
+      `;
+      
+      document.getElementById('quick-view-overlay').classList.add('active');
+    };
+
+    window.closeQuickView = function() {
+      document.getElementById('quick-view-overlay').classList.remove('active');
+    };
+
+    window.selectSizeOption = function(size, btnElement) {
+      selectedSize = size;
+      document.querySelectorAll('.size-option-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+    };
+
+    // Check auth & profiles before adding to cart
+    let currentUserProfile = null;
+    
+    async function loadUserProfile() {
+      if (isMockMode) {
+        const cached = localStorage.getItem('iqbal_mock_profile');
+        if (cached) {
+          currentUserProfile = JSON.parse(cached);
+          updateProfileUI();
+        }
+      } else {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+          
+          currentUserProfile = profile;
+          updateProfileUI();
+        }
+      }
+    }
+
+    function updateProfileUI() {
+      const profileBtn = document.getElementById('profile-btn');
+      if (currentUserProfile && currentUserProfile.avatar_url) {
+        profileBtn.innerHTML = `<div class="profile-avatar-btn"><img src="${currentUserProfile.avatar_url}" alt="Profile avatar"></div>`;
+      } else {
+        profileBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>`;
+      }
+    }
+
+    function checkUserProfileComplete() {
+      if (!currentUserProfile) return false;
+      if (!currentUserProfile.address || !currentUserProfile.phone) return false;
+      return true;
+    }
+
+    function triggerProfileRequiredModal() {
+      document.getElementById('profile-modal').classList.add('active');
+    }
+
+    window.quickAdd = function(productId) {
+      const product = productsList.find(p => p.id === productId);
+      if (!product) return;
+      
+      // Perform profile validation before add
+      if (!checkUserProfileComplete()) {
+        triggerProfileRequiredModal();
+        return;
+      }
+      
+      const sizeVal = product.sizes && product.sizes.length > 0 ? product.sizes[0] : '';
+      addItemToCart(product, sizeVal);
+    };
+
+    window.addSelectedToCart = function(productId) {
+      const product = productsList.find(p => p.id === productId);
+      if (!product) return;
+      
+      // Perform profile validation before add
+      if (!checkUserProfileComplete()) {
+        closeQuickView();
+        triggerProfileRequiredModal();
+        return;
+      }
+      
+      addItemToCart(product, selectedSize);
+      closeQuickView();
+    };
+
+    function addItemToCart(product, size) {
+      const cartIndex = cart.findIndex(item => item.product_id === product.id && item.size === size);
+      
+      if (cartIndex > -1) {
+        cart[cartIndex].quantity += 1;
+      } else {
+        cart.push({
+          product_id: product.id,
+          title: product.title,
+          price: product.price,
+          image: product.images && product.images[0] ? product.images[0] : '',
+          size: size,
+          material: product.material || '',
+          quantity: 1
+        });
+      }
+      
+      saveCart();
+      showToast(`Added ${product.title} to bag.`);
+      openDrawer(cartDrawer);
+      renderCartDrawerItems();
+    }
+
+    // --- DRAWERS & CART CONFIG (CONSISTENT) ---
+    const menuToggle = document.getElementById('menu-toggle');
+    const menuDrawer = document.getElementById('menu-drawer');
+    const menuClose = document.getElementById('menu-close');
+    const cartToggle = document.getElementById('cart-toggle');
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartClose = document.getElementById('cart-close');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+    const profileBtn = document.getElementById('profile-btn');
+
+    profileBtn.addEventListener('click', () => { window.location.href = 'profile.html'; });
+
+    function openDrawer(drawer) {
+      drawer.classList.add('active');
+      drawerOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeAllDrawers() {
+      menuDrawer.classList.remove('active');
+      cartDrawer.classList.remove('active');
+      drawerOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    menuToggle.addEventListener('click', () => openDrawer(menuDrawer));
+    menuClose.addEventListener('click', closeAllDrawers);
+    cartToggle.addEventListener('click', () => { openDrawer(cartDrawer); renderCartDrawerItems(); });
+    cartClose.addEventListener('click', closeAllDrawers);
+    drawerOverlay.addEventListener('click', closeAllDrawers);
+
+    document.getElementById('modal-close').addEventListener('click', () => {
+      document.getElementById('profile-modal').classList.remove('active');
+    });
+
+    document.getElementById('modal-go-profile').addEventListener('click', () => {
+      window.location.href = 'profile.html';
+    });
+
+    // --- TOAST SYSTEM ---
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 18px; height: 18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 50);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // --- CART FUNCTIONALITY ---
+    let cart = [];
+
+    function loadCart() {
+      const stored = localStorage.getItem('iqbal_fashion_cart');
+      if (stored) cart = JSON.parse(stored);
+      updateCartBadge();
+    }
+
+    function saveCart() {
+      localStorage.setItem('iqbal_fashion_cart', JSON.stringify(cart));
+      updateCartBadge();
+    }
+
+    function updateCartBadge() {
+      const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById('global-cart-count').textContent = totalQty;
+    }
+
+    function renderCartDrawerItems() {
+      const itemsContainer = document.getElementById('cart-drawer-items');
+      const checkoutBtn = document.getElementById('cart-checkout-btn');
+      
+      if (cart.length === 0) {
+        itemsContainer.innerHTML = `<div class="cart-empty-message">Your bag is empty</div>`;
+        checkoutBtn.style.opacity = '0.5';
+        checkoutBtn.style.pointerEvents = 'none';
+        updateCartTotals(0);
+        return;
+      }
+      
+      checkoutBtn.style.opacity = '1';
+      checkoutBtn.style.pointerEvents = 'auto';
+      itemsContainer.innerHTML = '';
+      let subtotal = 0;
+      
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        
+        const cardHtml = `
+          <div class="cart-item">
+            <img class="cart-item-image" src="${item.image || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=150'}" alt="${item.title}">
+            <div class="cart-item-info">
+              <div>
+                <div class="cart-item-title">${item.title}</div>
+                <div class="cart-item-meta">Size: ${item.size || 'Standard'} | Mat: ${item.material || 'Regular'}</div>
+                <button class="cart-item-remove" onclick="removeCartItem(${index})">Remove</button>
+              </div>
+              <div class="cart-item-qty-price">
+                <div class="qty-controls">
+                  <button class="qty-btn" onclick="adjustItemQty(${index}, -1)">-</button>
+                  <span class="qty-val">${item.quantity}</span>
+                  <button class="qty-btn" onclick="adjustItemQty(${index}, 1)">+</button>
+                </div>
+                <div class="cart-item-price">₹${itemTotal.toLocaleString('en-IN')}</div>
+              </div>
+            </div>
+          </div>
+        `;
+        itemsContainer.insertAdjacentHTML('beforeend', cardHtml);
+      });
+      
+      updateCartTotals(subtotal);
+    }
+
+    function updateCartTotals(subtotal) {
+      document.getElementById('cart-subtotal').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+      let shipping = (subtotal > 0 && subtotal < 999) ? 150 : 0;
+      document.getElementById('cart-shipping').textContent = shipping === 0 ? 'Free' : `₹${shipping}`;
+      const total = subtotal + shipping;
+      document.getElementById('cart-grand-total').textContent = `₹${total.toLocaleString('en-IN')}`;
+    }
+
+    window.adjustItemQty = function(index, change) {
+      cart[index].quantity += change;
+      if (cart[index].quantity <= 0) cart.splice(index, 1);
+      saveCart();
+      renderCartDrawerItems();
+    };
+
+    window.removeCartItem = function(index) {
+      cart.splice(index, 1);
+      saveCart();
+      renderCartDrawerItems();
+      showToast("Item removed from bag.");
+    };
+
+    checkoutBtn = document.getElementById('cart-checkout-btn');
+    checkoutBtn.addEventListener('click', async () => {
+      if (!currentUserProfile || !checkUserProfileComplete()) {
+        closeAllDrawers();
+        triggerProfileRequiredModal();
+        return;
+      }
+      
+      const totalAmt = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      if (isMockMode) {
+        const mockOrder = {
+          id: 'ord-' + Math.floor(Math.random() * 1000000),
+          created_at: new Date().toISOString(),
+          items: cart,
+          total_amount: totalAmt + (totalAmt >= 999 ? 0 : 150),
+          status: 'pending',
+          shipping_name: currentUserProfile.name,
+          shipping_email: currentUserProfile.email,
+          shipping_address: currentUserProfile.address,
+          shipping_phone: currentUserProfile.phone
+        };
+        
+        const existingOrders = JSON.parse(localStorage.getItem('iqbal_mock_orders') || '[]');
+        existingOrders.unshift(mockOrder);
+        localStorage.setItem('iqbal_mock_orders', JSON.stringify(existingOrders));
+        
+        cart = [];
+        saveCart();
+        closeAllDrawers();
+        
+        alert(`Order Placed Successfully! (Demo Order ID: ${mockOrder.id}). We will contact you soon on your registered phone number.`);
+        window.location.href = 'profile.html';
+      } else {
+        try {
+          const { data, error } = await supabase
+            .from('orders')
+            .insert([{
+              user_id: currentUserProfile.id,
+              items: cart,
+              total_amount: totalAmt + (totalAmt >= 999 ? 0 : 150),
+              shipping_name: currentUserProfile.name,
+              shipping_email: currentUserProfile.email,
+              shipping_address: currentUserProfile.address,
+              shipping_phone: currentUserProfile.phone
+            }]);
+            
+          if (error) throw error;
+          
+          cart = [];
+          saveCart();
+          closeAllDrawers();
+          
+          alert("Order Placed Successfully! We will contact you soon.");
+          window.location.href = 'profile.html';
+        } catch (err) {
+          console.error("Order creation failed", err);
+          showToast("Failed to place order. Try again.");
+        }
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadUserProfile();
+      loadCart();
+      loadProducts();
+    });
+  </script>
+</body>
+</html>

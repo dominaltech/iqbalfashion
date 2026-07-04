@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account - Iqbal Fashion Solapur</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1C2B21">
+  
+  <!-- Preconnect & Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+  
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    /* SHARED STYLING FROM INDEX.HTML */
+    :root {
+      --bg-primary: #FFFFFF;
+      --bg-secondary: #F8FAFC;
+      --text-primary: #0F172A;
+      --text-muted: #64748B;
+      --accent: #2563EB; /* 30% Fresh Blue */
+      --accent-hover: #1D4ED8;
+      --border-color: #E2E8F0;
+      --white: #FFFFFF;
+      --success: #10B981;
+      
+      --font-serif: 'Plus Jakarta Sans', sans-serif;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-fast: all 0.2s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 3px;
+    }
+
+    h1, h2, h3, .serif-font {
+      font-family: var(--font-serif);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+    }
+
+    .announcement-bar {
+      background-color: var(--text-primary);
+      color: var(--bg-primary);
+      text-align: center;
+      padding: 8px 16px;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    /* HEADER */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 900;
+      background-color: rgba(250, 248, 245, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+    }
+
+    @media (max-width: 768px) {
+      .header-container { padding: 0 20px; height: 60px; }
+    }
+
+    .icon-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-primary);
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-fast);
+      position: relative;
+    }
+
+    .icon-btn:hover { color: var(--accent); }
+    .icon-btn svg { width: 24px; height: 24px; stroke-width: 1.5; }
+    .logo-container a { text-decoration: none; color: var(--text-primary); display: flex; align-items: center; }
+    .logo-img {
+      height: 45px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    }
+    @media (max-width: 768px) {
+      .logo-img {
+        height: 35px;
+      }
+    }
+
+    .desktop-nav { display: flex; gap: 30px; }
+    .desktop-nav a {
+      text-decoration: none;
+      color: var(--text-primary);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+      transition: var(--transition-fast);
+      position: relative;
+      padding: 5px 0;
+    }
+
+    .desktop-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--accent);
+      transition: var(--transition-fast);
+    }
+
+    .desktop-nav a:hover { color: var(--accent); }
+    .desktop-nav a:hover::after { width: 100%; }
+
+    @media (max-width: 992px) { .desktop-nav { display: none; } }
+
+    .right-actions { display: flex; align-items: center; gap: 10px; }
+    .cart-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background-color: var(--accent);
+      color: var(--bg-primary);
+      font-size: 0.65rem;
+      font-weight: 700;
+      border-radius: 50%;
+      min-width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+    }
+
+    .profile-avatar-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--bg-secondary);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .profile-avatar-btn img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* DRAWERS */
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(28, 43, 33, 0.4);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      backdrop-filter: blur(4px);
+      transition: var(--transition-smooth);
+    }
+    .drawer-overlay.active { opacity: 1; visibility: visible; }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      max-width: 400px;
+      height: 100vh;
+      background-color: var(--bg-primary);
+      z-index: 1001;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #menu-drawer { left: 0; transform: translateX(-100%); }
+    #menu-drawer.active { transform: translateX(0); }
+    #cart-drawer { right: 0; transform: translateX(100%); }
+    #cart-drawer.active { transform: translateX(0); }
+
+    .drawer-header {
+      padding: 24px 30px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .drawer-title { font-size: 1.3rem; font-weight: 500; }
+    .drawer-close-btn { background: none; border: none; cursor: pointer; color: var(--text-primary); }
+    .drawer-close-btn svg { width: 24px; height: 24px; }
+
+    .menu-drawer-body { padding: 40px 30px; display: flex; flex-direction: column; gap: 24px; flex-grow: 1; }
+    .menu-link {
+      text-decoration: none;
+      color: var(--text-primary);
+      font-size: 1.5rem;
+      font-family: var(--font-serif);
+      transition: var(--transition-fast);
+      display: block;
+      padding-bottom: 5px;
+    }
+    .menu-link:hover { color: var(--accent); padding-left: 8px; }
+
+    /* CART DRAWER CONTENT */
+    .cart-drawer-body { flex-grow: 1; overflow-y: auto; padding: 30px; display: flex; flex-direction: column; gap: 20px; }
+    .cart-empty-message { text-align: center; color: var(--text-muted); margin: auto 0; }
+    
+    .cart-item { display: flex; gap: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 20px; }
+    .cart-item-image { width: 80px; height: 100px; object-fit: cover; background-color: var(--bg-secondary); }
+    .cart-item-info { flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .cart-item-title { font-size: 0.95rem; font-weight: 600; }
+    .cart-item-meta { font-size: 0.8rem; color: var(--text-muted); }
+    
+    .cart-item-qty-price { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+    .qty-controls { display: flex; align-items: center; border: 1px solid var(--border-color); }
+    .qty-btn { background: none; border: none; width: 26px; height: 26px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .qty-val { width: 30px; text-align: center; font-size: 0.85rem; font-weight: 600; }
+    .cart-item-price { font-size: 0.95rem; font-weight: 600; }
+    .cart-item-remove { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.75rem; text-decoration: underline; margin-top: 4px; align-self: flex-start; }
+    .cart-item-remove:hover { color: var(--accent); }
+
+    .cart-drawer-footer { padding: 30px; border-top: 1px solid var(--border-color); background-color: var(--bg-secondary); }
+    .cart-totals { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+    .cart-total-row { display: flex; justify-content: space-between; font-size: 0.9rem; }
+    .cart-total-row.grand-total { font-size: 1.15rem; font-weight: 600; border-top: 1px solid var(--border-color); padding-top: 10px; }
+    
+    .checkout-btn {
+      width: 100%; padding: 16px 20px; background-color: var(--accent); color: var(--bg-primary); border: none;
+      font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; cursor: pointer;
+      transition: var(--transition-smooth); text-align: center; text-decoration: none; display: block;
+    }
+    .checkout-btn:hover { background-color: var(--accent-hover); }
+
+    /* PROFILE LAYOUT GRID */
+    .profile-container {
+      max-width: 1000px;
+      margin: 60px auto;
+      padding: 0 40px;
+    }
+
+    @media (max-width: 768px) {
+      .profile-container { padding: 0 20px; margin: 40px auto; }
+    }
+
+    .profile-section-title {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    /* AUTH LOGIN BOX */
+    .auth-card {
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(28, 43, 33, 0.04);
+    }
+
+    .auth-logo {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .auth-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    .google-signin-btn {
+      width: 100%;
+      padding: 14px 20px;
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border-radius: 2px;
+    }
+
+    .google-signin-btn:hover {
+      border-color: var(--text-primary);
+      background-color: var(--bg-secondary);
+    }
+
+    .google-signin-btn svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* PROFILE VIEW GRID */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .profile-grid { grid-template-columns: 1fr; }
+    }
+
+    .profile-left {
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .profile-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 2px solid var(--accent);
+      background-color: var(--bg-secondary);
+    }
+
+    .profile-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .profile-name {
+      font-size: 1.4rem;
+      margin-bottom: 5px;
+    }
+
+    .profile-email {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+    }
+
+    .signout-btn {
+      width: 100%;
+      padding: 10px 20px;
+      background: none;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .signout-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* PROFILE RIGHT FORM & HISTORY */
+    .profile-right {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .profile-card {
+      background-color: var(--white);
+      border: 1px solid var(--border-color);
+      padding: 30px;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input {
+      padding: 12px;
+      border: 1px solid var(--border-color);
+      font-size: 0.9rem;
+      border-radius: 2px;
+      outline: none;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      width: 100%;
+    }
+
+    .form-input:focus {
+      border-color: var(--text-muted);
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .save-profile-btn {
+      padding: 12px 24px;
+      background-color: var(--text-primary);
+      color: var(--bg-primary);
+      border: none;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: var(--transition-fast);
+      align-self: flex-start;
+    }
+
+    .save-profile-btn:hover {
+      background-color: var(--accent);
+    }
+
+    /* ORDER HISTORY LIST */
+    .orders-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .order-item-card {
+      border: 1px solid var(--border-color);
+      padding: 20px;
+      border-radius: 2px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background-color: var(--bg-primary);
+    }
+
+    .order-header-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      border-bottom: 1px dashed var(--border-color);
+      padding-bottom: 8px;
+    }
+
+    .order-id {
+      font-weight: 700;
+    }
+
+    .order-date {
+      color: var(--text-muted);
+    }
+
+    .order-status {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      background-color: #E2E8F0;
+      color: #475569;
+      border-radius: 2px;
+    }
+
+    .order-status.pending {
+      background-color: #FEF3C7;
+      color: #D97706;
+    }
+
+    .order-status.completed {
+      background-color: #DCFCE7;
+      color: #16A34A;
+    }
+
+    .order-products {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 0.9rem;
+    }
+
+    .order-product-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .order-product-qty {
+      color: var(--text-muted);
+    }
+
+    .order-footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-top: 1px dashed var(--border-color);
+      padding-top: 8px;
+      margin-top: 4px;
+    }
+
+    /* DEVELOPER GUIDE PANEL */
+    .dev-guide-card {
+      background-color: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      padding: 25px;
+      border-radius: 2px;
+      font-size: 0.85rem;
+      color: #1E3A8A;
+      margin-top: 30px;
+    }
+
+    .dev-guide-title {
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .dev-guide-code {
+      background-color: #FFFFFF;
+      border: 1px solid #DBEAFE;
+      padding: 10px;
+      font-family: monospace;
+      display: block;
+      margin: 10px 0;
+      overflow-x: auto;
+      color: #1E293B;
+    }
+
+    .toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 3000; display: flex; flex-direction: column; gap: 10px; }
+    .toast {
+      background-color: var(--text-primary); color: var(--bg-primary); padding: 12px 24px; border-radius: 2px;
+      font-size: 0.85rem; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); display: flex; align-items: center; gap: 10px;
+      transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .toast.show { transform: translateX(0); }
+  </style>
+</head>
+<body>
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    Free shipping on orders above ₹999 | Minimalist Apparel
+  </div>
+
+  <!-- STICKY HEADER -->
+  <header>
+    <div class="header-container">
+      <button class="icon-btn" id="menu-toggle" aria-label="Open Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" />
+        </svg>
+      </button>
+
+      <div class="logo-container">
+        <a href="index.html">
+          <img class="logo-img" src="iqballogo.png" alt="Iqbal Fashion">
+        </a>
+      </div>
+
+      <nav class="desktop-nav">
+        <a href="mens.html">Men</a>
+        <a href="kids.html">Kids</a>
+        <a href="cloth-piece.html">Cloth Piece</a>
+        <a href="profile.html" style="color: var(--accent);">Profile</a>
+      </nav>
+
+      <div class="right-actions">
+        <button class="icon-btn" id="profile-btn" aria-label="View Profile">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+          </svg>
+        </button>
+        <button class="icon-btn" id="cart-toggle" aria-label="View Cart">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+          </svg>
+          <span class="cart-badge" id="global-cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- DRAWERS OVERLAY -->
+  <div class="drawer-overlay" id="drawer-overlay"></div>
+
+  <!-- MENU DRAWER (LEFT) -->
+  <div class="drawer" id="menu-drawer">
+    <div class="drawer-header">
+      <span class="drawer-title serif-font">Menu</span>
+      <button class="drawer-close-btn" id="menu-close" aria-label="Close Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="menu-drawer-body">
+      <a href="index.html" class="menu-link">Home</a>
+      <a href="mens.html" class="menu-link">Men's Collection</a>
+      <a href="kids.html" class="menu-link">Kids' Collection</a>
+      <a href="cloth-piece.html" class="menu-link">Cloth Piece</a>
+      <a href="profile.html" class="menu-link" style="color: var(--accent);">My Profile</a>
+    </div>
+  </div>
+
+  <!-- CART DRAWER (RIGHT) -->
+  <div class="drawer" id="cart-drawer">
+    <div class="drawer-header">
+      <span class="drawer-title serif-font">Your Bag</span>
+      <button class="drawer-close-btn" id="cart-close" aria-label="Close Cart">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+    <div class="cart-drawer-body" id="cart-drawer-items">
+      <div class="cart-empty-message">Your bag is empty</div>
+    </div>
+    <div class="cart-drawer-footer">
+      <div class="cart-totals">
+        <div class="cart-total-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">₹0</span>
+        </div>
+        <div class="cart-total-row">
+          <span>Shipping</span>
+          <span id="cart-shipping">Calculated next</span>
+        </div>
+        <div class="cart-total-row grand-total">
+          <span>Total</span>
+          <span id="cart-grand-total">₹0</span>
+        </div>
+      </div>
+      <button class="checkout-btn" id="cart-checkout-btn">Checkout</button>
+    </div>
+  </div>
+
+  <!-- PROFILE VIEW CONTAINER -->
+  <div class="profile-container">
+    <h1 class="profile-section-title serif-font">My Account</h1>
+    
+    <!-- 1. SIGN IN INTERFACE (Shown if not logged in) -->
+    <div id="auth-view" class="auth-card" style="display: none;">
+      <div class="auth-logo serif-font">Iqbal Fashion</div>
+      <p class="auth-subtitle">Verify your identity to save shopping bags, customize shipping addresses, and review order histories.</p>
+      
+      <!-- Real Google Sign-in button -->
+      <button class="google-signin-btn" id="google-login-btn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+        </svg>
+        Sign In with Google
+      </button>
+
+      <!-- Mock / Simulation login for immediate client testing -->
+      <div style="margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; font-weight: 600;">Demo Simulator (Without Database)</p>
+        <button class="google-signin-btn" onclick="simulateGoogleLogin()" style="background-color: var(--bg-secondary); border-style: dashed;">
+          Simulate Google Auth Login
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. LOGGED IN DASHBOARD (Shown if logged in) -->
+    <div id="dashboard-view" class="profile-grid" style="display: none;">
+      <!-- Profile Sidebar Card -->
+      <div class="profile-left">
+        <div class="profile-photo">
+          <img id="user-avatar" src="" alt="User profile image">
+        </div>
+        <h3 class="profile-name" id="user-name">Loading...</h3>
+        <p class="profile-email" id="user-email">Loading...</p>
+        <button class="signout-btn" id="signout-btn">Sign Out</button>
+      </div>
+
+      <!-- Forms and History -->
+      <div class="profile-right">
+        <!-- Delivery Details Form -->
+        <div class="profile-card">
+          <h3 class="card-title serif-font">Shipping & Contact Details</h3>
+          <form id="profile-form">
+            <div class="form-group">
+              <label class="form-label" for="profile-phone">Phone Number</label>
+              <input type="tel" id="profile-phone" class="form-input" placeholder="e.g. +91 98765 43210" required>
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="profile-address">Delivery Address</label>
+              <textarea id="profile-address" class="form-input form-textarea" placeholder="Flat No., Building, Street Name, Solapur - Pin code" required></textarea>
+            </div>
+            
+            <button type="submit" class="save-profile-btn">Save Address Details</button>
+          </form>
+        </div>
+
+        <!-- Orders History -->
+        <div class="profile-card">
+          <h3 class="card-title serif-font">Order History</h3>
+          <div class="orders-list" id="orders-list-container">
+            <div style="text-align: center; color: var(--text-muted); font-size: 0.9rem; padding: 20px 0;">Loading orders...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DEVELOPER INSTRUCTIONS (GOOGLE AUTH SETUP) -->
+    <div class="dev-guide-card" id="dev-auth-guide">
+      <div class="dev-guide-title">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 18px; height: 18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        Merchant/Developer: Setting up Google Auth in Supabase
+      </div>
+      <ol style="margin-left: 20px; margin-top: 10px; display: flex; flex-direction: column; gap: 8px;">
+        <li>Go to the <a href="https://console.cloud.google.com/" target="_blank" style="color: #1D4ED8; font-weight: 600;">Google Cloud Console</a>, create a project, and navigate to <strong>APIs & Services > Credentials</strong>.</li>
+        <li>Create an <strong>OAuth 2.0 Client ID</strong> for a web application.</li>
+        <li>Copy your Supabase project's Redirect URI (from <i>Supabase Dashboard > Auth > Providers > Google</i>). Paste this into Google Cloud's <strong>Authorized Redirect URIs</strong>.</li>
+        <li>Copy the generated <strong>Client ID</strong> and <strong>Client Secret</strong> from Google.</li>
+        <li>Go to your Supabase Auth Panel > Google provider, enable it, paste the Client ID & Secret, and save.</li>
+      </ol>
+    </div>
+
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Supabase Configuration
+    const SUPABASE_URL = "https://zquafonundzyqumukmbb.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpxdWFmb251bmR6eXF1bXVrbWJiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODMxNDgyMzksImV4cCI6MjA5ODcyNDIzOX0.XuO3ytv6om95CegooXclAQUHHC6FCHLlbY4xJTks9Kk";
+    let supabase = null;
+    let isMockMode = true;
+
+    if (SUPABASE_URL && SUPABASE_URL.startsWith('http')) {
+      try {
+        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        isMockMode = false;
+        document.getElementById('dev-auth-guide').style.display = 'none'; // Hide instructions once setup
+      } catch (err) {
+        console.error("Supabase failed to initialize", err);
+      }
+    }
+
+    let currentUser = null;
+    let currentUserProfile = null;
+
+    // --- GOOGLE SIGN IN OR MOCK SIMULATOR ---
+    document.getElementById('google-login-btn').addEventListener('click', async () => {
+      if (isMockMode) {
+        simulateGoogleLogin();
+        return;
+      }
+      try {
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: 'google',
+          options: {
+            redirectTo: window.location.origin + window.location.pathname
+          }
+        });
+        if (error) throw error;
+      } catch (err) {
+        showToast("Auth redirect failed. Simulating offline log-in instead.");
+        simulateGoogleLogin();
+      }
+    });
+
+    window.simulateGoogleLogin = function() {
+      // Simulate OAuth redirect returning google profile metadata
+      const mockProfile = {
+        id: "usr-" + Math.floor(Math.random() * 1000000),
+        name: "Iqbal Patel",
+        email: "iqbal.patel@gmail.com",
+        avatar_url: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150&auto=format&fit=crop",
+        phone: "",
+        address: "",
+        is_admin: true // grant admin status for local testing in demo mode
+      };
+      
+      localStorage.setItem('iqbal_mock_profile', JSON.stringify(mockProfile));
+      showToast("Logged in with Simulated Google profile.");
+      setTimeout(() => {
+        window.location.reload();
+      }, 800);
+    };
+
+    // --- CHECK USER LOGIN STATUS ON LOAD ---
+    async function checkUserSession() {
+      if (isMockMode) {
+        const cached = localStorage.getItem('iqbal_mock_profile');
+        if (cached) {
+          currentUserProfile = JSON.parse(cached);
+          showDashboardView();
+        } else {
+          showAuthView();
+        }
+      } else {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          currentUser = session.user;
+          // Fetch additional profile info
+          const { data: profile, error } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', currentUser.id)
+            .single();
+          
+          currentUserProfile = profile;
+          showDashboardView();
+        } else {
+          showAuthView();
+        }
+      }
+      updateProfileUI();
+    }
+
+    function showAuthView() {
+      document.getElementById('auth-view').style.display = 'block';
+      document.getElementById('dashboard-view').style.display = 'none';
+    }
+
+    function showDashboardView() {
+      document.getElementById('auth-view').style.display = 'none';
+      document.getElementById('dashboard-view').style.display = 'grid';
+      
+      // Populate fields
+      document.getElementById('user-avatar').src = currentUserProfile.avatar_url || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150";
+      document.getElementById('user-name').textContent = currentUserProfile.name || 'Anonymous User';
+      document.getElementById('user-email').textContent = currentUserProfile.email;
+      
+      document.getElementById('profile-phone').value = currentUserProfile.phone || '';
+      document.getElementById('profile-address').value = currentUserProfile.address || '';
+      
+      loadOrderHistory();
+    }
+
+    // --- UPDATE PROFILE FORM ---
+    document.getElementById('profile-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const phoneVal = document.getElementById('profile-phone').value;
+      const addressVal = document.getElementById('profile-address').value;
+      
+      if (isMockMode) {
+        currentUserProfile.phone = phoneVal;
+        currentUserProfile.address = addressVal;
+        localStorage.setItem('iqbal_mock_profile', JSON.stringify(currentUserProfile));
+        showToast("Address and contact details saved!");
+      } else {
+        try {
+          const { error } = await supabase
+            .from('profiles')
+            .update({
+              phone: phoneVal,
+              address: addressVal,
+              updated_at: new Date().toISOString()
+            })
+            .eq('id', currentUserProfile.id);
+            
+          if (error) throw error;
+          currentUserProfile.phone = phoneVal;
+          currentUserProfile.address = addressVal;
+          showToast("Profile details updated successfully!");
+        } catch (err) {
+          console.error("Update failed", err);
+          showToast("Failed to save changes.");
+        }
+      }
+    });
+
+    // --- LOGOUT LOGIC ---
+    document.getElementById('signout-btn').addEventListener('click', async () => {
+      if (isMockMode) {
+        localStorage.removeItem('iqbal_mock_profile');
+        showToast("Logged out successfully.");
+        setTimeout(() => window.location.reload(), 800);
+      } else {
+        await supabase.auth.signOut();
+        showToast("Signed out successfully.");
+        setTimeout(() => window.location.reload(), 800);
+      }
+    });
+
+    // --- RENDER ORDERS LIST ---
+    async function loadOrderHistory() {
+      const ordersContainer = document.getElementById('orders-list-container');
+      let orders = [];
+      
+      if (isMockMode) {
+        orders = JSON.parse(localStorage.getItem('iqbal_mock_orders') || '[]');
+      } else {
+        try {
+          const { data, error } = await supabase
+            .from('orders')
+            .select('*')
+            .eq('user_id', currentUserProfile.id)
+            .order('created_at', { ascending: false });
+            
+          if (error) throw error;
+          orders = data || [];
+        } catch (err) {
+          console.error("Failed to load orders", err);
+          ordersContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); padding: 20px 0;">Failed to load order history.</div>`;
+          return;
+        }
+      }
+
+      if (orders.length === 0) {
+        ordersContainer.innerHTML = `<div style="text-align: center; color: var(--text-muted); font-size: 0.9rem; padding: 20px 0;">No orders placed yet.</div>`;
+        return;
+      }
+
+      ordersContainer.innerHTML = '';
+      orders.forEach(order => {
+        const orderDate = new Date(order.created_at).toLocaleDateString('en-IN', {
+          year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+        
+        let itemsHtml = '';
+        order.items.forEach(item => {
+          let metersText = (item.size && item.size.endsWith('m')) ? ` (${item.size})` : ` [${item.size}]`;
+          itemsHtml += `
+            <div class="order-product-row">
+              <span>${item.title}${metersText}</span>
+              <span class="order-product-qty">x${item.quantity}</span>
+            </div>
+          `;
+        });
+        
+        const cardHtml = `
+          <div class="order-item-card">
+            <div class="order-header-row">
+              <span class="order-id">ID: ${order.id}</span>
+              <span class="order-date">${orderDate}</span>
+              <span class="order-status ${order.status}">${order.status}</span>
+            </div>
+            <div class="order-products">
+              ${itemsHtml}
+            </div>
+            <div class="order-footer-row">
+              <span>Total Paid</span>
+              <span>₹${order.total_amount.toLocaleString('en-IN')}</span>
+            </div>
+          </div>
+        `;
+        ordersContainer.insertAdjacentHTML('beforeend', cardHtml);
+      });
+    }
+
+    // --- COMMON CONTROLS: DRAWER & HEADER BADGE ---
+    let cart = [];
+    const profileBtn = document.getElementById('profile-btn');
+    const menuToggle = document.getElementById('menu-toggle');
+    const menuDrawer = document.getElementById('menu-drawer');
+    const menuClose = document.getElementById('menu-close');
+    const cartToggle = document.getElementById('cart-toggle');
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartClose = document.getElementById('cart-close');
+    const drawerOverlay = document.getElementById('drawer-overlay');
+
+    profileBtn.addEventListener('click', () => { window.location.href = 'profile.html'; });
+
+    function openDrawer(drawer) {
+      drawer.classList.add('active');
+      drawerOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeAllDrawers() {
+      menuDrawer.classList.remove('active');
+      cartDrawer.classList.remove('active');
+      drawerOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    menuToggle.addEventListener('click', () => openDrawer(menuDrawer));
+    menuClose.addEventListener('click', closeAllDrawers);
+    cartToggle.addEventListener('click', () => { openDrawer(cartDrawer); renderCartDrawerItems(); });
+    cartClose.addEventListener('click', closeAllDrawers);
+    drawerOverlay.addEventListener('click', closeAllDrawers);
+
+    function loadCart() {
+      const stored = localStorage.getItem('iqbal_fashion_cart');
+      if (stored) cart = JSON.parse(stored);
+      updateCartBadge();
+    }
+
+    function saveCart() {
+      localStorage.setItem('iqbal_fashion_cart', JSON.stringify(cart));
+      updateCartBadge();
+    }
+
+    function updateCartBadge() {
+      const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.getElementById('global-cart-count').textContent = totalQty;
+    }
+
+    function renderCartDrawerItems() {
+      const itemsContainer = document.getElementById('cart-drawer-items');
+      const checkoutBtn = document.getElementById('cart-checkout-btn');
+      
+      if (cart.length === 0) {
+        itemsContainer.innerHTML = `<div class="cart-empty-message">Your bag is empty</div>`;
+        checkoutBtn.style.opacity = '0.5';
+        checkoutBtn.style.pointerEvents = 'none';
+        updateCartTotals(0);
+        return;
+      }
+      
+      checkoutBtn.style.opacity = '1';
+      checkoutBtn.style.pointerEvents = 'auto';
+      itemsContainer.innerHTML = '';
+      let subtotal = 0;
+      
+      cart.forEach((item, index) => {
+        let meters = 1;
+        if (item.size && item.size.endsWith('m')) meters = parseFloat(item.size);
+        const itemTotal = item.price * meters * item.quantity;
+        subtotal += itemTotal;
+        
+        const cardHtml = `
+          <div class="cart-item">
+            <img class="cart-item-image" src="${item.image || 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=150'}" alt="${item.title}">
+            <div class="cart-item-info">
+              <div>
+                <div class="cart-item-title">${item.title}</div>
+                <div class="cart-item-meta">Size: ${item.size || 'Standard'} | Mat: ${item.material || 'Regular'}</div>
+                <button class="cart-item-remove" onclick="removeCartItem(${index})">Remove</button>
+              </div>
+              <div class="cart-item-qty-price">
+                <div class="qty-controls">
+                  <button class="qty-btn" onclick="adjustItemQty(${index}, -1)">-</button>
+                  <span class="qty-val">${item.quantity}</span>
+                  <button class="qty-btn" onclick="adjustItemQty(${index}, 1)">+</button>
+                </div>
+                <div class="cart-item-price">₹${itemTotal.toLocaleString('en-IN')}</div>
+              </div>
+            </div>
+          </div>
+        `;
+        itemsContainer.insertAdjacentHTML('beforeend', cardHtml);
+      });
+      
+      updateCartTotals(subtotal);
+    }
+
+    function updateCartTotals(subtotal) {
+      document.getElementById('cart-subtotal').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+      let shipping = (subtotal > 0 && subtotal < 999) ? 150 : 0;
+      document.getElementById('cart-shipping').textContent = shipping === 0 ? 'Free' : `₹${shipping}`;
+      const total = subtotal + shipping;
+      document.getElementById('cart-grand-total').textContent = `₹${total.toLocaleString('en-IN')}`;
+    }
+
+    window.adjustItemQty = function(index, change) {
+      cart[index].quantity += change;
+      if (cart[index].quantity <= 0) cart.splice(index, 1);
+      saveCart();
+      renderCartDrawerItems();
+    };
+
+    window.removeCartItem = function(index) {
+      cart.splice(index, 1);
+      saveCart();
+      renderCartDrawerItems();
+      showToast("Item removed from bag.");
+    };
+
+    document.getElementById('cart-checkout-btn').addEventListener('click', async () => {
+      // Since they are on profile, check if fields are saved
+      const phoneVal = document.getElementById('profile-phone').value;
+      const addressVal = document.getElementById('profile-address').value;
+      
+      if (!currentUserProfile || !phoneVal || !addressVal) {
+        showToast("Please save your phone number and address before ordering.");
+        return;
+      }
+      
+      let subtotal = 0;
+      cart.forEach(item => {
+        let meters = 1;
+        if (item.size && item.size.endsWith('m')) meters = parseFloat(item.size);
+        subtotal += item.price * meters * item.quantity;
+      });
+
+      const totalAmt = subtotal + (subtotal >= 999 ? 0 : 150);
+      
+      if (isMockMode) {
+        const mockOrder = {
+          id: 'ord-' + Math.floor(Math.random() * 1000000),
+          created_at: new Date().toISOString(),
+          items: cart,
+          total_amount: totalAmt,
+          status: 'pending',
+          shipping_name: currentUserProfile.name,
+          shipping_email: currentUserProfile.email,
+          shipping_address: addressVal,
+          shipping_phone: phoneVal
+        };
+        
+        const existingOrders = JSON.parse(localStorage.getItem('iqbal_mock_orders') || '[]');
+        existingOrders.unshift(mockOrder);
+        localStorage.setItem('iqbal_mock_orders', JSON.stringify(existingOrders));
+        
+        cart = [];
+        saveCart();
+        closeAllDrawers();
+        
+        alert(`Order Placed Successfully! (Demo Order ID: ${mockOrder.id}). We will contact you soon.`);
+        loadOrderHistory();
+      } else {
+        try {
+          const { data, error } = await supabase
+            .from('orders')
+            .insert([{
+              user_id: currentUserProfile.id,
+              items: cart,
+              total_amount: totalAmt,
+              shipping_name: currentUserProfile.name,
+              shipping_email: currentUserProfile.email,
+              shipping_address: addressVal,
+              shipping_phone: phoneVal
+            }]);
+            
+          if (error) throw error;
+          
+          cart = [];
+          saveCart();
+          closeAllDrawers();
+          
+          alert("Order Placed Successfully! We will contact you soon.");
+          loadOrderHistory();
+        } catch (err) {
+          console.error("Order creation failed", err);
+          showToast("Failed to place order.");
+        }
+      }
+    });
+
+    function updateProfileUI() {
+      const headerBtn = document.getElementById('profile-btn');
+      if (currentUserProfile && currentUserProfile.avatar_url) {
+        headerBtn.innerHTML = `<div class="profile-avatar-btn"><img src="${currentUserProfile.avatar_url}" alt="Profile avatar"></div>`;
+      } else {
+        headerBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>`;
+      }
+    }
+
+    // --- TOAST SYSTEM ---
+    function showToast(message) {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width: 18px; height: 18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.add('show'), 50);
+      setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      checkUserSession();
+      loadCart();
+    });
+  </script>
+</body>
+</html>
