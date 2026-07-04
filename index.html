@@ -1711,11 +1711,12 @@
     /* BRAND VIDEO SECTION */
     .brand-video-wrap {
       width: 100%;
-      max-width: 1200px;
+      max-width: 380px;
+      aspect-ratio: 9/16;
       margin: 0 auto;
       border-radius: 16px;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.12);
       position: relative;
       background: var(--black);
     }
@@ -1724,10 +1725,10 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      aspect-ratio: 16/9;
+      aspect-ratio: 9/16;
       background: linear-gradient(135deg, #1e293b, #0f172a);
       color: var(--white);
-      padding: 40px;
+      padding: 20px;
       text-align: center;
     }
     .video-placeholder svg {
@@ -2594,22 +2595,65 @@
       titleEl.textContent = brandVideoAsset.title || "Brand Showcase";
 
       container.innerHTML = `
-        <video id="brand-video" autoplay loop playsinline controls style="width: 100%; aspect-ratio: 16/9; display: block; object-fit: cover;">
+        <video id="brand-video" autoplay loop playsinline controls style="width: 100%; aspect-ratio: 9/16; display: block; object-fit: cover;">
           <source src="${brandVideoAsset.file_url}" type="video/mp4">
           Your browser does not support the video tag.
         </video>
       `;
 
-      // Try autoplaying with sound. If browser blocks it, mute and auto-play
       const video = document.getElementById('brand-video');
       if (video) {
+        // 1. Initial attempt to autoplay with sound
+        video.muted = false;
         const playPromise = video.play();
         if (playPromise !== undefined) {
           playPromise.catch(error => {
-            console.log("Autoplay with sound was blocked. Muting to autoplay.");
+            console.log("Initial autoplay with sound blocked. Muting to autoplay.");
             video.muted = true;
             video.play();
           });
+        }
+
+        // 2. Global listener to unmute the video on first screen tap/interaction
+        const unmuteOnInteraction = () => {
+          if (video.muted) {
+            video.muted = false;
+            if (video.paused) {
+              video.play().catch(e => console.log(e));
+            }
+          }
+          document.removeEventListener('click', unmuteOnInteraction);
+          document.removeEventListener('touchstart', unmuteOnInteraction);
+        };
+        document.addEventListener('click', unmuteOnInteraction);
+        document.addEventListener('touchstart', unmuteOnInteraction);
+
+        // 3. IntersectionObserver to restart video from beginning (0s) when scrolled into view
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                // Restart video from beginning when it becomes active on screen
+                video.currentTime = 0;
+                
+                // Try to play with sound
+                video.muted = false;
+                const activePlay = video.play();
+                if (activePlay !== undefined) {
+                  activePlay.catch(() => {
+                    console.log("Autoplay with sound blocked on enter. Muting.");
+                    video.muted = true;
+                    video.play();
+                  });
+                }
+              } else {
+                // Pause when scrolled off-screen to save resources
+                video.pause();
+              }
+            });
+          }, { threshold: 0.3 }); // Trigger when at least 30% of the video is visible
+          
+          observer.observe(video);
         }
       }
     }
