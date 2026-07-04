@@ -342,7 +342,9 @@
       width: 100vw;
       height: 100vh;
       background-color: rgba(28, 43, 33, 0.4);
-      z-index: 1000;
+      z-index: 20000;
+      transform: translate3d(0, 0, 20000px);
+      -webkit-transform: translate3d(0, 0, 20000px);
       opacity: 0;
       visibility: hidden;
       backdrop-filter: blur(4px);
@@ -361,7 +363,7 @@
       max-width: 400px;
       height: 100vh;
       background-color: var(--bg-primary);
-      z-index: 1001;
+      z-index: 20001;
       box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
       display: flex;
       flex-direction: column;
@@ -371,21 +373,25 @@
     /* LEFT DRAWER (MENU) */
     #menu-drawer {
       left: 0;
-      transform: translateX(-100%);
+      transform: translate3d(-100%, 0, 20001px);
+      -webkit-transform: translate3d(-100%, 0, 20001px);
     }
 
     #menu-drawer.active {
-      transform: translateX(0);
+      transform: translate3d(0, 0, 20001px);
+      -webkit-transform: translate3d(0, 0, 20001px);
     }
 
     /* RIGHT DRAWER (CART) */
     #cart-drawer {
       right: 0;
-      transform: translateX(100%);
+      transform: translate3d(100%, 0, 20001px);
+      -webkit-transform: translate3d(100%, 0, 20001px);
     }
 
     #cart-drawer.active {
-      transform: translateX(0);
+      transform: translate3d(0, 0, 20001px);
+      -webkit-transform: translate3d(0, 0, 20001px);
     }
 
     .drawer-header {
@@ -2403,14 +2409,17 @@
       dotsContainer.innerHTML = '';
 
       homepageSlides.forEach((slide, idx) => {
+        const showContent = slide.title || slide.subtitle_or_desc;
         const slideHtml = `
           <div class="slide">
             <div class="slide-overlay"></div>
+            ${showContent ? `
             <div class="slide-content">
               <span class="slide-tag">Iqbal Fashion</span>
-              <h1 class="slide-title serif-font">${slide.title}</h1>
-              <p style="margin-bottom: 20px; font-size: 1rem; color: rgba(255,255,255,0.9);">${slide.subtitle_or_desc || ''}</p>
+              ${slide.title ? `<h1 class="slide-title serif-font">${slide.title}</h1>` : ''}
+              ${slide.subtitle_or_desc ? `<p style="margin-bottom: 20px; font-size: 1rem; color: rgba(255,255,255,0.9);">${slide.subtitle_or_desc}</p>` : ''}
             </div>
+            ` : ''}
           </div>
         `;
         container.insertAdjacentHTML('beforeend', slideHtml);
@@ -2688,7 +2697,7 @@
     function startAutoSlide() {
       autoSlideInterval = setInterval(() => {
         goToSlide(currentSlide + 1);
-      }, 5000);
+      }, 2500);
     }
 
     function resetAutoSlide() {
