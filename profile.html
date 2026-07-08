@@ -1036,53 +1036,13 @@
   <div class="profile-container">
     <h1 class="profile-section-title serif-font">My Account</h1>
 
-    <!-- 1. SIGN IN INTERFACE (Shown if not logged in) -->
-    <div id="auth-view" class="auth-card" style="display: none;">
-      <div class="auth-logo serif-font">Iqbal Fashion</div>
-      <p class="auth-subtitle">Verify your identity to save shopping bags, customize shipping addresses, and review
-        order histories.</p>
-
-      <!-- Real Google Sign-in button -->
-      <button class="google-signin-btn" id="google-login-btn">
-        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-            fill="#4285F4" />
-          <path
-            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-            fill="#34A853" />
-          <path
-            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
-            fill="#FBBC05" />
-          <path
-            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"
-            fill="#EA4335" />
-        </svg>
-        Sign In with Google
-      </button>
-
-      <!-- Mock / Simulation login for immediate client testing -->
-      <div style="margin-top: 30px; border-top: 1px solid var(--border-color); padding-top: 20px;">
-        <p
-          style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; font-weight: 600;">
-          Demo Simulator (Without Database)</p>
-        <button class="google-signin-btn" onclick="simulateGoogleLogin()"
-          style="background-color: var(--bg-secondary); border-style: dashed;">
-          Simulate Google Auth Login
-        </button>
-      </div>
-    </div>
-
     <!-- 2. LOGGED IN DASHBOARD (Shown if logged in) -->
     <div id="dashboard-view" class="profile-grid" style="display: none;">
       <!-- Profile Sidebar Card -->
       <div class="profile-left">
-        <div class="profile-photo">
-          <img id="user-avatar" src="" alt="User profile image">
-        </div>
         <h3 class="profile-name" id="user-name">Loading...</h3>
         <p class="profile-email" id="user-email">Loading...</p>
-        <button class="signout-btn" id="signout-btn">Sign Out</button>
+        
       </div>
 
       <!-- Forms and History -->
@@ -1092,7 +1052,12 @@
           <h3 class="card-title serif-font">Shipping & Contact Details</h3>
           <form id="profile-form">
             <div class="form-group">
-              <label class="form-label" for="profile-phone">Phone Number</label>
+              <label class="form-label" for="profile-name">Full Name</label>
+              <input type="text" id="profile-name" class="form-input" placeholder="Your Name" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="profile-phone">WhatsApp/Contact Number</label>
               <input type="tel" id="profile-phone" class="form-input" placeholder="e.g. +91 98765 43210" required>
             </div>
 
@@ -1101,8 +1066,18 @@
               <textarea id="profile-address" class="form-input form-textarea"
                 placeholder="Flat No., Building, Street Name, Solapur - Pin code" required></textarea>
             </div>
+            
+            <div class="form-group">
+              <label class="form-label" for="profile-age">Age (Optional)</label>
+              <input type="number" id="profile-age" class="form-input" placeholder="e.g. 25" min="1" max="120">
+            </div>
 
-            <button type="submit" class="save-profile-btn">Save Address Details</button>
+                        <div class="form-group">
+              <label class="form-label" for="profile-pincode">Pincode</label>
+              <input type="text" id="profile-pincode" class="form-input" placeholder="e.g. 413005" required>
+            </div>
+            
+            <button type="submit" class="save-profile-btn">Save Profile Details</button>
           </form>
         </div>
 
@@ -1197,99 +1172,74 @@
       }
     }
 
-    let currentUser = null;
     let currentUserProfile = null;
 
-    // --- GOOGLE SIGN IN OR MOCK SIMULATOR ---
-    document.getElementById('google-login-btn').addEventListener('click', async () => {
-      if (isMockMode) {
-        simulateGoogleLogin();
-        return;
+    // Generate a UUID for the guest user
+    function generateUUID() {
+      if (crypto && crypto.randomUUID) {
+        return crypto.randomUUID();
       }
-      try {
-        const { error } = await supabaseClient.auth.signInWithOAuth({
-          provider: 'google',
-          options: {
-            redirectTo: window.location.origin + window.location.pathname
-          }
-        });
-        if (error) throw error;
-      } catch (err) {
-        showToast("Auth redirect failed. Simulating offline log-in instead.");
-        simulateGoogleLogin();
-      }
-    });
-
-    window.simulateGoogleLogin = function () {
-      // Simulate OAuth redirect returning google profile metadata
-      const mockProfile = {
-        id: "usr-" + Math.floor(Math.random() * 1000000),
-        name: "Iqbal Patel",
-        email: "iqbal.patel@gmail.com",
-        avatar_url: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150&auto=format&fit=crop",
-        phone: "",
-        address: "",
-        is_admin: true // grant admin status for local testing in demo mode
-      };
-
-      localStorage.setItem('iqbal_mock_profile', JSON.stringify(mockProfile));
-      showToast("Logged in with Simulated Google profile.");
-      setTimeout(() => {
-        window.location.reload();
-      }, 800);
-    };
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
 
     // --- CHECK USER LOGIN STATUS ON LOAD ---
     async function checkUserSession() {
+      let userId = localStorage.getItem('iqbal_user_id');
+      if (!userId) {
+        userId = generateUUID();
+        localStorage.setItem('iqbal_user_id', userId);
+      }
+
       if (isMockMode) {
         const cached = localStorage.getItem('iqbal_mock_profile');
         if (cached) {
           currentUserProfile = JSON.parse(cached);
-          showDashboardView();
         } else {
-          showAuthView();
+          currentUserProfile = { id: userId, is_admin: true }; // Admin for testing
         }
+        showDashboardView();
       } else {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        if (session) {
-          currentUser = session.user;
-          // Fetch additional profile info
+        try {
           const { data: profile, error } = await supabaseClient
             .from('profiles')
             .select('*')
-            .eq('id', currentUser.id)
+            .eq('id', userId)
             .single();
 
-          currentUserProfile = profile;
-          showDashboardView();
-        } else {
-          showAuthView();
+          if (profile) {
+            currentUserProfile = profile;
+          } else {
+            currentUserProfile = { id: userId };
+          }
+        } catch (err) {
+          currentUserProfile = { id: userId };
         }
+        showDashboardView();
       }
       updateProfileUI();
     }
 
-    function showAuthView() {
-      document.getElementById('auth-view').style.display = 'block';
-      document.getElementById('dashboard-view').style.display = 'none';
-    }
-
     function showDashboardView() {
-      document.getElementById('auth-view').style.display = 'none';
       document.getElementById('dashboard-view').style.display = 'grid';
 
-      const avatarUrl = (currentUserProfile && currentUserProfile.avatar_url) ? currentUserProfile.avatar_url : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150";
-      const name = (currentUserProfile && currentUserProfile.name) ? currentUserProfile.name : (currentUser ? currentUser.email.split('@')[0] : 'Anonymous User');
-      const email = (currentUserProfile && currentUserProfile.email) ? currentUserProfile.email : (currentUser ? currentUser.email : '');
-      const phone = (currentUserProfile && currentUserProfile.phone) ? currentUserProfile.phone : '';
-      const address = (currentUserProfile && currentUserProfile.address) ? currentUserProfile.address : '';
+      const name = currentUserProfile.name || 'Guest User';
+      const email = currentUserProfile.email || '';
+      const phone = currentUserProfile.phone || '';
+      const address = currentUserProfile.address || '';
+      const age = currentUserProfile.age || '';
+      const pincode = currentUserProfile.pincode || '';
 
-      document.getElementById('user-avatar').src = avatarUrl;
       document.getElementById('user-name').textContent = name;
       document.getElementById('user-email').textContent = email;
 
+      document.getElementById('profile-name').value = currentUserProfile.name || '';
       document.getElementById('profile-phone').value = phone;
       document.getElementById('profile-address').value = address;
+      document.getElementById('profile-age').value = age;
+      document.getElementById('profile-pincode').value = pincode;
 
       loadOrderHistory();
     }
@@ -1297,28 +1247,42 @@
     // --- UPDATE PROFILE FORM ---
     document.getElementById('profile-form').addEventListener('submit', async (e) => {
       e.preventDefault();
+      const nameVal = document.getElementById('profile-name').value;
       const phoneVal = document.getElementById('profile-phone').value;
       const addressVal = document.getElementById('profile-address').value;
+      const ageVal = document.getElementById('profile-age').value ? parseInt(document.getElementById('profile-age').value) : null;
+      const pincodeVal = document.getElementById('profile-pincode').value;
 
       if (isMockMode) {
+        currentUserProfile.name = nameVal;
         currentUserProfile.phone = phoneVal;
         currentUserProfile.address = addressVal;
+        currentUserProfile.age = ageVal;
+        currentUserProfile.pincode = pincodeVal;
         localStorage.setItem('iqbal_mock_profile', JSON.stringify(currentUserProfile));
-        showToast("Address and contact details saved!");
+        document.getElementById('user-name').textContent = nameVal;
+        showToast("Profile details saved!");
       } else {
         try {
           const { error } = await supabaseClient
             .from('profiles')
-            .update({
+            .upsert({
+              id: currentUserProfile.id,
+              name: nameVal,
               phone: phoneVal,
               address: addressVal,
+              age: ageVal,
+              pincode: pincodeVal,
               updated_at: new Date().toISOString()
-            })
-            .eq('id', currentUserProfile.id);
+            });
 
           if (error) throw error;
+          currentUserProfile.name = nameVal;
           currentUserProfile.phone = phoneVal;
           currentUserProfile.address = addressVal;
+          currentUserProfile.age = ageVal;
+          currentUserProfile.pincode = pincodeVal;
+          document.getElementById('user-name').textContent = nameVal;
           showToast("Profile details updated successfully!");
         } catch (err) {
           console.error("Update failed", err);
@@ -1327,18 +1291,7 @@
       }
     });
 
-    // --- LOGOUT LOGIC ---
-    document.getElementById('signout-btn').addEventListener('click', async () => {
-      if (isMockMode) {
-        localStorage.removeItem('iqbal_mock_profile');
-        showToast("Logged out successfully.");
-        setTimeout(() => window.location.reload(), 800);
-      } else {
-        await supabaseClient.auth.signOut();
-        showToast("Signed out successfully.");
-        setTimeout(() => window.location.reload(), 800);
-      }
-    });
+    
 
     // --- RENDER ORDERS LIST ---
     async function loadOrderHistory() {
@@ -1647,11 +1600,8 @@
 
     function updateProfileUI() {
       const headerBtn = document.getElementById('profile-btn');
-      if (currentUserProfile && currentUserProfile.avatar_url) {
-        headerBtn.innerHTML = `<div class="profile-avatar-btn"><img src="${currentUserProfile.avatar_url}" alt="Profile avatar"></div>`;
-      } else {
-        headerBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>`;
-      }
+      // Always show the default icon since avatar is removed
+      headerBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>`;
     }
 
     // --- TOAST SYSTEM ---
