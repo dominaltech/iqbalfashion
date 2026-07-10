@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Merchant Console - Iqbal Fashion Solapur</title>
-  <link rel="manifest" href="manifest.json">
+  <!-- manifest.json requires http/https -- omitted for file:// compatibility -->
   <meta name="theme-color" content="#1C2B21">
   
   <!-- Preconnect & Fonts -->
@@ -84,11 +84,14 @@
     header {
       position: sticky;
       top: 0;
-      z-index: 900;
-      background-color: rgba(250, 248, 245, 0.85);
+      z-index: 9999;
+      transform: translate3d(0, 0, 999px);
+      -webkit-transform: translate3d(0, 0, 999px);
+      background-color: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border-color);
+      transition: var(--transition-smooth);
     }
 
     .header-container {
@@ -162,6 +165,12 @@
 
     @media (max-width: 992px) { .desktop-nav { display: none; } }
 
+    @media (min-width: 993px) {
+      #menu-toggle {
+        display: none;
+      }
+    }
+
     .right-actions { display: flex; align-items: center; gap: 10px; }
     .cart-badge {
       position: absolute;
@@ -194,7 +203,7 @@
     }
     .profile-avatar-btn img { width: 100%; height: 100%; object-fit: cover; }
 
-    /* DRAWERS */
+    /* DRAWERS (SIDEBARS) */
     .drawer-overlay {
       position: fixed;
       top: 0;
@@ -202,7 +211,9 @@
       width: 100vw;
       height: 100vh;
       background-color: rgba(28, 43, 33, 0.4);
-      z-index: 1000;
+      z-index: 20000;
+      transform: translate3d(0, 0, 20000px);
+      -webkit-transform: translate3d(0, 0, 20000px);
       opacity: 0;
       visibility: hidden;
       backdrop-filter: blur(4px);
@@ -217,17 +228,31 @@
       max-width: 400px;
       height: 100vh;
       background-color: var(--bg-primary);
-      z-index: 1001;
+      z-index: 20001;
       box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
       display: flex;
       flex-direction: column;
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    #menu-drawer { left: 0; transform: translateX(-100%); }
-    #menu-drawer.active { transform: translateX(0); }
-    #cart-drawer { right: 0; transform: translateX(100%); }
-    #cart-drawer.active { transform: translateX(0); }
+    #menu-drawer {
+      left: 0;
+      transform: translate3d(-100%, 0, 20001px);
+      -webkit-transform: translate3d(-100%, 0, 20001px);
+    }
+    #menu-drawer.active {
+      transform: translate3d(0, 0, 20001px);
+      -webkit-transform: translate3d(0, 0, 20001px);
+    }
+    #cart-drawer {
+      right: 0;
+      transform: translate3d(100%, 0, 20001px);
+      -webkit-transform: translate3d(100%, 0, 20001px);
+    }
+    #cart-drawer.active {
+      transform: translate3d(0, 0, 20001px);
+      -webkit-transform: translate3d(0, 0, 20001px);
+    }
 
     .drawer-header {
       padding: 24px 30px;
@@ -606,6 +631,75 @@
       transform: translateX(120%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .toast.show { transform: translateX(0); }
+
+    /* MOBILE BOTTOM TASKBAR */
+    .mobile-taskbar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border-color);
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0 env(safe-area-inset-bottom);
+      z-index: 999;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+    }
+    .taskbar-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: color 0.2s;
+      position: relative;
+      width: 20%;
+    }
+    .taskbar-tab.active, .taskbar-tab:hover {
+      color: var(--accent);
+    }
+    .taskbar-tab svg {
+      width: 22px;
+      height: 22px;
+      stroke-width: 2;
+      stroke: currentColor;
+      fill: none;
+      transition: transform 0.2s;
+    }
+    .taskbar-tab:active svg {
+      transform: scale(0.9);
+    }
+    .taskbar-tab .badge {
+      position: absolute;
+      top: -2px;
+      right: 18px;
+      background: var(--accent);
+      color: var(--white);
+      border-radius: 50%;
+      font-size: 0.6rem;
+      min-width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-taskbar {
+        display: flex;
+      }
+      body {
+        padding-bottom: 70px; /* Space for sticky taskbar */
+      }
+    }
   </style>
 </head>
 <body>
@@ -953,6 +1047,42 @@
     </div>
 
   </div>
+
+  <!-- MOBILE BOTTOM TASKBAR -->
+  <nav class="mobile-taskbar">
+    <a href="index.html" class="taskbar-tab" data-tab="home">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
+      </svg>
+      <span>Home</span>
+    </a>
+    <a href="index.html#featured-collection" class="taskbar-tab" data-tab="collection">
+      <svg viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7"/>
+        <rect x="14" y="3" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/>
+      </svg>
+      <span>Collection</span>
+    </a>
+    <a href="#" class="taskbar-tab" id="taskbar-cart-btn" onclick="openDrawer(cartDrawer); return false;">
+      <svg viewBox="0 0 24 24">
+        <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <path d="M16 10a4 4 0 01-8 0"/>
+      </svg>
+      <span class="badge" id="taskbar-cart-badge">0</span>
+      <span>Cart</span>
+    </a>
+    <a href="profile.html" class="taskbar-tab" data-tab="profile">
+      <svg viewBox="0 0 24 24">
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
+        <circle cx="12" cy="7" r="4"/>
+      </svg>
+      <span>Profile</span>
+    </a>
+  </nav>
 
   <div class="toast-container" id="toast-container"></div>
 
@@ -1527,11 +1657,41 @@
       document.body.style.overflow = '';
     }
 
-    menuToggle.addEventListener('click', () => openDrawer(menuDrawer));
-    menuClose.addEventListener('click', closeAllDrawers);
-    cartToggle.addEventListener('click', () => { openDrawer(cartDrawer); renderCartDrawerItems(); });
-    cartClose.addEventListener('click', closeAllDrawers);
-    drawerOverlay.addEventListener('click', closeAllDrawers);
+    const handleMenuToggle = (e) => {
+      e.preventDefault();
+      openDrawer(menuDrawer);
+    };
+    menuToggle.addEventListener('click', handleMenuToggle);
+    menuToggle.addEventListener('touchstart', handleMenuToggle, { passive: false });
+
+    const handleMenuClose = (e) => {
+      e.preventDefault();
+      closeAllDrawers();
+    };
+    menuClose.addEventListener('click', handleMenuClose);
+    menuClose.addEventListener('touchstart', handleMenuClose, { passive: false });
+    
+    const handleCartToggle = (e) => {
+      e.preventDefault();
+      openDrawer(cartDrawer);
+      renderCartDrawerItems();
+    };
+    cartToggle.addEventListener('click', handleCartToggle);
+    cartToggle.addEventListener('touchstart', handleCartToggle, { passive: false });
+
+    const handleCartClose = (e) => {
+      e.preventDefault();
+      closeAllDrawers();
+    };
+    cartClose.addEventListener('click', handleCartClose);
+    cartClose.addEventListener('touchstart', handleCartClose, { passive: false });
+
+    const handleOverlayTap = (e) => {
+      e.preventDefault();
+      closeAllDrawers();
+    };
+    drawerOverlay.addEventListener('click', handleOverlayTap);
+    drawerOverlay.addEventListener('touchstart', handleOverlayTap, { passive: false });
 
     function loadCart() {
       const stored = localStorage.getItem('iqbal_fashion_cart');
@@ -1546,7 +1706,13 @@
 
     function updateCartBadge() {
       const totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
-      document.getElementById('global-cart-count').textContent = totalQty;
+      const globalBadge = document.getElementById('global-cart-count');
+      const taskbarBadge = document.getElementById('taskbar-cart-badge');
+      if (globalBadge) globalBadge.textContent = totalQty;
+      if (taskbarBadge) {
+        taskbarBadge.textContent = totalQty;
+        taskbarBadge.style.display = totalQty > 0 ? 'flex' : 'none';
+      }
     }
 
     function renderCartDrawerItems() {
@@ -1655,6 +1821,24 @@
       checkAdminAccess();
       loadCart();
     });
-  </script>
+
+    // --- TASKBAR ACTIVE STATE (auto-set based on current page) ---
+    (function() {
+      var path = location.pathname.toLowerCase();
+      var tabs = document.querySelectorAll('.taskbar-tab');
+      tabs.forEach(function(tab) { tab.classList.remove('active'); });
+      if (path.endsWith('mens.html') || path.endsWith('kids.html') || path.endsWith('cloth-piece.html')) {
+        // catalog pages -> highlight Collection tab
+        var colTab = document.querySelector('.taskbar-tab[data-tab="collection"]');
+        if (colTab) colTab.classList.add('active');
+      } else if (path.endsWith('profile.html') || path.endsWith('admin.html')) {
+        var profTab = document.querySelector('.taskbar-tab[data-tab="profile"]');
+        if (profTab) profTab.classList.add('active');
+      } else {
+        // index.html or root -> highlight Home tab
+        var homeTab = document.querySelector('.taskbar-tab[data-tab="home"]');
+        if (homeTab) homeTab.classList.add('active');
+      }
+    })();  </script>
 </body>
 </html>

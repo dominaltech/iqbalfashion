@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Iqbal Fashion Solapur - Minimalist Premium Clothing</title>
-  <link rel="manifest" href="manifest.json">
+  <!-- manifest.json requires http/https -- omitted for file:// compatibility -->
   <meta name="theme-color" content="#1C2B21">
   
   <!-- Preconnect & Fonts -->
@@ -285,6 +285,12 @@
 
     @media (max-width: 992px) {
       .desktop-nav {
+        display: none;
+      }
+    }
+
+    @media (min-width: 993px) {
+      #menu-toggle {
         display: none;
       }
     }
@@ -2170,7 +2176,7 @@
       <div class="usp-item">
         <span class="usp-icon">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9s2.015-9 4.5-9yM3 9h18M3 15h18" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9s2.015-9 4.5-9M3 9h18M3 15h18" />
           </svg>
         </span>
         <h3 class="usp-title">Pure Organic Materials</h3>
@@ -2233,14 +2239,14 @@
 
   <!-- MOBILE BOTTOM TASKBAR -->
   <nav class="mobile-taskbar">
-    <a href="index.html" class="taskbar-tab active">
+    <a href="index.html" class="taskbar-tab" data-tab="home">
       <svg viewBox="0 0 24 24">
         <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
         <polyline points="9 22 9 12 15 12 15 22"/>
       </svg>
       <span>Home</span>
     </a>
-    <a href="#featured-collection" class="taskbar-tab">
+    <a href="#featured-collection" class="taskbar-tab" data-tab="collection">
       <svg viewBox="0 0 24 24">
         <rect x="3" y="3" width="7" height="7"/>
         <rect x="14" y="3" width="7" height="7"/>
@@ -2258,7 +2264,7 @@
       <span class="badge" id="taskbar-cart-badge">0</span>
       <span>Cart</span>
     </a>
-    <a href="profile.html" class="taskbar-tab">
+    <a href="profile.html" class="taskbar-tab" data-tab="profile">
       <svg viewBox="0 0 24 24">
         <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
         <circle cx="12" cy="7" r="4"/>
@@ -2310,7 +2316,7 @@
       <div class="social-links">
         <a href="#" class="social-link" aria-label="Instagram">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9s2.015-9 4.5-9yM3 9h18M3 15h18" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9s2.015-9 4.5-9M3 9h18M3 15h18" />
           </svg>
         </a>
       </div>
@@ -2575,6 +2581,9 @@
       });
     }
 
+    let userMuted = localStorage.getItem('brand_video_user_muted') === 'true';
+    let programmaticChange = false;
+
     // --- RENDER BRAND VIDEO ---
     function renderBrandVideo() {
       const container = document.getElementById('video-showcase-container');
@@ -2603,23 +2612,49 @@
 
       const video = document.getElementById('brand-video');
       if (video) {
-        // 1. Initial attempt to autoplay with sound
-        video.muted = false;
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            console.log("Initial autoplay with sound blocked. Muting to autoplay.");
-            video.muted = true;
-            video.play();
-          });
+        // Initialize muted state based on user's preference
+        video.muted = userMuted;
+
+        // Try autoplaying on load (if not explicitly muted by user)
+        if (!userMuted) {
+          video.muted = false;
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {
+              if (error.name !== 'AbortError') {
+                console.log("Initial autoplay with sound blocked. Muting to autoplay.");
+                programmaticChange = true;
+                video.muted = true;
+                setTimeout(() => { programmaticChange = false; }, 0);
+                video.play().catch(e => { if (e.name !== 'AbortError') console.log("Play failed", e); });
+              }
+            });
+          }
+        } else {
+          video.pause();
         }
 
-        // 2. Global listener to unmute the video on first screen tap/interaction
+        // Listen for volume/mute changes to detect explicit user actions
+        video.addEventListener('volumechange', () => {
+          if (!programmaticChange) {
+            userMuted = video.muted || video.volume === 0;
+            localStorage.setItem('brand_video_user_muted', userMuted ? 'true' : 'false');
+            if (userMuted) {
+              video.pause(); // Pause when muted, as requested ("resume shouldnot auto play")
+            }
+          }
+        });
+
+        // Global listener to unmute the video on first screen tap/interaction
         const unmuteOnInteraction = () => {
-          if (video.muted) {
+          if (video.muted && !userMuted) {
+            programmaticChange = true;
             video.muted = false;
+            setTimeout(() => { programmaticChange = false; }, 0);
             if (video.paused) {
-              video.play().catch(e => console.log(e));
+              video.play().catch(e => {
+                if (e.name !== 'AbortError') console.log("Play failed on interaction", e);
+              });
             }
           }
           document.removeEventListener('click', unmuteOnInteraction);
@@ -2628,23 +2663,34 @@
         document.addEventListener('click', unmuteOnInteraction);
         document.addEventListener('touchstart', unmuteOnInteraction);
 
-        // 3. IntersectionObserver to restart video from beginning (0s) when scrolled into view
+        // IntersectionObserver to restart video when scrolled into view
         if ('IntersectionObserver' in window) {
           const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
               if (entry.isIntersecting) {
-                // Restart video from beginning when it becomes active on screen
-                video.currentTime = 0;
-                
-                // Try to play with sound
-                video.muted = false;
-                const activePlay = video.play();
-                if (activePlay !== undefined) {
-                  activePlay.catch(() => {
-                    console.log("Autoplay with sound blocked on enter. Muting.");
-                    video.muted = true;
-                    video.play();
-                  });
+                if (!userMuted) {
+                  // Restart video from beginning when it becomes active on screen
+                  video.currentTime = 0;
+                  
+                  // Try to play with sound
+                  video.muted = false;
+                  const activePlay = video.play();
+                  if (activePlay !== undefined) {
+                    activePlay.catch(error => {
+                      if (error.name !== 'AbortError') {
+                        console.log("Autoplay with sound blocked on enter. Muting.");
+                        programmaticChange = true;
+                        video.muted = true;
+                        setTimeout(() => { programmaticChange = false; }, 0);
+                        video.play().catch(e => {
+                          if (e.name !== 'AbortError') console.log("Play failed on enter", e);
+                        });
+                      }
+                    });
+                  }
+                } else {
+                  // If user has muted the video, do not auto play
+                  video.pause();
                 }
               } else {
                 // Pause when scrolled off-screen to save resources
@@ -2659,7 +2705,8 @@
     }
 
     // --- PWA SERVICE WORKER REGISTRATION ---
-    if ('serviceWorker' in navigator) {
+    // Only register on http/https (not file:// which blocks SW)
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.protocol === 'http:')) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
           .then(reg => console.log('Service Worker registered successfully', reg.scope))
@@ -3094,6 +3141,24 @@
       loadCart();
       loadHomepageAssets();
     });
-  </script>
+
+    // --- TASKBAR ACTIVE STATE (auto-set based on current page) ---
+    (function() {
+      var path = location.pathname.toLowerCase();
+      var tabs = document.querySelectorAll('.taskbar-tab');
+      tabs.forEach(function(tab) { tab.classList.remove('active'); });
+      if (path.endsWith('mens.html') || path.endsWith('kids.html') || path.endsWith('cloth-piece.html')) {
+        // catalog pages -> highlight Collection tab
+        var colTab = document.querySelector('.taskbar-tab[data-tab="collection"]');
+        if (colTab) colTab.classList.add('active');
+      } else if (path.endsWith('profile.html') || path.endsWith('admin.html')) {
+        var profTab = document.querySelector('.taskbar-tab[data-tab="profile"]');
+        if (profTab) profTab.classList.add('active');
+      } else {
+        // index.html or root -> highlight Home tab
+        var homeTab = document.querySelector('.taskbar-tab[data-tab="home"]');
+        if (homeTab) homeTab.classList.add('active');
+      }
+    })();  </script>
 </body>
 </html>
