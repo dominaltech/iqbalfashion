@@ -843,7 +843,7 @@
             <form id="product-upload-form">
               <div class="form-group">
                 <label class="form-label" for="prod-title">Product Title</label>
-                <input type="text" id="prod-title" class="form-input" placeholder="e.g. Ivory Linen Shirt" required>
+                <input type="text" id="prod-title" class="form-input" placeholder="e.g. Ivory Linen Shirt (optional, defaults to file name)">
               </div>
               
               <div class="form-group">
@@ -864,37 +864,37 @@
 
               <div class="form-group">
                 <label class="form-label" for="prod-price">Price (INR)</label>
-                <input type="number" id="prod-price" class="form-input" placeholder="e.g. 1499" required min="1">
+                <input type="number" id="prod-price" class="form-input" placeholder="e.g. 1499 (optional, defaults to 0)">
               </div>
 
               <div class="form-group">
                 <label class="form-label" for="prod-material">Material / GSM Details</label>
-                <input type="text" id="prod-material" class="form-input" placeholder="e.g. 100% Organic Linen | 150 GSM" required>
+                <input type="text" id="prod-material" class="form-input" placeholder="e.g. 100% Organic Linen | 150 GSM (optional)">
               </div>
 
               <div class="form-group">
                 <label class="form-label" for="prod-sizes">Sizes (Comma separated)</label>
-                <input type="text" id="prod-sizes" class="form-input" placeholder="e.g. S, M, L, XL or 2-3Y, 4-5Y or 1m, 2m, 3m" required>
+                <input type="text" id="prod-sizes" class="form-input" placeholder="e.g. S, M, L, XL (optional)">
               </div>
 
               <div class="form-group">
-                <label class="form-label">Product Image</label>
+                <label class="form-label">Product Images</label>
                 <div class="file-input-wrapper">
                   <div class="file-input-button">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="width:18px; height:18px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" /></svg>
-                    <span>Choose File (Upload to Bucket)</span>
+                    <span>Choose Files (Upload to Bucket)</span>
                   </div>
-                  <input type="file" id="prod-image-file" class="real-file-input" accept="image/*" onchange="displayFileName('prod-image-file', 'prod-image-name')">
+                  <input type="file" id="prod-image-file" class="real-file-input" accept="image/*" multiple required onchange="displayFileName('prod-image-file', 'prod-image-name')">
                 </div>
-                <div class="file-name-display" id="prod-image-name">No file selected (will prompt Unsplash fallback if left empty)</div>
+                <div class="file-name-display" id="prod-image-name">No files selected (Required, supports multiple selection)</div>
               </div>
 
               <div class="form-group">
                 <label class="form-label" for="prod-desc">Product Description</label>
-                <textarea id="prod-desc" class="form-input form-textarea" placeholder="Provide description detailing product characteristics..." required></textarea>
+                <textarea id="prod-desc" class="form-input form-textarea" placeholder="Provide description detailing product characteristics... (optional)"></textarea>
               </div>
 
-              <button type="submit" class="submit-btn">Upload Inventory Item</button>
+              <button type="submit" class="submit-btn">Upload Inventory Item(s)</button>
             </form>
           </div>
 
@@ -1200,22 +1200,20 @@
     window.displayFileName = function(inputElId, labelElId) {
       const input = document.getElementById(inputElId);
       const label = document.getElementById(labelElId);
-      if (input.files && input.files[0]) {
-        label.textContent = input.files[0].name;
+      if (input.files && input.files.length > 0) {
+        if (input.files.length === 1) {
+          label.textContent = input.files[0].name;
+        } else {
+          label.textContent = `${input.files.length} files selected`;
+        }
       } else {
         label.textContent = "No file selected";
       }
     };
 
     // --- UPLOAD STORAGE UTILITY ---
-    async function uploadMediaFile(fileInputId, bucketName) {
-      const fileInput = document.getElementById(fileInputId);
-      if (!fileInput.files || !fileInput.files[0]) return null;
-
-      const file = fileInput.files[0];
-      
+    async function uploadSingleFile(file, bucketName) {
       if (isMockMode) {
-        // Mock Mode: Generate a local URL that can represent the file temporarily in local session
         return URL.createObjectURL(file);
       } else {
         try {
@@ -1229,7 +1227,6 @@
 
           if (error) throw error;
 
-          // Get Public URL
           const { data: { publicUrl } } = supabaseClient.storage
             .from(bucketName)
             .getPublicUrl(filePath);
@@ -1242,63 +1239,76 @@
       }
     }
 
+    async function uploadMediaFile(fileInputId, bucketName) {
+      const fileInput = document.getElementById(fileInputId);
+      if (!fileInput.files || !fileInput.files[0]) return null;
+      return uploadSingleFile(fileInput.files[0], bucketName);
+    }
+
     // --- SUBMIT PRODUCT UPLOAD ---
     document.getElementById('product-upload-form').addEventListener('submit', async (e) => {
       e.preventDefault();
       
-      const title = document.getElementById('prod-title').value;
+      const titleInput = document.getElementById('prod-title').value.trim();
       const category = document.getElementById('prod-category').value;
       const subcategory = document.getElementById('prod-subcategory').value;
-      const price = parseFloat(document.getElementById('prod-price').value);
-      const material = document.getElementById('prod-material').value;
-      const sizes = document.getElementById('prod-sizes').value.split(',').map(s => s.trim());
-      const description = document.getElementById('prod-desc').value;
+      const priceInput = document.getElementById('prod-price').value;
+      const price = priceInput ? parseFloat(priceInput) : 0;
+      const material = document.getElementById('prod-material').value.trim() || 'Premium Fabric';
+      const sizesInput = document.getElementById('prod-sizes').value.trim();
+      const sizes = sizesInput ? sizesInput.split(',').map(s => s.trim()) : [];
+      const description = document.getElementById('prod-desc').value.trim() || 'No description provided.';
 
-      showToast("Uploading product... please wait.");
+      const fileInput = document.getElementById('prod-image-file');
+      const files = fileInput.files;
+
+      if (!files || files.length === 0) {
+        showToast("Please select at least one image file.");
+        return;
+      }
+
+      showToast(`Uploading ${files.length} product(s)... please wait.`);
 
       try {
-        // Upload image file to 'products' bucket
-        let imageUrl = await uploadMediaFile('prod-image-file', 'products');
-        
-        // Fallback Unsplash URL if no file was uploaded
-        if (!imageUrl) {
-          const placeholderUrls = {
-            mens: "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?q=80&w=600",
-            kids: "https://images.unsplash.com/photo-1519457431-44ccd64a579b?q=80&w=600",
-            'cloth-piece': "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=600"
+        let successCount = 0;
+        for (let i = 0; i < files.length; i++) {
+          const file = files[i];
+          const imageUrl = await uploadSingleFile(file, 'products');
+          
+          // Use filename (without extension) if title is left empty
+          const title = titleInput || file.name.split('.').slice(0, -1).join('.') || 'Unnamed Product';
+
+          const newProduct = {
+            id: 'p-added-' + Math.floor(Math.random() * 1000000),
+            created_at: new Date().toISOString(),
+            title,
+            category,
+            subcategory,
+            price,
+            material,
+            sizes,
+            images: [imageUrl],
+            description
           };
-          imageUrl = placeholderUrls[category];
+
+          if (isMockMode) {
+            const existing = JSON.parse(localStorage.getItem('iqbal_mock_products') || '[]');
+            existing.unshift(newProduct);
+            localStorage.setItem('iqbal_mock_products', JSON.stringify(existing));
+            successCount++;
+          } else {
+            const { error } = await supabaseClient
+              .from('products')
+              .insert([{
+                title, category, subcategory, price, material, sizes, description,
+                images: [imageUrl]
+              }]);
+            if (error) throw error;
+            successCount++;
+          }
         }
 
-        const newProduct = {
-          id: 'p-added-' + Math.floor(Math.random() * 1000000),
-          created_at: new Date().toISOString(),
-          title,
-          category,
-          subcategory,
-          price,
-          material,
-          sizes,
-          images: [imageUrl],
-          description
-        };
-
-        if (isMockMode) {
-          const existing = JSON.parse(localStorage.getItem('iqbal_mock_products') || '[]');
-          existing.unshift(newProduct);
-          localStorage.setItem('iqbal_mock_products', JSON.stringify(existing));
-          showToast("Product uploaded to inventory!");
-        } else {
-          const { error } = await supabaseClient
-            .from('products')
-            .insert([{
-              title, category, subcategory, price, material, sizes, description,
-              images: [imageUrl]
-            }]);
-          if (error) throw error;
-          showToast("Product successfully saved to DB!");
-        }
-
+        showToast(`Successfully uploaded ${successCount} product(s) to ${category}!`);
         e.target.reset();
         document.getElementById('prod-image-name').textContent = "No file selected";
         updateSubcatDropdown();
