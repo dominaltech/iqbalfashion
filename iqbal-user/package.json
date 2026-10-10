@@ -1,0 +1,13 @@
+{
+  "name": "iqbal-fashion-user",
+  "version": "1.0.0",
+  "description": "Iqbal Fashion Customer E-Commerce Storefront",
+  "main": "main.js",
+  "scripts": {
+    "start": "serve .",
+    "dev": "serve ."
+  },
+  "dependencies": {
+    "web-push": "^3.6.7"
+  }
+}

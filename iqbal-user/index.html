@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iqbal Fashion — Excellence in Bespoke Men's Fashion &amp; Fine Fabrics</title>
+  <meta name="description" content="Iqbal Fashion Solapur — Excellence in bespoke men's tailoring, fine cloth materials, suiting, shirting, linen, cotton, silk, and readymade apparel.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="images/logo.png" type="image/jpeg">
+  <link rel="apple-touch-icon" href="images/logo.png">
+  <meta property="og:image" content="images/logo.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Iqbal Fashion",
+    "url": "https://iqbalfashion.com",
+    "logo": "https://iqbalfashion.com/images/logo.png"
+  }
+  </script>
+  <link rel="stylesheet" href="styles.css?v=10">
+  <link rel="stylesheet" href="loader/startup-loader.css">
+  <script>
+    if (sessionStorage.getItem('hasSeenStartupLoader') || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+      document.documentElement.classList.add('skip-startup-loader');
+    }
+  </script>
+  <style>
+    .skip-startup-loader #iqbalStartupLoader { display: none !important; }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="main.js"></script>
+</head>
+<body>
+
+<!-- STARTUP LOADER: CODE-ONLY THREAD & BUTTON MICRO-ANIMATION -->
+<div id="iqbalStartupLoader" aria-hidden="true">
+  <div class="loader-curtain loader-curtain-top"></div>
+  <div class="loader-curtain loader-curtain-bottom"></div>
+  <div class="loader-stage">
+    <div class="button-anim-container">
+      <div class="button-spin-wrap">
+        <svg class="button-svg" viewBox="0 0 130 130">
+          <circle cx="65" cy="65" r="52" fill="#18110b" stroke="#c8a251" stroke-width="3.5" />
+          <circle cx="65" cy="65" r="44" fill="none" stroke="rgba(200, 162, 81, 0.45)" stroke-width="1.5" stroke-dasharray="4 3" />
+          <circle cx="53" cy="53" r="5" fill="#0d0a08" stroke="#8a7035" stroke-width="1" />
+          <circle cx="77" cy="53" r="5" fill="#0d0a08" stroke="#8a7035" stroke-width="1" />
+          <circle cx="53" cy="77" r="5" fill="#0d0a08" stroke="#8a7035" stroke-width="1" />
+          <circle cx="77" cy="77" r="5" fill="#0d0a08" stroke="#8a7035" stroke-width="1" />
+          <line x1="53" y1="53" x2="77" y2="77" class="stitch-path stitch-cross-1" />
+          <line x1="77" y1="53" x2="53" y2="77" class="stitch-path stitch-cross-2" />
+          <g class="needle-group">
+            <polygon points="76,46 100,16 104,20 80,50" fill="#e5cf8e" />
+            <line x1="97" y1="18" x2="101" y2="22" stroke="#0d0a08" stroke-width="1.5" />
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div class="loader-brand">
+      <h2 class="loader-brand-title">IQBAL FASHION</h2>
+      <span class="loader-brand-sub">BESPOKE &amp; FINE FABRICS</span>
+      <div class="loader-progress-bar-wrap">
+        <div class="loader-progress-bar-fill"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announcement-bar">
+  <div class="announce-ticker">
+    <div class="announce-ticker-track">
+      <span>Excellence in <strong>Bespoke Tailoring</strong></span>
+      <span>Curated <strong>Fine Cloth Materials</strong></span>
+      <span>Premium <strong>Readymade Apparel</strong></span>
+      <span>100% Genuine <strong>Quality Fabrics</strong></span>
+    </div>
+  </div>
+  <div class="announce-links">
+    <a href="my-orders.html">Track Order</a>
+    <a href="contact.html">Contact Us</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="site-header" id="siteHeader">
+  <nav class="navbar">
+    <button class="nav-icon-btn js-hamburger-open" aria-label="Open menu" id="topMenuBtn" onclick="openCatDrawer()">
+      <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <!-- Logo -->
+    <a href="index.html" class="logo" aria-label="Iqbal Fashion">
+      <img src="images/logo.png" alt="Iqbal Fashion" class="logo-img" style="height:44px;width:auto;object-fit:contain;" />
+    </a>
+
+    <!-- Desktop Nav -->
+    <div class="nav-links">
+      <div class="nav-item"><a href="shop.html" class="nav-link">All Materials</a></div>
+      <div class="nav-item"><a href="suiting.html" class="nav-link">Suiting</a></div>
+      <div class="nav-item"><a href="shirting.html" class="nav-link">Shirting</a></div>
+      <div class="nav-item"><a href="cotton.html" class="nav-link">Cotton</a></div>
+      <div class="nav-item"><a href="linen.html" class="nav-link">Linen</a></div>
+      <div class="nav-item"><a href="khadi.html" class="nav-link">Khadi</a></div>
+      <div class="nav-item"><a href="silk.html" class="nav-link">Silk</a></div>
+    </div>
+
+    <!-- Icons -->
+    <div class="nav-icons">
+      <button class="nav-icon-btn js-search-open" aria-label="Search">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <a href="signin.html" class="nav-icon-btn" aria-label="Account / Sign In">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </a>
+      <a href="cart.html" class="nav-icon-btn js-cart-open" aria-label="Cart" id="cartOpenBtn">
+        <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <span class="icon-badge cart-count cart-count-badge" id="cartCountBadge" style="display:none;">0</span>
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!-- HAMBURGER DRAWER -->
+<div class="hamburger-overlay" id="hamburgerOverlay">
+  <div class="hamburger-drawer">
+    <div class="ham-head">
+      <img src="images/logo.png" alt="Iqbal Fashion" style="height:34px;width:auto;object-fit:contain;" />
+      <button class="ham-close" id="hamCloseBtn" onclick="closeCatDrawer()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="ham-body">
+      <a href="index.html" class="ham-link active">Home</a>
+      <a href="shop.html" class="ham-link">All Products Catalog</a>
+      <div class="ham-cat-title">Categories</div>
+            <div class="ham-sublinks">
+        <a href="suiting.html">Suiting Material</a>
+        <a href="shirting.html">Shirting Cloth</a>
+        <a href="cotton.html">Pure Cotton</a>
+        <a href="linen.html">Pure Linen</a>
+        <a href="khadi.html">Handloom Khadi</a>
+        <a href="silk.html">Royal Silk</a>
+      </div>
+      <div class="ham-divider"></div>
+      <a href="my-orders.html" class="ham-link">My Orders</a>
+      <a href="cart.html" class="ham-link">My Shopping Bag</a>
+      <a href="about.html" class="ham-link">About Us</a>
+      <a href="policy.html" class="ham-link">Policy</a>
+      <a href="contact.html" class="ham-link">Contact Us</a>
+      <a href="signin.html" class="ham-link">Account / Sign In</a>
+    </div>
+  </div>
+</div>
+
+<!-- SEARCH OVERLAY -->
+<div class="search-overlay" id="searchOverlay" role="dialog" aria-label="Search">
+  <button class="search-overlay-close" aria-label="Close search">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <div class="search-box">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="search" class="search-input" placeholder="Search for products…" autocomplete="off" />
+  </div>
+  <div class="search-label">Top Searches</div>
+    <div class="search-tags">
+    <a href="suiting.html" class="search-tag">Suiting Material</a>
+    <a href="shirting.html" class="search-tag">Shirting Cloth</a>
+    <a href="cotton.html" class="search-tag">Pure Cotton</a>
+    <a href="linen.html" class="search-tag">Pure Linen</a>
+    <a href="khadi.html" class="search-tag">Handloom Khadi</a>
+    <a href="silk.html" class="search-tag">Royal Silk</a>
+  </div>
+</div>
+
+<!-- CART OVERLAY + DRAWER -->
+<div class="cart-overlay" id="cartOverlay">
+  <div class="cart-drawer">
+    <div class="cart-head">
+      <span class="cart-head-title">Your Cart</span>
+      <button class="cart-head-close" aria-label="Close cart">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="cart-body">
+      <div class="cart-empty-state">
+        <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        <p>Your cart is empty</p>
+        <a href="shop.html">Continue Shopping</a>
+      </div>
+    </div>
+    <div class="cart-foot">
+      <div class="cart-total-row">
+        <span>Subtotal</span>
+        <span class="cart-total-amount">₹0</span>
+      </div>
+      <button class="cart-checkout" onclick="window.location.href='cart.html'">View Shopping Bag</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main id="MainContent">
+
+  <!-- HERO SPLIT SECTION (PC: LEFT BRAND TEXT & BUTTON / RIGHT SLIDER) -->
+  <section class="hero-split-section" id="heroSection" aria-label="Featured showcase">
+    <div class="container hero-split-container">
+      <div class="hero-split-grid">
+        
+        <!-- LEFT SIDE: BRAND NAME, SIMPLE TEXT, SHOP NOW BUTTON -->
+        <div class="hero-left-brand-col">
+          <div class="hero-brand-inner">
+            <span class="hero-brand-badge">ROYAL HERITAGE BESPOKE</span>
+            <h1 class="hero-brand-heading">IQBAL FASHION</h1>
+            <p class="hero-brand-text">
+              Fine Suiting, Shirting, Readymade &amp; Cloth Materials Crafted for Elegance.
+            </p>
+            <div class="hero-btn-group">
+              <a href="shop.html" class="hero-shop-now-btn" id="heroShopNowBtn">
+                <span>SHOP NOW</span>
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+            <div class="hero-trust-badges">
+              <div class="hero-trust-item">
+                <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                <span>100% Genuine Fabrics</span>
+              </div>
+              <div class="hero-trust-item">
+                <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                <span>All India Express Delivery</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT SIDE: HERO BANNER IMAGE SLIDER -->
+        <!-- RIGHT SIDE: HERO BANNER IMAGE SLIDER (DYNAMICALLY POPULATED FROM ADMIN / SUPABASE) -->
+        <div class="hero-right-slider-col">
+          <div class="hero-slider" id="heroSlider" aria-label="Featured collections">
+            <!-- Dynamic Hero Banner Slider Loader (Zero Hardcoded Images) -->
+            <div class="hero-slider-loader" id="heroSliderLoader">
+              <div class="hero-loader-shimmer"></div>
+              <div class="hero-loader-badge">IQBAL BESPOKE</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED BRAND VIDEO SHOWCASE (classic.mp4) -->
+  <section class="classic-video-section" id="classicVideoSection" aria-label="Brand Video Showcase">
+    <div class="container">
+      <div class="classic-video-container">
+        <div class="classic-video-header">
+          <span class="classic-video-badge">EXCLUSIVE SHOWCASE</span>
+          <h2 class="classic-video-title">IQBAL FASHION</h2>
+          <p class="classic-video-subtitle">Watch our artisanal craftsmanship, tailoring &amp; fine fabrics heritage in action</p>
+        </div>
+        <div class="classic-video-wrapper">
+          <video id="classicMainVideo"
+                 class="classic-video-player"
+                 src="classic.mp4"
+                 playsinline
+                 webkit-playsinline
+                 loop
+                 preload="auto"
+                 muted
+                 controls>
+            Your browser does not support HTML5 video.
+          </video>
+          <button class="video-sound-pill" id="videoSoundBtn" onclick="toggleMainVideoSound()" aria-label="Unmute Sound">
+            <svg viewBox="0 0 24 24" id="soundIconSvg" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+            <span id="videoSoundLabel">SOUND OFF</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DYNAMIC EVENT & PROMOTION BANNER STRIP (MANAGED VIA ADMIN PANEL) -->
+  <section class="rakhi-home-strip" id="homeEventStrip" style="display: none;">
+    <!-- Injected dynamically via loadHomeEventBanner() -->
+  </section>
+
+  <!-- CATEGORY TILES -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-head-left">
+          <h2 class="section-title">Shop by Category</h2>
+          <p class="section-subtitle">Find your perfect style</p>
+        </div>
+        <a href="shop.html" class="view-all-link">VIEW ALL →</a>
+      </div>
+      <div class="cat-grid" id="homeCategoryGrid">
+        <!-- Dynamic Categories -->
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS CATALOG -->
+  <section class="section section-bg">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-head-left">
+          <h2 class="section-title">FEATURED CLOTH MATERIALS</h2>
+          <p class="section-subtitle">Premium Suiting, Shirting & Fabrics</p>
+        </div>
+        <a href="shop.html" class="view-all-link">VIEW ALL PRODUCTS →</a>
+      </div>
+      <div class="product-grid" id="homeProductGrid">
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+        <div class="skeleton skeleton-card"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST BADGES -->
+  <section class="trust-section">
+    <div class="container">
+      <div class="trust-grid">
+        <div class="trust-item fade-up">
+          <div class="trust-icon-wrap">
+            <svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">Fast Delivery</div>
+            <div class="trust-desc">All-India express shipping</div>
+          </div>
+        </div>
+        <div class="trust-item fade-up">
+          <div class="trust-icon-wrap">
+            <svg viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">Easy Returns</div>
+            <div class="trust-desc">2-day easy return policy</div>
+          </div>
+        </div>
+        <div class="trust-item fade-up">
+          <div class="trust-icon-wrap">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">100% Authentic</div>
+            <div class="trust-desc">Original heavy-GSM fabric</div>
+          </div>
+        </div>
+        <div class="trust-item fade-up">
+          <div class="trust-icon-wrap">
+            <svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <div>
+            <div class="trust-title">Secure Payments</div>
+            <div class="trust-desc">Instant UPI, Cards &amp; Netbanking</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="section section-dark newsletter-section">
+    <div class="container">
+      <p class="nl-eyebrow">Stay in the loop</p>
+      <h2 class="nl-title">Get Exclusive Deals</h2>
+      <p class="nl-sub">Be the first to know about new arrivals, sales &amp; style drops.</p>
+      <form class="nl-form" onsubmit="event.preventDefault(); window.UR_TOAST('Subscribed successfully!');">
+        <input type="email" class="nl-input" placeholder="Enter your email address" required />
+        <button type="submit" class="nl-submit">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="footer-logo-row logo" aria-label="Iqbal Fashion">
+          <img src="images/logo.png" alt="Iqbal Fashion" class="logo-img" style="height:42px;width:auto;object-fit:contain;" />
+        </a>
+        <p class="footer-desc">Excellence in Bespoke Men's Fashion, Fine Fabrics &amp; Readymade Apparel. Quality craftsmanship tailored to perfection.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <div class="footer-links">
+          <a href="about.html">About Us</a>
+          <a href="policy.html">Policy</a>
+          <a href="contact.html">Contact Us</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Need Help</div>
+        <div class="footer-links">
+          <a href="policy.html">Shipping Policy</a>
+          <a href="policy.html">Return &amp; Exchange</a>
+          <a href="policy.html">Privacy Policy</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Support</div>
+        <div class="footer-contact-row">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <span>iqbalfashiongents@gmail.com</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Iqbal Fashion. All rights reserved.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mobile-taskbar">
+  <a href="index.html" class="taskbar-tab active">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Home</span>
+  </a>
+  <a href="shop.html" class="taskbar-tab">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    <span>Shop</span>
+  </a>
+  <a href="cart.html" class="taskbar-tab">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    <span class="badge-pip cart-count-badge" style="display:none; top: 4px; right: 20%;">0</span>
+    <span>Cart</span>
+  </a>
+  <a href="my-orders.html" class="taskbar-tab">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <span>Orders</span>
+  </a>
+  <a href="signin.html" class="taskbar-tab">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Profile</span>
+  </a>
+</nav>
+
+<script>
+  let heroSlideIndex = 0;
+  let heroInterval = null;
+
+  function setHeroSlide(index, restartTimer = false) {
+    const slider = document.getElementById('heroSlider');
+    if (!slider) return;
+    const slides = slider.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('#heroSliderDots .slider-dot');
+    if (!slides.length) return;
+
+    heroSlideIndex = (index + slides.length) % slides.length;
+    slides.forEach((s, idx) => {
+      s.classList.toggle('active', idx === heroSlideIndex);
+    });
+    dots.forEach((d, idx) => {
+      d.classList.toggle('active', idx === heroSlideIndex);
+    });
+    if (restartTimer) {
+      startHeroSlider();
+    }
+  }
+
+  function prevHeroSlide() {
+    const slides = document.querySelectorAll('#heroSlider .hero-slide');
+    if (slides.length <= 1) return;
+    setHeroSlide(heroSlideIndex - 1, true);
+  }
+
+  function nextHeroSlide() {
+    const slides = document.querySelectorAll('#heroSlider .hero-slide');
+    if (slides.length <= 1) return;
+    setHeroSlide(heroSlideIndex + 1, true);
+  }
+
+  function startHeroSlider() {
+    if (heroInterval) clearInterval(heroInterval);
+    heroInterval = setInterval(() => {
+      const slides = document.querySelectorAll('#heroSlider .hero-slide');
+      if (slides.length > 1) {
+        setHeroSlide(heroSlideIndex + 1);
+      }
+    }, 1500);
+
+    const sliderEl = document.getElementById('heroSlider');
+    if (sliderEl && !sliderEl._swipeAttached) {
+      sliderEl._swipeAttached = true;
+      let startX = 0;
+      sliderEl.addEventListener('touchstart', (e) => {
+        if (e.changedTouches && e.changedTouches.length) {
+          startX = e.changedTouches[0].screenX;
+        }
+      }, { passive: true });
+      sliderEl.addEventListener('touchend', (e) => {
+        if (e.changedTouches && e.changedTouches.length) {
+          const diff = startX - e.changedTouches[0].screenX;
+          if (diff > 40) nextHeroSlide();
+          else if (diff < -40) prevHeroSlide();
+        }
+      }, { passive: true });
+    }
+  }
+
+  async function loadHomePageData() {
+    const grid = document.getElementById('homeProductGrid');
+    const catGrid = document.getElementById('homeCategoryGrid');
+    const client = window.urSupabase || (window.supabase && typeof window.supabase.createClient === 'function' ? window.supabase.createClient(window.UR_CONFIG.SUPABASE_URL, window.UR_CONFIG.SUPABASE_ANON_KEY) : null);
+    if (!client) return;
+
+    // Helper: Render Hero Banners into DOM
+    function renderBanners(banners) {
+      if (!banners || banners.length === 0) return;
+      const validBanners = banners.filter(b => b.image_url && b.image_url.trim().length > 0);
+      const slider = document.getElementById('heroSlider');
+      if (slider && validBanners.length > 0) {
+        slider.innerHTML = validBanners.map((b, idx) => `
+          <div class="hero-slide ${idx === 0 ? 'active' : ''}">
+            <img src="${b.image_url}" alt="${b.title || 'Iqbal Fashion'}" class="hero-img" ${idx > 0 ? 'loading="lazy" decoding="async"' : 'fetchpriority="high"'}>
+            <div class="hero-slide-overlay">
+              ${b.badge_text ? `<span class="hero-slide-tag">${b.badge_text}</span>` : ''}
+              ${b.title ? `<span class="hero-slide-caption">${b.title}</span>` : ''}
+            </div>
+            ${b.link_url && b.link_url !== '#' ? `<a href="${b.link_url}" class="hero-slide-clickable" aria-label="${b.title || 'View collection'}"></a>` : ''}
+          </div>
+        `).join('') + `
+          <div class="slider-dots" id="heroSliderDots">
+            ${validBanners.map((_, idx) => `<button class="slider-dot ${idx === 0 ? 'active' : ''}" onclick="setHeroSlide(${idx}, true)" aria-label="Slide ${idx+1}"></button>`).join('')}
+          </div>
+          <button class="slider-nav-btn prev" onclick="prevHeroSlide()" aria-label="Previous slide">
+            <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="slider-nav-btn next" onclick="nextHeroSlide()" aria-label="Next slide">
+            <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        `;
+        startHeroSlider();
+      }
+    }
+
+    // Helper: Render Category Tiles into DOM
+    function renderCategories(categories) {
+      if (!categories || categories.length === 0 || !catGrid) return;
+      const validCats = categories.filter(c => c.slug !== 'test-items' && !(c.name || '').toLowerCase().includes('test'));
+      if (validCats.length > 0) {
+        catGrid.innerHTML = validCats.map(cat => {
+          let targetUrl = `shop.html?category=${encodeURIComponent(cat.slug || cat.id)}`;
+          if (cat.slug === 'readymade') targetUrl = 'readymade.html';
+          else if (cat.slug === 'ethnic') targetUrl = 'ethnic.html';
+          else if (cat.slug === 'casual-wear') targetUrl = 'casual-wear.html';
+          else if (cat.slug === 'cloth-material') targetUrl = 'cloth-material.html';
+          else if (cat.slug === 'kids') targetUrl = 'kids.html';
+          else if (cat.slug === 'boys') targetUrl = 'boys.html';
+          else if (cat.slug === 'girls') targetUrl = 'girls.html';
+          else if (cat.slug === 'suiting') targetUrl = 'suiting.html';
+          else if (cat.slug === 'shirting') targetUrl = 'shirting.html';
+          else if (cat.slug === 'cotton') targetUrl = 'cotton.html';
+          else if (cat.slug === 'linen') targetUrl = 'linen.html';
+          else if (cat.slug === 'khadi') targetUrl = 'khadi.html';
+          else if (cat.slug === 'silk') targetUrl = 'silk.html';
+
+          const bannerImg = cat.banner_url || cat.image_url;
+          const bgStyle = bannerImg 
+            ? `background-image: url('${bannerImg}'); background-size: cover; background-position: center;` 
+            : `background: linear-gradient(135deg, #F4EFE6 0%, #E8DCB8 100%);`;
+
+          return `
+            <a href="${targetUrl}" class="cat-tile fade-up">
+              <div class="cat-tile-bg" style="${bgStyle}"></div>
+              <div class="cat-tile-overlay"></div>
+              <div class="cat-tile-body">
+                <span class="cat-tile-name">${cat.name}</span>
+                <span class="cat-tile-shop">Explore Collection <svg viewBox="0 0 24 24" style="width:12px;height:12px;display:inline-block;vertical-align:middle;stroke:currentColor;fill:none;stroke-width:2"><polyline points="9 18 15 12 9 6"/></svg></span>
+              </div>
+            </a>
+          `;
+        }).join('');
+      }
+    }
+
+    // Helper: Render Products into DOM
+    function renderProducts(products) {
+      if (!products || products.length === 0 || !grid) return;
+      grid.innerHTML = products.map(p => `
+        <div class="product-card">
+          <div class="prod-image-wrap">
+            ${p.is_new_arrival ? '<span class="prod-tag">NEW</span>' : ''}
+            <button class="prod-wishlist-btn" onclick="event.preventDefault(); event.stopPropagation(); window.UR_TOAST && window.UR_TOAST('Saved to wishlist');" aria-label="Add to Wishlist">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <a href="product.html?id=${p.id}">
+              <img src="${p.main_image || 'images/logo.png'}" alt="${p.name}" loading="lazy" decoding="async">
+            </a>
+          </div>
+          <div class="prod-info">
+            <div class="product-category" style="font-size:11px;color:var(--text-muted);font-weight:700;">${p.categories ? p.categories.name : 'IQBAL FASHION'}</div>
+            <a href="product.html?id=${p.id}" class="prod-name" style="font-weight:700;font-size:14px;margin:4px 0;">${p.name}</a>
+            <div class="prod-price-row">
+              <span class="prod-price">₹${p.price}</span>
+              ${p.mrp ? `<span class="prod-mrp">₹${p.mrp}</span>` : ''}
+              ${p.mrp ? `<span class="prod-off">${Math.round(((p.mrp - p.price)/p.mrp)*100)}% OFF</span>` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    try {
+      // 1. FAST INITIAL PAINT FROM LOCALSTORAGE (0ms latency, 0 egress bytes)
+      let cachedData = null;
+      try {
+        const raw = localStorage.getItem('iqbalfashion_home_cache') || localStorage.getItem('classic_home_cache');
+        if (raw) cachedData = JSON.parse(raw);
+      } catch(e) {}
+
+      if (cachedData) {
+        if (cachedData.banners) renderBanners(cachedData.banners);
+        if (cachedData.categories) renderCategories(cachedData.categories);
+        if (cachedData.products) renderProducts(cachedData.products);
+
+        // If verified within last 60 seconds, skip network check entirely (0 egress)
+        if (Date.now() - (cachedData.timestamp || 0) < 60000) {
+          return;
+        }
+      }
+
+      // 2. MINIMAL BYTE-SIZED SUPABASE CHECK: Check if any product updated (~30 bytes)
+      let needsFreshFetch = !cachedData;
+      if (cachedData && cachedData.latestUpdatedAt) {
+        try {
+          const { data: latestRow } = await client
+            .from('products')
+            .select('updated_at')
+            .order('updated_at', { ascending: false })
+            .limit(1);
+
+          if (latestRow && latestRow[0] && latestRow[0].updated_at === cachedData.latestUpdatedAt) {
+            // Unchanged: refresh timestamp, save ~25KB egress
+            cachedData.timestamp = Date.now();
+            localStorage.setItem('iqbalfashion_home_cache', JSON.stringify(cachedData));
+            return;
+          } else {
+            needsFreshFetch = true;
+          }
+        } catch(err) {
+          needsFreshFetch = true;
+        }
+      }
+
+      // 3. FETCH FULL DATA (Only when cache is missing or database has fresh updates)
+      let banners = [];
+      try {
+        const { data: fetchedBanners } = await client
+          .from('banners')
+          .select('id, title, subtitle, image_url, link_url, badge_text, display_order, is_active')
+          .eq('is_active', true)
+          .order('display_order', { ascending: true });
+        if (fetchedBanners && fetchedBanners.length > 0) banners = fetchedBanners;
+      } catch(e) {}
+
+      const categories = await window.fetchStoreCategories();
+
+      const { data: products } = await client
+        .from('products')
+        .select('id, name, price, mrp, main_image, is_new_arrival, category_id, updated_at, categories(slug, name)')
+        .eq('status', 'published')
+        .order('created_at', { ascending: false })
+        .limit(8);
+
+      renderBanners(banners);
+      renderCategories(categories);
+      renderProducts(products);
+
+      // Save to localStorage
+      const latestUpdatedAt = (products && products[0] && products[0].updated_at) ? products[0].updated_at : new Date().toISOString();
+      localStorage.setItem('iqbalfashion_home_cache', JSON.stringify({
+        banners,
+        categories,
+        products,
+        latestUpdatedAt,
+        timestamp: Date.now()
+      }));
+
+    } catch(e) { console.error('loadHomePageData error:', e); }
+  }
+
+  let currentActiveHomeCoupon = null;
+
+  async function loadHomeEventBanner() {
+    const strip = document.getElementById('homeEventStrip');
+    if (!strip || !window.UR_COUPON) return;
+
+    try {
+      const coupon = await window.UR_COUPON.fetchHomeBannerCoupon();
+      if (!coupon || !coupon.is_active || !coupon.show_home_banner) {
+        strip.style.display = 'none';
+        strip.innerHTML = '';
+        currentActiveHomeCoupon = null;
+        return;
+      }
+
+      currentActiveHomeCoupon = coupon;
+      const isPct = (coupon.discount_type === 'PERCENTAGE');
+      const discountStr = isPct ? `${parseFloat(coupon.discount_value)}% OFF` : `₹${parseFloat(coupon.discount_value).toFixed(0)} OFF`;
+      const isApplied = window.UR_COUPON.isApplied(coupon.code);
+
+      strip.style.display = 'block';
+      strip.className = `rakhi-home-strip ${isApplied ? 'applied' : ''}`;
+      strip.innerHTML = `
+        <div class="container">
+          <div class="rakhi-strip-inner">
+            <div class="rakhi-strip-left">
+              <div class="rakhi-badge-pill"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${(coupon.banner_tag || 'SPECIAL EVENT OFFER').replace(/[\u2700-\u27bf\U00010000-\U0010ffff]/g, '')}</div>
+              <div class="rakhi-strip-text">
+                <span class="rakhi-strip-title">${coupon.banner_message || 'FLAT ' + discountStr + ' ON ALL ORDERS'}</span>
+                <span class="rakhi-strip-sub">Use coupon code <strong class="rakhi-strip-code">${coupon.code}</strong> at checkout</span>
+              </div>
+            </div>
+            <div class="rakhi-strip-right">
+              <button class="rakhi-strip-btn" onclick="toggleHomeEventCoupon()">
+                <span>${isApplied ? `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:middle;margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>${discountStr} APPLIED (${coupon.code})` : `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="vertical-align:middle;margin-right:4px;"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>APPLY ${discountStr}`}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    } catch(err) {
+      console.error('loadHomeEventBanner error:', err);
+      strip.style.display = 'none';
+    }
+  }
+
+  async function toggleHomeEventCoupon() {
+    if (!currentActiveHomeCoupon || !window.UR_COUPON) return;
+    const isApplied = window.UR_COUPON.isApplied(currentActiveHomeCoupon.code);
+    if (isApplied) {
+      window.UR_COUPON.remove();
+    } else {
+      await window.UR_COUPON.apply(currentActiveHomeCoupon.code);
+    }
+    loadHomeEventBanner();
+  }
+
+  // FEATURED VIDEO: AUTOPLAY ONLY WHEN SCROLLED IN VIEW, PAUSE WHEN OFF-SCREEN, RESTART WHEN RETURNING
+  let isClassicVideoInView = false;
+
+  const SOUND_MUTED_SVG = `<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>`;
+  const SOUND_ON_SVG = `<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path class="svg-wave-pulse" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`;
+
+  function updateVideoSoundUI(isMuted) {
+    const soundBtn = document.getElementById('videoSoundBtn');
+    if (!soundBtn) return;
+    if (isMuted) {
+      soundBtn.innerHTML = `${SOUND_MUTED_SVG}<span>SOUND OFF</span>`;
+      soundBtn.setAttribute('aria-label', 'Unmute Sound');
+    } else {
+      soundBtn.innerHTML = `${SOUND_ON_SVG}<span>SOUND ON</span>`;
+      soundBtn.setAttribute('aria-label', 'Mute Sound');
+    }
+  }
+
+  function initClassicVideo() {
+    const video = document.getElementById('classicMainVideo');
+    if (!video) return;
+
+    // Initial state: ensure paused, rewind to 0, start muted
+    video.pause();
+    video.currentTime = 0;
+    video.muted = true;
+    updateVideoSoundUI(true);
+
+    let gestureListenerAttached = false;
+    const attachGestureListener = () => {
+      if (gestureListenerAttached) return;
+      gestureListenerAttached = true;
+      const onUserGesture = () => {
+        if (isClassicVideoInView && video) {
+          video.muted = false;
+          video.volume = 1.0;
+          updateVideoSoundUI(false);
+        }
+        ['pointerdown', 'touchstart', 'scroll', 'click'].forEach(evt => {
+          window.removeEventListener(evt, onUserGesture, { capture: true });
+        });
+        gestureListenerAttached = false;
+      };
+      ['pointerdown', 'touchstart', 'scroll', 'click'].forEach(evt => {
+        window.addEventListener(evt, onUserGesture, { capture: true, once: true, passive: true });
+      });
+    };
+
+    const playVideoWithSound = async () => {
+      try {
+        video.muted = false;
+        video.volume = 1.0;
+        await video.play();
+        updateVideoSoundUI(false);
+      } catch (err) {
+        // Fallback if browser autoplay policy blocks unmuted audio before user interaction
+        video.muted = true;
+        updateVideoSoundUI(true);
+        try {
+          await video.play();
+          attachGestureListener();
+        } catch (e) {
+          console.warn('Autoplay error:', e);
+        }
+      }
+    };
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          // Play with sound automatically when >= 50% of the video is visible on screen
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.50) {
+            if (!isClassicVideoInView) {
+              isClassicVideoInView = true;
+              playVideoWithSound();
+            }
+          } else if (!entry.isIntersecting || entry.intersectionRatio < 0.50) {
+            // Mute and pause when user scrolls past / passes 50% of the video screen
+            if (isClassicVideoInView) {
+              isClassicVideoInView = false;
+              video.muted = true;
+              updateVideoSoundUI(true);
+              if (!video.paused) {
+                video.pause();
+              }
+            }
+          }
+        });
+      }, {
+        threshold: [0, 0.25, 0.50, 0.75, 1.0]
+      });
+
+      observer.observe(video);
+    } else {
+      // Fallback scroll listener for browsers without IntersectionObserver
+      const checkScroll = () => {
+        const rect = video.getBoundingClientRect();
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        const visibleHeight = Math.max(0, Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0));
+        const visibleRatio = rect.height > 0 ? visibleHeight / rect.height : 0;
+
+        if (visibleRatio >= 0.50) {
+          if (!isClassicVideoInView) {
+            isClassicVideoInView = true;
+            playVideoWithSound();
+          }
+        } else if (visibleRatio < 0.50) {
+          if (isClassicVideoInView) {
+            isClassicVideoInView = false;
+            video.muted = true;
+            updateVideoSoundUI(true);
+            if (!video.paused) video.pause();
+          }
+        }
+      };
+      window.addEventListener('scroll', checkScroll, { passive: true });
+      window.addEventListener('resize', checkScroll, { passive: true });
+    }
+
+    // Pause when user switches browser tab, resume if still in view
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (!video.paused) video.pause();
+      } else if (isClassicVideoInView) {
+        video.play().catch(() => {});
+      }
+    });
+  }
+
+  window.toggleMainVideoSound = function() {
+    const video = document.getElementById('classicMainVideo');
+    if (!video) return;
+    if (video.muted) {
+      video.muted = false;
+      video.volume = 1.0;
+      if (video.paused) video.play().catch(() => {});
+      updateVideoSoundUI(false);
+    } else {
+      video.muted = true;
+      updateVideoSoundUI(true);
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    startHeroSlider();
+    loadHomePageData();
+    loadHomeEventBanner();
+    initClassicVideo();
+    document.addEventListener('urSupabaseReady', function() {
+      loadHomePageData();
+      loadHomeEventBanner();
+    });
+  });
+</script>
+<script src="loader/startup-loader.js"></script>
+</body>
+</html>
