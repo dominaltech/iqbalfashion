@@ -20,22 +20,14 @@
   }
   </script>
   <link rel="stylesheet" href="styles.css?v=11">
-  <link rel="stylesheet" href="loader/startup-loader.css">
-  <script>
-    if (sessionStorage.getItem('hasSeenStartupLoader') || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) {
-      document.documentElement.classList.add('skip-startup-loader');
-    }
-  </script>
-  <style>
-    .skip-startup-loader #iqbalStartupLoader { display: none !important; }
-  </style>
+  <link rel="stylesheet" href="loader/startup-loader.css?v=2">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="main.js"></script>
 </head>
 <body>
 
-<!-- STARTUP LOADER: CODE-ONLY THREAD & BUTTON MICRO-ANIMATION -->
+<!-- STARTUP LOADER: WHITE CANVAS WITH BESPOKE BUTTON & THREAD MICRO-ANIMATION -->
 <div id="iqbalStartupLoader" aria-hidden="true">
   <div class="loader-curtain loader-curtain-top"></div>
   <div class="loader-curtain loader-curtain-bottom"></div>
@@ -43,17 +35,22 @@
     <div class="button-anim-container">
       <div class="button-spin-wrap">
         <svg class="button-svg" viewBox="0 0 130 130">
-          <circle cx="65" cy="65" r="52" fill="#18110b" stroke="#c8a251" stroke-width="3.5" />
-          <circle cx="65" cy="65" r="44" fill="none" stroke="rgba(200, 162, 81, 0.45)" stroke-width="1.5" stroke-dasharray="4 3" />
-          <circle cx="53" cy="53" r="5" fill="#0d0a08" stroke="#8a7035" stroke-width="1" />
-          <circle cx="77" cy="53" r="5" fill="#0d0a08" stroke="#8a7035" stroke-width="1" />
-          <circle cx="53" cy="77" r="5" fill="#0d0a08" stroke="#8a7035" stroke-width="1" />
-          <circle cx="77" cy="77" r="5" fill="#0d0a08" stroke="#8a7035" stroke-width="1" />
-          <line x1="53" y1="53" x2="77" y2="77" class="stitch-path stitch-cross-1" />
-          <line x1="77" y1="53" x2="53" y2="77" class="stitch-path stitch-cross-2" />
+          <!-- Bespoke Suit Button Outer Body (Jet Black with Dual Rim) -->
+          <circle cx="65" cy="65" r="52" fill="#111111" stroke="#282828" stroke-width="2.5" />
+          <!-- Tailor Engraved Inset Rim -->
+          <circle cx="65" cy="65" r="43" fill="none" stroke="rgba(255, 255, 255, 0.2)" stroke-width="1.5" stroke-dasharray="4 3" />
+          <!-- 4 Button Holes -->
+          <circle cx="52" cy="52" r="5.5" fill="#000000" stroke="#333333" stroke-width="1.2" />
+          <circle cx="78" cy="52" r="5.5" fill="#000000" stroke="#333333" stroke-width="1.2" />
+          <circle cx="52" cy="78" r="5.5" fill="#000000" stroke="#333333" stroke-width="1.2" />
+          <circle cx="78" cy="78" r="5.5" fill="#000000" stroke="#333333" stroke-width="1.2" />
+          <!-- Tailor Gold Cross Stitching -->
+          <line x1="52" y1="52" x2="78" y2="78" class="stitch-path stitch-cross-1" />
+          <line x1="78" y1="52" x2="52" y2="78" class="stitch-path stitch-cross-2" />
+          <!-- Polished Silver Stitching Needle -->
           <g class="needle-group">
-            <polygon points="76,46 100,16 104,20 80,50" fill="#e5cf8e" />
-            <line x1="97" y1="18" x2="101" y2="22" stroke="#0d0a08" stroke-width="1.5" />
+            <polygon points="76,46 100,16 104,20 80,50" fill="#E6E6E6" stroke="#B0B0B0" stroke-width="0.8" />
+            <line x1="97" y1="18" x2="101" y2="22" stroke="#111111" stroke-width="1.5" />
           </g>
         </svg>
       </div>
@@ -964,6 +961,6 @@
     });
   });
 </script>
-<script src="loader/startup-loader.js"></script>
+<script src="loader/startup-loader.js?v=2"></script>
 </body>
 </html>

@@ -2,6 +2,7 @@
  * ==============================================================================
  * IQBAL FASHION — STARTUP LOADER & ASSET PRELOADER
  * Thread & Button Micro-Animation with Split Curtain Reveal
+ * Plays on every website start/load as requested
  * ==============================================================================
  */
 
@@ -9,21 +10,10 @@
   'use strict';
 
   const LOADER_ID = 'iqbalStartupLoader';
-  const SESSION_KEY = 'hasSeenStartupLoader';
-  const MAX_SAFETY_TIMEOUT = 3800; // Milliseconds
+  const MAX_SAFETY_TIMEOUT = 2800; // Fast and snappy (2.8s max fallback)
 
   const loaderEl = document.getElementById(LOADER_ID);
   if (!loaderEl) return;
-
-  // 1. Session Gating & Accessibility Check
-  const hasSeen = sessionStorage.getItem(SESSION_KEY);
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (hasSeen || prefersReducedMotion) {
-    loaderEl.style.display = 'none';
-    if (loaderEl.parentNode) loaderEl.parentNode.removeChild(loaderEl);
-    return;
-  }
 
   const progressBar = loaderEl.querySelector('.loader-progress-bar-fill');
   let isDismissed = false;
@@ -34,7 +24,7 @@
     }
   }
 
-  // 2. Dismiss & Curtain Split Reveal
+  // Dismiss & Curtain Split Reveal
   function dismissLoader() {
     if (isDismissed) return;
     isDismissed = true;
@@ -42,7 +32,6 @@
 
     setTimeout(() => {
       loaderEl.classList.add('split');
-      sessionStorage.setItem(SESSION_KEY, 'true');
 
       // Dispatch event for other scripts
       try {
@@ -51,25 +40,19 @@
 
       // Remove from DOM after curtain splits
       setTimeout(() => {
-        if (loaderEl.parentNode) {
+        if (loaderEl && loaderEl.parentNode) {
           loaderEl.parentNode.removeChild(loaderEl);
         }
       }, 900);
-    }, 400);
+    }, 450);
   }
 
-  // 3. Fallback Safety Timeout
-  const safetyTimer = setTimeout(() => {
-    dismissLoader();
-  }, MAX_SAFETY_TIMEOUT);
-
-  // 4. Preload Critical Assets (Hero Slider First Banner)
+  // Preload Critical Assets (Hero Slider First Banner)
   async function preloadCriticalHero() {
     let heroUrl = null;
 
-    // Check cached home data
     try {
-      const cached = localStorage.getItem('iqbalfashion_home_cache') || localStorage.getItem('classic_home_cache');
+      const cached = localStorage.getItem('iqbalfashion_home_cache');
       if (cached) {
         const parsed = JSON.parse(cached);
         if (parsed.banners && parsed.banners.length > 0 && parsed.banners[0].image_url) {
@@ -78,12 +61,11 @@
       }
     } catch (e) {}
 
-    // Fallback to local default hero or wait for Supabase
     if (!heroUrl) {
       heroUrl = 'images/hero1.jpg';
     }
 
-    updateProgress(35);
+    updateProgress(45);
 
     try {
       const img = new Image();
@@ -96,24 +78,23 @@
           img.onerror = resolve;
         });
       }
-      updateProgress(85);
-    } catch (err) {
-      // Decode error fallback
-      updateProgress(85);
-    }
+      updateProgress(90);
+    } catch (err) {}
 
-    // Minimum animation duration (2000ms) for aesthetic appreciation
+    // Ensure the animation has had at least 1.8s to play smoothly
     setTimeout(() => {
-      clearTimeout(safetyTimer);
       dismissLoader();
-    }, 1900);
+    }, 1800);
   }
 
-  // Start preloader on DOM load
+  // Safety timer
+  setTimeout(() => {
+    dismissLoader();
+  }, MAX_SAFETY_TIMEOUT);
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', preloadCriticalHero);
   } else {
     preloadCriticalHero();
   }
-
 })();
