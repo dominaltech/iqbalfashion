@@ -1,0 +1,42 @@
+{
+  "version": 2,
+  "redirects": [
+    { "source": "/baggy.html", "destination": "/readymade.html", "permanent": true },
+    { "source": "/baggy", "destination": "/readymade.html", "permanent": true },
+    { "source": "/hoodies.html", "destination": "/ethnic.html", "permanent": true },
+    { "source": "/hoodies", "destination": "/ethnic.html", "permanent": true },
+    { "source": "/oversize.html", "destination": "/casual-wear.html", "permanent": true },
+    { "source": "/oversize", "destination": "/casual-wear.html", "permanent": true },
+    { "source": "/pants.html", "destination": "/cloth-material.html", "permanent": true },
+    { "source": "/pants", "destination": "/cloth-material.html", "permanent": true },
+    { "source": "/plan-tshirt.html", "destination": "/kids.html", "permanent": true },
+    { "source": "/plan-tshirt", "destination": "/kids.html", "permanent": true },
+    { "source": "/printing-tshirt.html", "destination": "/boys.html", "permanent": true },
+    { "source": "/printing-tshirt", "destination": "/boys.html", "permanent": true },
+    { "source": "/women.html", "destination": "/girls.html", "permanent": true },
+    { "source": "/women", "destination": "/girls.html", "permanent": true }
+  ],
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "Service-Worker-Allowed", "value": "/" }
+      ]
+    },
+    {
+      "source": "/manifest.json",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, must-revalidate" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ]
+}
