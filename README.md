@@ -1,92 +1,143 @@
-# Iqbal Fashion E-Commerce Platform
+# Iqbal Fashion — E-Commerce Customer Storefront & PWA
 
-A bespoke men's fashion and fine cloth materials e-commerce platform crafted with Snitch-style luxury minimalism, featuring a customer storefront (`iqbal-user`) and operations management portal (`iqbal-admin`).
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Root%20Zero--Config%20Deployment-black?style=flat&logo=vercel)](https://github.com/dominaltech/iqbalfashion)
+[![Database: Supabase](https://img.shields.io/badge/Database-Supabase%20PostgreSQL-3ECF8E?style=flat&logo=supabase)](https://supabase.com)
+[![Payment: Cashfree](https://img.shields.io/badge/Payments-Cashfree%20PG%20v2023--08--01-008080?style=flat)](https://www.cashfree.com)
+[![PWA](https://img.shields.io/badge/PWA-Service%20Worker%20Ready-blueviolet?style=flat)](manifest.json)
+[![Admin Portal](https://img.shields.io/badge/Admin%20Portal-iqbalfashion__admin-orange?style=flat)](https://github.com/dominaltech/iqbalfashion_admin)
+
+Welcome to the **Iqbal Fashion** customer storefront repository. This repository contains the customer-facing e-commerce web application, Progressive Web App (PWA), and serverless payment/notification backend for **Iqbal Fashion** — specializing in bespoke men's tailoring, luxury fabrics, ready-made garments, and ethnic wear.
+
+> [!NOTE]
+> The dedicated administrative portal and store management PWA is maintained in a separate repository: **[Iqbal Fashion Admin Portal](https://github.com/dominaltech/iqbalfashion_admin)**.
 
 ---
 
-## 1. Architecture & Repository Structure
+## 💎 Design & Aesthetics (Snitch Luxury Style)
+
+The user experience has been redesigned to match modern luxury menswear aesthetics:
+- **Product Presentation:** Standardized 4:5 aspect ratio cards with subtle 1px border styling (`#eee`), clean typography, and badge indicators ("SALE", "NEW", "PREMIUM").
+- **Interactive Card Hover:** Dynamic image crossfade displaying alternate product angles on hover.
+- **Wishlist Quick Action:** Floating wishlist heart button with animated toggle on each card.
+- **Mobile Navigation Dock:** Native-app feel bottom docking bar with safe-area inset support (`env(safe-area-inset-bottom)`).
+- **Startup Loader:** Ultra-lightweight thread & button animated vector loader with zero-flash inline display and Supabase hero preloading.
+
+---
+
+## 📁 Project Structure (Root-Level Vercel Architecture)
 
 ```
-├── iqbal-user/              # Customer Storefront Portal (Vanilla HTML/CSS/JS + Supabase Client)
-│   ├── api/                 # Vercel Serverless Functions (Cashfree order creation & webhooks, VAPID push)
-│   ├── loader/              # Thread & Button startup micro-animation & preloader
-│   ├── styles.css           # Snitch-style luxury design system (4:5 cards, mobile dock, light borders)
-│   ├── config.js            # Frontend credentials & config
-│   ├── vercel.json          # 301 permanent redirect map from legacy fit names + security headers
-│   └── *.html               # Storefront pages (readymade, cloth-material, kids, etc.)
+.
+├── index.html                  # Storefront Homepage
+├── shop.html                   # All Products / Catalog Search
+├── product.html                # Detailed Product View & Size Selection
+├── cart.html                   # Shopping Bag & Cart Calculations
+├── checkout.html               # Shipping Address & Order Placement
+├── payment.html                # Cashfree Checkout & Seamless Payment SDK
+├── order-success.html          # Order Confirmation & Real-time Status
+├── my-orders.html              # Customer Order History & Invoices
+├── signin.html                 # Supabase Customer Authentication
+├── about.html                  # About Iqbal Fashion
+├── contact.html                # Store Location & Contact Form
+├── policy.html                 # Return Policy & Terms of Service
 │
-├── iqbal-admin/             # Store Operations & Admin Portal
-│   ├── categories.html      # Hierarchical category tree manager with thumbnail uploads
-│   ├── add-product.html     # Cascading Category > Subcategory selector with multi-image upload
-│   ├── orders.html          # Order processing, status transitions, WhatsApp CRM & packing slips
-│   ├── add-banner.html      # Hero sliders & promotional event banners
-│   ├── coupons.html         # Discount coupons & promo strips
-│   ├── config.js            # Admin credentials & config
-│   └── vercel.json          # Admin SPA routing & security headers
+├── readymade.html              # Ready-made garments (formerly baggy.html)
+├── ethnic.html                 # Ethnic & Traditional wear (formerly hoodies.html)
+├── casual-wear.html            # Casual wear (formerly oversize.html)
+├── cloth-material.html         # Unstitched fabrics (formerly pants.html)
+├── kids.html                   # Kids collection (formerly plan-tshirt.html)
+├── boys.html                   # Boys apparel (formerly printing-tshirt.html)
+├── girls.html                  # Girls apparel (formerly women.html)
+├── suiting.html                # Suiting fabrics & blazer materials
+├── shirting.html               # Premium shirting cloths
+├── linen.html                  # Pure linen fabric collection
+├── cotton.html                 # Giza & Egyptian cotton collection
+├── silk.html                   # Festive silk fabrics
+├── khadi.html                  # Authentic hand-spun khadi
 │
-├── supabase/
-│   └── migrations_iqbal_proposed/
-│       ├── 01_iqbal_core_schema_and_permissions.sql
-│       ├── 02_iqbal_hierarchical_categories_and_links.sql
-│       ├── 03_iqbal_seed_initial_categories_and_banners.sql
-│       ├── 04_iqbal_realtime_and_push_triggers.sql
-│       └── 05_iqbal_update_legacy_page_urls.sql
+├── styles.css                  # Core CSS design system
+├── main.js                     # Storefront application logic
+├── config.js                   # Client environment config & fallbacks
+├── manifest.json               # Progressive Web App manifest
+├── sw.js                       # Offline caching & media caching Service Worker
+├── vercel.json                 # 301 redirects & caching headers
+├── package.json                # Serverless dependencies (web-push)
 │
-└── docs/                    # Architectural Plans & Inventories
-    ├── FILE_RENAME_PLAN.md  # Legacy file rename mapping, 301 redirect map & verification table
-    ├── FEATURE_INVENTORY.md # Zero feature loss baseline audit
-    ├── BANNER_INVENTORY.md  # Complete audit of all banners, sliders, and menu thumbnails
-    ├── ENV_VARIABLES.md     # Production environment variables specification
-    ├── MIGRATION_AUDIT.md   # SQL schema evolution and execution roadmap
-    └── IMPLEMENTATION_PLAN.md # Master task checklist and progress log
+├── api/                        # Vercel Serverless Functions
+│   ├── create-cashfree-order.js   # Cashfree PG order session initialization
+│   ├── verify-cashfree-order.js   # Payment verification & order status check
+│   ├── cashfree-webhook.js        # Asynchronous payment settlement listener
+│   └── send-push.js               # Dispatches encrypted VAPID push alerts to Admin PWA
+│
+├── loader/                     # Animated Vector Startup Loader
+│   ├── startup-loader.js
+│   └── startup-loader.css
+│
+├── docs/                       # Migration plans and specifications
+│   ├── IMPLEMENTATION_PLAN.md
+│   └── FILE_RENAME_PLAN.md
+│
+└── supabase/                   # Supabase Database Migrations
+    ├── migrations/             # Base schema migrations (00–16)
+    └── migrations_iqbal_proposed/ # Iqbal Fashion idempotent additive migrations (01–05)
 ```
 
 ---
 
-## 2. Supabase Database Setup
+## 🔀 301 Permanent Redirects & Legacy Route Compatibility
 
-Log into your Supabase Dashboard at `https://yimbuvqtlbqdfggthaqt.supabase.co`, navigate to the **SQL Editor**, and run the migrations in `supabase/migrations_iqbal_proposed/` in sequential order:
+To preserve SEO juice and customer bookmarks, legacy URLs are permanently redirected in `vercel.json`:
 
-1. **`01_iqbal_core_schema_and_permissions.sql`**: Base tables (`categories`, `products`, `orders`, `banners`, `coupons`, `push_subscriptions`), RLS policies, storage buckets (`product-images`, `category-images`, `banners`).
-2. **`02_iqbal_hierarchical_categories_and_links.sql`**: Extends `categories` with `parent_id`, `thumb_image_url`, `banner_image_url`, `sort_order`, `show_on_home`, and product link fields.
-3. **`03_iqbal_seed_initial_categories_and_banners.sql`**: Seeds top-level departments (Readymade, Cloth Material, Kids), sub-departments (Ethnic, Casual Wear, Cotton, Linen, Silk, Khadi, Suiting, Shirting, Boys, Girls), initial hero banners, and `IQBAL10` coupon.
-4. **`04_iqbal_realtime_and_push_triggers.sql`**: Adds tables to `supabase_realtime` publication and auto-confirms user signups.
-5. **`05_iqbal_update_legacy_page_urls.sql`**: Additive and idempotent migration to update any stored banner links, category slugs, and notification URLs from old streetwear names to Iqbal Fashion sections (with rollback notes).
-
----
-
-## 3. Renamed Pages & 301 Redirect Mapping
-
-All Classic Collection streetwear product line pages have been renamed to match Iqbal Fashion's business sections:
-
-| Old URL / Route | New URL / Route | Business Section |
-|---|---|---|
-| `/baggy.html` | `/readymade.html` | Readymade (Top Department) |
-| `/hoodies.html` | `/ethnic.html` | Readymade > Ethnic Wear |
-| `/oversize.html` | `/casual-wear.html` | Readymade > Casual Wear |
-| `/pants.html` | `/cloth-material.html` | Cloth Material (Top Department) |
-| `/plan-tshirt.html` | `/kids.html` | Kids (Top Department) |
-| `/printing-tshirt.html` | `/boys.html` | Kids > Boys |
-| `/women.html` | `/girls.html` | Kids > Girls |
-
-Permanent 301 redirects are configured in `iqbal-user/vercel.json` ensuring no bookmark or search engine link breaks.
+| Legacy URL | Target URL |
+|---|---|
+| `/baggy.html` or `/baggy` | `/readymade.html` |
+| `/hoodies.html` or `/hoodies` | `/ethnic.html` |
+| `/oversize.html` or `/oversize` | `/casual-wear.html` |
+| `/pants.html` or `/pants` | `/cloth-material.html` |
+| `/plan-tshirt.html` or `/plan-tshirt` | `/kids.html` |
+| `/printing-tshirt.html` or `/printing-tshirt` | `/boys.html` |
+| `/women.html` or `/women` | `/girls.html` |
 
 ---
 
-## 4. Key Highlights & Features
+## ⚡ Deployment on Vercel
 
-- **Snitch-Style Luxury Aesthetic:** 1px clean light borders (`#eeeeee`), modern typography (Inter / Outfit / Playfair Display), 4:5 product card image ratios with wishlist heart button, hover image crossfade, and mobile bottom navigation dock with `env(safe-area-inset-bottom)`.
-- **Code-Only Thread & Button Startup Loader:** Zero-flash CSS & SVG animation featuring a 4-hole sewing button, needle stitching an X (`stroke-dashoffset`), 360° spin, logo reveal, split curtain reveal, and Supabase hero image preloading with session gating.
-- **Hierarchical Categories & Zero Hardcoding:** Managed entirely via `iqbal-admin/categories.html` with thumbnail uploads for drawer menu buttons, parent-child relationships, and home slider banners.
-- **Enterprise Security:** Service secret keys are kept strictly on serverless backends and never committed to git repositories.
+This repository is optimized for **zero-config standalone deployment** on Vercel.
+
+### 1. Import Repository
+1. In your [Vercel Dashboard](https://vercel.com/dashboard), click **Add New...** ➔ **Project**.
+2. Select `https://github.com/dominaltech/iqbalfashion`.
+3. Leave **Root Directory** as `./`.
+
+### 2. Configure Environment Variables
+Set the following environment variables in Vercel Project Settings:
+
+| Environment Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase Project URL (`https://yimbuvqtlbqdfggthaqt.supabase.co`) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase Public Anonymous Key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase Service Role Secret (serverless only) |
+| `CASHFREE_APP_ID` | Cashfree API App ID |
+| `CASHFREE_SECRET_KEY` | Cashfree API Secret Key |
+| `CASHFREE_ENV` | `PRODUCTION` (or `TEST`) |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Web Push VAPID Public Key |
+| `VAPID_PRIVATE_KEY` | Web Push VAPID Private Key (serverless only) |
+| `VAPID_SUBJECT` | Web Push Contact Email (`mailto:iqbalfashiongents@gmail.com`) |
+
+### 3. Deploy
+Click **Deploy**. Vercel will build serverless functions in `/api` and serve static assets instantly.
 
 ---
 
-## 5. Deployment
+## 🛒 Key Features
 
-### Customer Storefront (`iqbal-user`)
-- Deploy `iqbal-user` root to Vercel as a standalone project.
-- Set environment variables as documented in `docs/ENV_VARIABLES.md` (`CASHFREE_APP_ID`, `CASHFREE_SECRET_KEY`, `CASHFREE_ENV`, `SUPABASE_SERVICE_ROLE_KEY`, `VAPID_PRIVATE_KEY`, etc.).
-
-### Operations Admin (`iqbal-admin`)
-- Deploy `iqbal-admin` root to Vercel as a private administrative portal.
+1. **Cashfree Payment Gateway Integration:**
+   - Seamless server-side order generation and signature verification.
+   - Support for UPI, Credit/Debit Cards, Net Banking, and Wallets.
+2. **Instant Push Notifications to Admin:**
+   - As soon as a customer confirms an order, `api/send-push.js` sends an encrypted notification to the Admin PWA.
+   - Built-in 5-minute strict deduplication to prevent double alerts.
+3. **Dynamic Hierarchical Navigation:**
+   - Supports parent categories and subcategories fetched directly from Supabase.
+4. **Offline Resilience:**
+   - Service worker caches UI shell, banners, and product imagery for offline browsing.

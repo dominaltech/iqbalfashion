@@ -143,6 +143,14 @@ Detailed companion audit documents have been established:
 - [x] **T-046:** Perform final verification pass and compile verification table in plan.
 - [x] **T-047:** Initialize git, check for zero secrets, commit logical changes, and push to `https://github.com/dominaltech/iqbalfashion`.
 
+### Phase 9: Repository Separation & Standalone Deployment Architecture
+- [x] **T-048:** Separate Admin Portal into dedicated standalone GitHub repository (`https://github.com/dominaltech/iqbalfashion_admin`).
+- [x] **T-049:** Place all admin assets directly at the root of `iqbalfashion_admin` for zero-config Vercel hosting and root PWA service worker (`/`).
+- [x] **T-050:** Remove all admin code from `https://github.com/dominaltech/iqbalfashion`.
+- [x] **T-051:** Move all customer storefront files (`iqbal-user/*`) directly to the repository root of `iqbalfashion`.
+- [x] **T-052:** Verify serverless functions (`/api/*`), service worker caching (`/sw.js`), and Vercel redirects work seamlessly at root level.
+- [x] **T-053:** Push clean storefront repository to `https://github.com/dominaltech/iqbalfashion` on `main`.
+
 ---
 
 ## 5. Progress Log
@@ -155,3 +163,6 @@ Detailed companion audit documents have been established:
 | 2026-10-10 (Init) | Created Supabase migration audit & proposed schema files guide | `docs/MIGRATION_AUDIT.md` |
 | 2026-10-10 (Init) | Created file & route rename plan with 301 redirect mapping | `docs/FILE_RENAME_PLAN.md` |
 | 2026-10-10 (Init) | Established master implementation plan | `docs/IMPLEMENTATION_PLAN.md` |
+| 2026-10-10 (Phase 9) | Standalone Admin repository initialized, documented, and pushed | `https://github.com/dominaltech/iqbalfashion_admin` |
+| 2026-10-10 (Phase 9) | Storefront repository restructured to root-level architecture | `https://github.com/dominaltech/iqbalfashion` |
+
