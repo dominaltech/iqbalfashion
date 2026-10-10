@@ -39,14 +39,13 @@
     <a href="index.html" class="logo">
       <img src="images/logo.png" alt="Iqbal Fashion" class="logo-img" style="height:42px;width:auto;object-fit:contain;" />
     </a>
-            <div class="nav-links">
-      <div class="nav-item"><a href="shop.html" class="nav-link">All Materials</a></div>
-      <div class="nav-item"><a href="suiting.html" class="nav-link">Suiting</a></div>
-      <div class="nav-item"><a href="shirting.html" class="nav-link">Shirting</a></div>
-      <div class="nav-item"><a href="cotton.html" class="nav-link">Cotton</a></div>
-      <div class="nav-item"><a href="linen.html" class="nav-link">Linen</a></div>
-      <div class="nav-item"><a href="khadi.html" class="nav-link">Khadi</a></div>
-      <div class="nav-item"><a href="silk.html" class="nav-link">Silk</a></div>
+          <div class="nav-links">
+      <div class="nav-item"><a href="readymade.html" class="nav-link">Readymade</a></div>
+      <div class="nav-item"><a href="cloth-material.html" class="nav-link">Cloth Material</a></div>
+      <div class="nav-item"><a href="kids.html" class="nav-link">Kids</a></div>
+      <div class="nav-item"><a href="ethnic.html" class="nav-link">Ethnic</a></div>
+      <div class="nav-item"><a href="casual-wear.html" class="nav-link">Casual</a></div>
+      <div class="nav-item"><a href="shop.html" class="nav-link">All Collections</a></div>
     </div>
 
     <div class="nav-icons">
@@ -64,70 +63,83 @@
   </nav>
 </header>
 
-<main class="section">
-  <div class="container" style="max-width: 480px;">
-    <!-- LOGGED IN USER PROFILE DISPLAY CARD -->
-    <div id="userProfileView" style="display: none; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 32px; text-align: center;">
-      <div id="userAvatar" style="width: 72px; height: 72px; border-radius: 50%; background: var(--black); color: #fff; font-size: 2rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px;">U</div>
-      <h2 id="userName" style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;">Classic Customer</h2>
-      <p id="userEmail" style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">customer@urbanrich.com</p>
+<main class="section" style="padding: 40px 0 80px; background: #FFFFFF; min-height: 70vh;">
+  <div class="container" style="max-width: 440px;">
 
-      <div style="text-align: left; margin-bottom: 24px;">
-        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-          <span style="color: var(--text-muted);">Phone Number</span>
-          <strong id="userPhone">+91 9876543210</strong>
+    <!-- LOGGED IN USER PROFILE DISPLAY CARD -->
+    <div id="userProfileView" style="display: none; background: #FFFFFF; border: 1px solid #EEEEEE; border-radius: 4px; padding: 36px 28px; text-align: center; box-shadow: 0 2px 12px rgba(0,0,0,0.03);">
+      <div id="userAvatar" style="width: 72px; height: 72px; border-radius: 50%; background: #111111; color: #FFFFFF; font-size: 1.8rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; border: 2px solid #EEEEEE;">U</div>
+      <h2 id="userName" style="font-family: inherit; font-size: 1.35rem; font-weight: 700; color: #111111; margin-bottom: 4px; letter-spacing: -0.3px;">Iqbal Customer</h2>
+      <p id="userPhoneDisplay" style="color: #666666; font-size: 14px; margin-bottom: 24px; font-weight: 500;">+91 9876543210</p>
+
+      <div style="text-align: left; margin-bottom: 24px; background: #FAFAFA; border: 1px solid #EEEEEE; border-radius: 4px; padding: 12px 16px;">
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #EEEEEE; font-size: 13px;">
+          <span style="color: #666666;">Mobile Number</span>
+          <strong id="userPhone" style="color: #111111;">+91 9876543210</strong>
         </div>
-        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;">
-          <span style="color: var(--text-muted);">Account Role</span>
-          <strong id="userRole">Customer</strong>
+        <div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 13px;">
+          <span style="color: #666666;">Account Status</span>
+          <strong id="userRole" style="color: #00875A;">Verified Customer</strong>
         </div>
       </div>
 
-      <div style="display: flex; flex-direction: column; gap: 12px;">
-        <a href="my-orders.html" style="display:block;width:100%;padding:14px;background:var(--black);color:#fff;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;text-decoration:none;text-align:center;">VIEW MY ORDERS</a>
-        <button onclick="handleSignOut()" style="width:100%;padding:14px;background:transparent;color:var(--sale-red);border:1px solid var(--sale-red);font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">SIGN OUT</button>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <a href="my-orders.html" style="display:block;width:100%;padding:14px;background:#111111;color:#FFFFFF;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;text-decoration:none;text-align:center;border-radius:2px;">VIEW MY ORDERS</a>
+        <a href="shop.html" style="display:block;width:100%;padding:12px;background:#FAFAFA;border:1px solid #EEEEEE;color:#111111;font-weight:600;font-size:12px;letter-spacing:0.5px;text-transform:uppercase;text-decoration:none;text-align:center;border-radius:2px;">CONTINUE SHOPPING</a>
+        <button onclick="handleSignOut()" style="width:100%;padding:12px;background:transparent;color:#E53935;border:1px solid #FFCDD2;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:2px;margin-top:6px;">SIGN OUT</button>
       </div>
     </div>
 
     <!-- GUEST AUTH FORM (LOGIN / REGISTER) -->
-    <div id="guestAuthView" style="background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 32px;">
-      <div style="display: flex; border-bottom: 1px solid var(--border); margin-bottom: 24px;">
-        <div class="auth-tab active" onclick="switchAuthTab('login', this)" style="flex:1;text-align:center;padding:12px;font-weight:700;font-size:14px;cursor:pointer;border-bottom:2px solid var(--black);">SIGN IN</div>
-        <div class="auth-tab" onclick="switchAuthTab('register', this)" style="flex:1;text-align:center;padding:12px;font-weight:700;font-size:14px;cursor:pointer;color:var(--text-muted);">CREATE ACCOUNT</div>
+    <div id="guestAuthView" style="background: #FFFFFF; border: 1px solid #EEEEEE; border-radius: 4px; padding: 32px 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.03);">
+      
+      <!-- SNITCH TAB SWITCHER -->
+      <div style="display: flex; border-bottom: 2px solid #EEEEEE; margin-bottom: 24px;">
+        <div id="tabLogin" class="auth-tab" onclick="switchAuthTab('login')" style="flex:1;text-align:center;padding:12px 6px;font-weight:700;font-size:13px;letter-spacing:0.5px;cursor:pointer;border-bottom:2px solid #111111;margin-bottom:-2px;color:#111111;">SIGN IN</div>
+        <div id="tabRegister" class="auth-tab" onclick="switchAuthTab('register')" style="flex:1;text-align:center;padding:12px 6px;font-weight:700;font-size:13px;letter-spacing:0.5px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;color:#888888;">CREATE ACCOUNT</div>
       </div>
 
-      <!-- SIGN IN FORM -->
+      <!-- SIGN IN FORM (PHONE + PASSWORD, NO OTP) -->
       <form id="loginForm">
-        <div style="margin-bottom: 16px;">
-          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;text-transform:uppercase;">Email Address *</label>
-          <input type="email" id="loginEmail" required placeholder="yourname@domain.com" style="width:100%;padding:12px;border:1px solid var(--border-dark);border-radius:2px;font-size:14px;background:var(--bg-secondary);outline:none;">
+        <div style="margin-bottom: 18px;">
+          <label style="display:block;font-size:11px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;color:#111111;">Mobile Number *</label>
+          <div style="display:flex;align-items:center;background:#FFFFFF;border:1px solid #D6D6D6;border-radius:2px;overflow:hidden;transition:border-color 0.2s;">
+            <span style="padding:12px 14px;background:#F8F8F8;font-weight:600;font-size:13px;border-right:1px solid #E0E0E0;color:#555555;">+91</span>
+            <input type="tel" id="loginPhone" required maxlength="10" placeholder="10-digit mobile number" pattern="[0-9]{10}" inputmode="numeric" style="flex:1;padding:12px;border:none;font-size:14px;outline:none;background:transparent;color:#111111;">
+          </div>
+          <div style="font-size:11px;color:#888888;margin-top:4px;">Enter your registered 10-digit phone number</div>
         </div>
-        <div style="margin-bottom: 20px;">
-          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;text-transform:uppercase;">Password *</label>
-          <input type="password" id="loginPass" required placeholder="••••••••" style="width:100%;padding:12px;border:1px solid var(--border-dark);border-radius:2px;font-size:14px;background:var(--bg-secondary);outline:none;">
+
+        <div style="margin-bottom: 24px;">
+          <label style="display:block;font-size:11px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;color:#111111;">Password *</label>
+          <input type="password" id="loginPass" required placeholder="Enter password" style="width:100%;padding:12px;border:1px solid #D6D6D6;border-radius:2px;font-size:14px;background:#FFFFFF;outline:none;color:#111111;">
         </div>
-        <button type="submit" style="width:100%;padding:14px;background:var(--black);color:#fff;border:none;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">SIGN IN</button>
+
+        <button type="submit" id="loginSubmitBtn" style="width:100%;padding:14px;background:#111111;color:#FFFFFF;border:none;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;">SIGN IN</button>
       </form>
 
-      <!-- REGISTER FORM -->
+      <!-- REGISTER FORM (NAME + PHONE + PASSWORD, NO OTP, NO EMAIL VERIFY) -->
       <form id="registerForm" style="display: none;">
         <div style="margin-bottom: 16px;">
-          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;text-transform:uppercase;">Full Name *</label>
-          <input type="text" id="regName" required placeholder="John Doe" style="width:100%;padding:12px;border:1px solid var(--border-dark);border-radius:2px;font-size:14px;background:var(--bg-secondary);outline:none;">
+          <label style="display:block;font-size:11px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;color:#111111;">Full Name *</label>
+          <input type="text" id="regName" required placeholder="e.g. John Doe" style="width:100%;padding:12px;border:1px solid #D6D6D6;border-radius:2px;font-size:14px;background:#FFFFFF;outline:none;color:#111111;">
         </div>
+
         <div style="margin-bottom: 16px;">
-          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;text-transform:uppercase;">Phone Number *</label>
-          <input type="tel" id="regPhone" required placeholder="9876543210" style="width:100%;padding:12px;border:1px solid var(--border-dark);border-radius:2px;font-size:14px;background:var(--bg-secondary);outline:none;">
+          <label style="display:block;font-size:11px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;color:#111111;">Mobile Number (Unique Account ID) *</label>
+          <div style="display:flex;align-items:center;background:#FFFFFF;border:1px solid #D6D6D6;border-radius:2px;overflow:hidden;transition:border-color 0.2s;">
+            <span style="padding:12px 14px;background:#F8F8F8;font-weight:600;font-size:13px;border-right:1px solid #E0E0E0;color:#555555;">+91</span>
+            <input type="tel" id="regPhone" required maxlength="10" placeholder="10-digit mobile number" pattern="[0-9]{10}" inputmode="numeric" style="flex:1;padding:12px;border:none;font-size:14px;outline:none;background:transparent;color:#111111;">
+          </div>
+          <div style="font-size:11px;color:#888888;margin-top:4px;">No OTP verification required — instant setup</div>
         </div>
-        <div style="margin-bottom: 16px;">
-          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;text-transform:uppercase;">Email Address *</label>
-          <input type="email" id="regEmail" required placeholder="yourname@domain.com" style="width:100%;padding:12px;border:1px solid var(--border-dark);border-radius:2px;font-size:14px;background:var(--bg-secondary);outline:none;">
+
+        <div style="margin-bottom: 24px;">
+          <label style="display:block;font-size:11px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;color:#111111;">Create Password *</label>
+          <input type="password" id="regPass" required minlength="6" placeholder="At least 6 characters" style="width:100%;padding:12px;border:1px solid #D6D6D6;border-radius:2px;font-size:14px;background:#FFFFFF;outline:none;color:#111111;">
         </div>
-        <div style="margin-bottom: 20px;">
-          <label style="display:block;font-size:12px;font-weight:700;margin-bottom:6px;text-transform:uppercase;">Password *</label>
-          <input type="password" id="regPass" required placeholder="••••••••" style="width:100%;padding:12px;border:1px solid var(--border-dark);border-radius:2px;font-size:14px;background:var(--bg-secondary);outline:none;">
-        </div>
-        <button type="submit" style="width:100%;padding:14px;background:var(--black);color:#fff;border:none;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;">CREATE ACCOUNT</button>
+
+        <button type="submit" id="regSubmitBtn" style="width:100%;padding:14px;background:#111111;color:#FFFFFF;border:none;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:2px;transition:background 0.2s;">CREATE ACCOUNT</button>
       </form>
     </div>
   </div>
@@ -201,19 +213,35 @@
 </nav>
 
 <script>
-  function switchAuthTab(type, el) {
-    document.querySelectorAll('.auth-tab').forEach(t => {
-      t.style.borderBottom = 'none';
-      t.style.color = 'var(--text-muted)';
-    });
-    el.style.borderBottom = '2px solid var(--black)';
-    el.style.color = 'var(--text)';
+  function sanitizePhone(raw) {
+    if (!raw) return '';
+    return raw.toString().replace(/\D/g, '').slice(-10);
+  }
+
+  function getSyntheticEmail(phone10) {
+    return phone10 + '@iqbalfashion.local';
+  }
+
+  function switchAuthTab(type) {
+    const tabLogin = document.getElementById('tabLogin');
+    const tabRegister = document.getElementById('tabRegister');
+    const formLogin = document.getElementById('loginForm');
+    const formRegister = document.getElementById('registerForm');
+
     if (type === 'login') {
-      document.getElementById('loginForm').style.display = 'block';
-      document.getElementById('registerForm').style.display = 'none';
+      tabLogin.style.borderBottom = '2px solid #111111';
+      tabLogin.style.color = '#111111';
+      tabRegister.style.borderBottom = '2px solid transparent';
+      tabRegister.style.color = '#888888';
+      formLogin.style.display = 'block';
+      formRegister.style.display = 'none';
     } else {
-      document.getElementById('loginForm').style.display = 'none';
-      document.getElementById('registerForm').style.display = 'block';
+      tabRegister.style.borderBottom = '2px solid #111111';
+      tabRegister.style.color = '#111111';
+      tabLogin.style.borderBottom = '2px solid transparent';
+      tabLogin.style.color = '#888888';
+      formLogin.style.display = 'none';
+      formRegister.style.display = 'block';
     }
   }
 
@@ -230,10 +258,11 @@
       try {
         const { data: { user } } = await window.urSupabase.auth.getUser();
         if (user) {
+          const rawPhone = user.user_metadata?.phone || (user.email && user.email.includes('@iqbalfashion.local') ? user.email.replace('@iqbalfashion.local', '') : '');
           localUser = {
             name: user.user_metadata?.full_name || 'Iqbal Customer',
             email: user.email,
-            phone: user.user_metadata?.phone || '+91 9876543210',
+            phone: rawPhone || '+91 9876543210',
             role: user.user_metadata?.role || 'Customer'
           };
           localStorage.setItem('iqbal_user_profile', JSON.stringify(localUser));
@@ -244,14 +273,16 @@
       }
     }
 
-    if (localUser) {
+    if (localUser && (localUser.phone || localUser.name)) {
       guestView.style.display = 'none';
       profileView.style.display = 'block';
 
-      document.getElementById('userName').textContent = localUser.name || 'Iqbal Customer';
-      document.getElementById('userEmail').textContent = localUser.email || 'customer@urbanrich.com';
-      document.getElementById('userPhone').textContent = localUser.phone || '+91 9876543210';
-      document.getElementById('userAvatar').textContent = (localUser.name || 'U').charAt(0).toUpperCase();
+      const displayName = localUser.name || 'Valued Customer';
+      const displayPhone = localUser.phone ? (localUser.phone.startsWith('+91') ? localUser.phone : '+91 ' + localUser.phone) : '+91 9876543210';
+      document.getElementById('userName').textContent = displayName;
+      document.getElementById('userPhoneDisplay').textContent = displayPhone;
+      document.getElementById('userPhone').textContent = displayPhone;
+      document.getElementById('userAvatar').textContent = displayName.charAt(0).toUpperCase();
     } else {
       guestView.style.display = 'block';
       profileView.style.display = 'none';
@@ -271,30 +302,48 @@
     localStorage.removeItem('classic_user_phone');
     localStorage.removeItem('classic_user_email');
     localStorage.removeItem('ur_my_orders');
-    window.UR_TOAST('Signed out successfully!');
+    if (window.UR_TOAST) window.UR_TOAST('Signed out successfully');
     setTimeout(() => {
       window.location.reload();
-    }, 500);
+    }, 400);
   }
 
+  // PHONE + PASSWORD SIGN IN (NO OTP)
   document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
-    const origText = btn ? btn.textContent : '';
-    if (btn) { btn.disabled = true; btn.textContent = 'SIGNING IN...'; }
+    const btn = document.getElementById('loginSubmitBtn');
+    const origText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'SIGNING IN...';
 
-    const email = document.getElementById('loginEmail').value.trim();
+    const rawPhone = document.getElementById('loginPhone').value.trim();
+    const cleanPhone = sanitizePhone(rawPhone);
     const pass = document.getElementById('loginPass').value;
+
+    if (cleanPhone.length !== 10) {
+      if (window.UR_TOAST) window.UR_TOAST('Please enter a valid 10-digit mobile number');
+      btn.disabled = false;
+      btn.textContent = origText;
+      return;
+    }
+
+    const syntheticEmail = getSyntheticEmail(cleanPhone);
 
     if (window.urSupabase) {
       try {
-        let { data, error } = await window.urSupabase.auth.signInWithPassword({ email, password: pass });
+        let { data, error } = await window.urSupabase.auth.signInWithPassword({
+          email: syntheticEmail,
+          password: pass
+        });
 
         // Auto-confirm fallback: if unconfirmed email error, trigger RPC confirmation and retry immediately
         if (error && (error.message.toLowerCase().includes('confirm') || error.message.toLowerCase().includes('not confirmed'))) {
           try {
-            await window.urSupabase.rpc('confirm_user_account', { user_email: email });
-            const retry = await window.urSupabase.auth.signInWithPassword({ email, password: pass });
+            await window.urSupabase.rpc('confirm_user_account', { user_email: syntheticEmail });
+            const retry = await window.urSupabase.auth.signInWithPassword({
+              email: syntheticEmail,
+              password: pass
+            });
             if (!retry.error && retry.data?.user) {
               data = retry.data;
               error = null;
@@ -303,84 +352,113 @@
         }
 
         if (error) {
-          window.UR_TOAST('Sign In Error: ' + error.message);
+          // If login fails, check if user was created with a standard email (legacy) or invalid password
+          if (error.message.toLowerCase().includes('invalid login credentials')) {
+            if (window.UR_TOAST) window.UR_TOAST('Invalid mobile number or password. Please check your credentials.');
+          } else {
+            if (window.UR_TOAST) window.UR_TOAST('Sign In: ' + error.message);
+          }
         } else {
           const u = data.user;
-          const phone = u.user_metadata?.phone || '';
           const userMeta = {
-            name: u.user_metadata?.full_name || email.split('@')[0],
+            name: u.user_metadata?.full_name || ('Customer ' + cleanPhone.slice(-4)),
             email: u.email,
-            phone: phone || '+91 9876543210'
+            phone: cleanPhone
           };
           localStorage.setItem('iqbal_user_profile', JSON.stringify(userMeta));
           localStorage.setItem('classic_user_profile', JSON.stringify(userMeta));
-          if (phone) {
-            localStorage.setItem('iqbal_user_phone', phone);
-            localStorage.setItem('classic_user_phone', phone);
-          }
-          localStorage.setItem('iqbal_user_email', u.email);
-          localStorage.setItem('classic_user_email', u.email);
-          window.UR_TOAST('Signed in successfully!');
+          localStorage.setItem('iqbal_user_phone', cleanPhone);
+          localStorage.setItem('classic_user_phone', cleanPhone);
+          if (window.UR_TOAST) window.UR_TOAST('Welcome back! Signed in successfully.');
           checkAuthSession();
         }
       } catch(err) {
-        window.UR_TOAST('Sign in error: ' + err.message);
+        if (window.UR_TOAST) window.UR_TOAST('Sign in error: ' + err.message);
       } finally {
-        if (btn) { btn.disabled = false; btn.textContent = origText; }
+        btn.disabled = false;
+        btn.textContent = origText;
       }
     } else {
-      const userMeta = { name: email.split('@')[0], email: email, phone: '+91 9876543210' };
+      const userMeta = { name: 'Customer ' + cleanPhone.slice(-4), email: syntheticEmail, phone: cleanPhone };
       localStorage.setItem('iqbal_user_profile', JSON.stringify(userMeta));
       localStorage.setItem('classic_user_profile', JSON.stringify(userMeta));
-      localStorage.setItem('iqbal_user_email', email);
-      localStorage.setItem('classic_user_email', email);
-      window.UR_TOAST('Signed in successfully!');
+      localStorage.setItem('iqbal_user_phone', cleanPhone);
+      localStorage.setItem('classic_user_phone', cleanPhone);
+      if (window.UR_TOAST) window.UR_TOAST('Signed in successfully!');
       checkAuthSession();
-      if (btn) { btn.disabled = false; btn.textContent = origText; }
+      btn.disabled = false;
+      btn.textContent = origText;
     }
   });
 
+  // NAME + PHONE + PASSWORD CREATE ACCOUNT (NO OTP, NO EMAIL VERIFY)
   document.getElementById('registerForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    const btn = e.target.querySelector('button[type="submit"]');
-    const origText = btn ? btn.textContent : '';
-    if (btn) { btn.disabled = true; btn.textContent = 'CREATING ACCOUNT...'; }
+    const btn = document.getElementById('regSubmitBtn');
+    const origText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'CREATING ACCOUNT...';
 
     const name = document.getElementById('regName').value.trim();
-    const phone = document.getElementById('regPhone').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
+    const rawPhone = document.getElementById('regPhone').value.trim();
+    const cleanPhone = sanitizePhone(rawPhone);
     const pass = document.getElementById('regPass').value;
 
-    const userMeta = { name, email, phone, role: 'Customer' };
+    if (cleanPhone.length !== 10) {
+      if (window.UR_TOAST) window.UR_TOAST('Please enter a valid 10-digit mobile number');
+      btn.disabled = false;
+      btn.textContent = origText;
+      return;
+    }
+
+    if (pass.length < 6) {
+      if (window.UR_TOAST) window.UR_TOAST('Password must be at least 6 characters');
+      btn.disabled = false;
+      btn.textContent = origText;
+      return;
+    }
+
+    const syntheticEmail = getSyntheticEmail(cleanPhone);
+    const userMeta = { name, email: syntheticEmail, phone: cleanPhone, role: 'Customer' };
     localStorage.setItem('iqbal_user_profile', JSON.stringify(userMeta));
     localStorage.setItem('classic_user_profile', JSON.stringify(userMeta));
-    localStorage.setItem('iqbal_user_phone', phone);
-    localStorage.setItem('classic_user_phone', phone);
-    localStorage.setItem('iqbal_user_email', email);
-    localStorage.setItem('classic_user_email', email);
+    localStorage.setItem('iqbal_user_phone', cleanPhone);
+    localStorage.setItem('classic_user_phone', cleanPhone);
 
     if (window.urSupabase) {
       try {
         const { data, error } = await window.urSupabase.auth.signUp({
-          email,
+          email: syntheticEmail,
           password: pass,
-          options: { data: { full_name: name, phone: phone } }
+          options: {
+            data: {
+              full_name: name,
+              phone: cleanPhone
+            }
+          }
         });
 
         if (error) {
-          window.UR_TOAST(error.message);
+          // If already registered, suggest signing in
+          if (error.message.toLowerCase().includes('already registered')) {
+            if (window.UR_TOAST) window.UR_TOAST('This mobile number is already registered. Please Sign In.');
+            switchAuthTab('login');
+            document.getElementById('loginPhone').value = cleanPhone;
+          } else {
+            if (window.UR_TOAST) window.UR_TOAST(error.message);
+          }
           return;
         }
 
-        // Auto-confirm user via RPC to guarantee no email verification is needed
+        // Auto-confirm user account immediately via RPC
         try {
-          await window.urSupabase.rpc('confirm_user_account', { user_email: email });
+          await window.urSupabase.rpc('confirm_user_account', { user_email: syntheticEmail });
         } catch(rpcErr) {}
 
-        // Automatically log the user in immediately so they never have to confirm email
+        // Instant seamless sign in
         let activeUser = data?.user;
         const { data: signInData, error: signInErr } = await window.urSupabase.auth.signInWithPassword({
-          email,
+          email: syntheticEmail,
           password: pass
         });
 
@@ -394,24 +472,26 @@
             await window.urSupabase.from('profiles').upsert({
               id: activeUser.id,
               full_name: name,
-              phone: phone,
+              phone: cleanPhone,
               role: 'user',
               updated_at: new Date()
             }, { onConflict: 'id' });
           } catch(pErr) {}
         }
 
-        window.UR_TOAST('Account registered & signed in successfully!');
+        if (window.UR_TOAST) window.UR_TOAST('Account created! Welcome to Iqbal Fashion.');
         checkAuthSession();
       } catch(err) {
-        window.UR_TOAST('Registration error: ' + err.message);
+        if (window.UR_TOAST) window.UR_TOAST('Registration error: ' + err.message);
       } finally {
-        if (btn) { btn.disabled = false; btn.textContent = origText; }
+        btn.disabled = false;
+        btn.textContent = origText;
       }
     } else {
-      window.UR_TOAST('Account registered successfully!');
+      if (window.UR_TOAST) window.UR_TOAST('Account registered successfully!');
       checkAuthSession();
-      if (btn) { btn.disabled = false; btn.textContent = origText; }
+      btn.disabled = false;
+      btn.textContent = origText;
     }
   });
 

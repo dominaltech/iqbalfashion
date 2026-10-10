@@ -73,13 +73,12 @@
       <img src="images/logo.png" alt="Iqbal Fashion" class="logo-img" style="height:42px;width:auto;object-fit:contain;" />
     </a>
             <div class="nav-links">
-      <div class="nav-item"><a href="shop.html" class="nav-link">All Materials</a></div>
-      <div class="nav-item"><a href="suiting.html" class="nav-link">Suiting</a></div>
-      <div class="nav-item"><a href="shirting.html" class="nav-link">Shirting</a></div>
-      <div class="nav-item"><a href="cotton.html" class="nav-link">Cotton</a></div>
-      <div class="nav-item"><a href="linen.html" class="nav-link">Linen</a></div>
-      <div class="nav-item"><a href="khadi.html" class="nav-link">Khadi</a></div>
-      <div class="nav-item"><a href="silk.html" class="nav-link">Silk</a></div>
+      <div class="nav-item"><a href="readymade.html" class="nav-link">Readymade</a></div>
+      <div class="nav-item"><a href="cloth-material.html" class="nav-link">Cloth Material</a></div>
+      <div class="nav-item"><a href="kids.html" class="nav-link">Kids</a></div>
+      <div class="nav-item"><a href="ethnic.html" class="nav-link">Ethnic</a></div>
+      <div class="nav-item"><a href="casual-wear.html" class="nav-link">Casual</a></div>
+      <div class="nav-item"><a href="shop.html" class="nav-link active">All Collections</a></div>
     </div>
 
     <div class="nav-icons">
@@ -97,26 +96,82 @@
   </nav>
 </header>
 
-<!-- HAMBURGER DRAWER -->
+<!-- HAMBURGER DRAWER WITH SNITCH VISUAL CATEGORY IMAGE TILES -->
 <div class="hamburger-overlay" id="hamburgerOverlay">
   <div class="hamburger-drawer">
     <div class="ham-head">
-      <img src="images/logo.jpg" alt="Iqbal Fashion" style="height:32px;" />
+      <img src="images/logo.png" alt="Iqbal Fashion" style="height:36px;width:auto;object-fit:contain;" />
       <button class="ham-close" onclick="closeCatDrawer()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
-    <div class="ham-body">
+    <div class="ham-body" style="padding-bottom: 90px;">
       <a href="index.html" class="ham-link">Home</a>
       <a href="shop.html" class="ham-link active">All Products Catalog</a>
-      <div class="ham-cat-title">Categories</div>
-            <div class="ham-sublinks">
-        <a href="suiting.html">Suiting Material</a>
-        <a href="shirting.html">Shirting Cloth</a>
-        <a href="cotton.html">Pure Cotton</a>
-        <a href="linen.html">Pure Linen</a>
-        <a href="khadi.html">Handloom Khadi</a>
-        <a href="silk.html">Royal Silk</a>
+
+      <!-- 1. READYMADE -->
+      <div class="ham-cat-section">
+        <div class="ham-section-title">1. READYMADE COLLECTION</div>
+        <div class="ham-image-tiles-grid">
+          <a href="ethnic.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/hero2.jpg" alt="Ethnic Wear" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Ethnic Wear</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="casual-wear.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/cat-readymade.jpg" alt="Casual Wear" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Casual Wear</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+        </div>
+        <a href="readymade.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Readymade →</a>
       </div>
-      <div class="ham-divider"></div>
+
+      <!-- 2. CLOTH MATERIAL -->
+      <div class="ham-cat-section">
+        <div class="ham-section-title">2. CLOTH MATERIAL &amp; FABRICS</div>
+        <div class="ham-image-tiles-grid">
+          <a href="suiting.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Suiting Material" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Suiting</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="shirting.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/hero1.jpg" alt="Shirting Cloth" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Shirting</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="linen.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Pure Linen" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Pure Linen</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="cotton.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/prod1.jpg" alt="Pure Cotton" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Pure Cotton</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="silk.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/hero2.jpg" alt="Royal Silk" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Royal Silk</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="khadi.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Handloom Khadi" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Khadi</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+        </div>
+        <a href="cloth-material.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Fabrics &amp; Unstitched Materials →</a>
+      </div>
+
+      <!-- 3. KIDS COLLECTION -->
+      <div class="ham-cat-section">
+        <div class="ham-section-title">3. KIDS COLLECTION</div>
+        <div class="ham-image-tiles-grid">
+          <a href="boys.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/cat-kids.jpg" alt="Boys Collection" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Boys Apparel</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="girls.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/cat-kids.jpg" alt="Girls Collection" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Girls Apparel</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+        </div>
+        <a href="kids.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Kids Collection →</a>
+      </div>
+
+      <div class="ham-divider" style="height:1px;background:var(--border);margin:16px 0;"></div>
       <a href="my-orders.html" class="ham-link">My Orders</a>
       <a href="cart.html" class="ham-link">My Shopping Bag</a>
       <a href="about.html" class="ham-link">About Us</a>

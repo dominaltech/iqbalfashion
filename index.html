@@ -96,13 +96,12 @@
 
     <!-- Desktop Nav -->
     <div class="nav-links">
-      <div class="nav-item"><a href="shop.html" class="nav-link">All Materials</a></div>
-      <div class="nav-item"><a href="suiting.html" class="nav-link">Suiting</a></div>
-      <div class="nav-item"><a href="shirting.html" class="nav-link">Shirting</a></div>
-      <div class="nav-item"><a href="cotton.html" class="nav-link">Cotton</a></div>
-      <div class="nav-item"><a href="linen.html" class="nav-link">Linen</a></div>
-      <div class="nav-item"><a href="khadi.html" class="nav-link">Khadi</a></div>
-      <div class="nav-item"><a href="silk.html" class="nav-link">Silk</a></div>
+      <div class="nav-item"><a href="readymade.html" class="nav-link">Readymade</a></div>
+      <div class="nav-item"><a href="cloth-material.html" class="nav-link">Cloth Material</a></div>
+      <div class="nav-item"><a href="kids.html" class="nav-link">Kids</a></div>
+      <div class="nav-item"><a href="ethnic.html" class="nav-link">Ethnic</a></div>
+      <div class="nav-item"><a href="casual-wear.html" class="nav-link">Casual</a></div>
+      <div class="nav-item"><a href="shop.html" class="nav-link">All Collections</a></div>
     </div>
 
     <!-- Icons -->
@@ -121,25 +120,81 @@
   </nav>
 </header>
 
-<!-- HAMBURGER DRAWER -->
+<!-- HAMBURGER DRAWER WITH SNITCH VISUAL CATEGORY IMAGE TILES -->
 <div class="hamburger-overlay" id="hamburgerOverlay">
   <div class="hamburger-drawer">
     <div class="ham-head">
-      <img src="images/logo.png" alt="Iqbal Fashion" style="height:34px;width:auto;object-fit:contain;" />
+      <img src="images/logo.png" alt="Iqbal Fashion" style="height:36px;width:auto;object-fit:contain;" />
       <button class="ham-close" id="hamCloseBtn" onclick="closeCatDrawer()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
-    <div class="ham-body">
+    <div class="ham-body" style="padding-bottom: 90px;">
       <a href="index.html" class="ham-link active">Home</a>
       <a href="shop.html" class="ham-link">All Products Catalog</a>
-      <div class="ham-cat-title">Categories</div>
-            <div class="ham-sublinks">
-        <a href="suiting.html">Suiting Material</a>
-        <a href="shirting.html">Shirting Cloth</a>
-        <a href="cotton.html">Pure Cotton</a>
-        <a href="linen.html">Pure Linen</a>
-        <a href="khadi.html">Handloom Khadi</a>
-        <a href="silk.html">Royal Silk</a>
+
+      <!-- 1. READYMADE SECTION WITH VISUAL IMAGE TILES -->
+      <div class="ham-cat-section">
+        <div class="ham-section-title">1. READYMADE COLLECTION</div>
+        <div class="ham-image-tiles-grid">
+          <a href="ethnic.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/hero2.jpg" alt="Ethnic Wear" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Ethnic Wear</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="casual-wear.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/cat-readymade.jpg" alt="Casual Wear" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Casual Wear</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+        </div>
+        <a href="readymade.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Readymade →</a>
       </div>
+
+      <!-- 2. CLOTH MATERIAL SECTION WITH VISUAL IMAGE TILES -->
+      <div class="ham-cat-section">
+        <div class="ham-section-title">2. CLOTH MATERIAL &amp; FABRICS</div>
+        <div class="ham-image-tiles-grid">
+          <a href="suiting.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Suiting Material" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Suiting</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="shirting.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/hero1.jpg" alt="Shirting Cloth" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Shirting</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="linen.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Pure Linen" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Pure Linen</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="cotton.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/prod1.jpg" alt="Pure Cotton" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Pure Cotton</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="silk.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/hero2.jpg" alt="Royal Silk" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Royal Silk</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="khadi.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Handloom Khadi" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Khadi</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+        </div>
+        <a href="cloth-material.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Fabrics &amp; Unstitched Materials →</a>
+      </div>
+
+      <!-- 3. KIDS SECTION WITH VISUAL IMAGE TILES -->
+      <div class="ham-cat-section">
+        <div class="ham-section-title">3. KIDS COLLECTION</div>
+        <div class="ham-image-tiles-grid">
+          <a href="boys.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/cat-kids.jpg" alt="Boys Collection" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Boys Apparel</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+          <a href="girls.html" class="ham-image-tile">
+            <div class="ham-tile-thumb"><img src="images/cat-kids.jpg" alt="Girls Collection" loading="lazy" /></div>
+            <div class="ham-tile-info"><span class="ham-tile-name">Girls Apparel</span><span class="ham-tile-arrow">→</span></div>
+          </a>
+        </div>
+        <a href="kids.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Kids Collection →</a>
+      </div>
+
       <div class="ham-divider"></div>
       <a href="my-orders.html" class="ham-link">My Orders</a>
       <a href="cart.html" class="ham-link">My Shopping Bag</a>
@@ -158,16 +213,18 @@
   </button>
   <div class="search-box">
     <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input type="search" class="search-input" placeholder="Search for products…" autocomplete="off" />
+    <input type="search" class="search-input" placeholder="Search for readymade, cloth materials, kids…" autocomplete="off" />
   </div>
   <div class="search-label">Top Searches</div>
-    <div class="search-tags">
-    <a href="suiting.html" class="search-tag">Suiting Material</a>
+  <div class="search-tags">
+    <a href="readymade.html" class="search-tag">Readymade</a>
+    <a href="ethnic.html" class="search-tag">Ethnic Wear</a>
+    <a href="casual-wear.html" class="search-tag">Casual Shirts</a>
+    <a href="cloth-material.html" class="search-tag">Cloth Material</a>
+    <a href="suiting.html" class="search-tag">Suiting Fabric</a>
     <a href="shirting.html" class="search-tag">Shirting Cloth</a>
-    <a href="cotton.html" class="search-tag">Pure Cotton</a>
+    <a href="kids.html" class="search-tag">Kids Collection</a>
     <a href="linen.html" class="search-tag">Pure Linen</a>
-    <a href="khadi.html" class="search-tag">Handloom Khadi</a>
-    <a href="silk.html" class="search-tag">Royal Silk</a>
   </div>
 </div>
 
@@ -244,36 +301,6 @@
           </div>
         </div>
 
-      </div>
-    </div>
-  </section>
-
-  <!-- FEATURED BRAND VIDEO SHOWCASE (classic.mp4) -->
-  <section class="classic-video-section" id="classicVideoSection" aria-label="Brand Video Showcase">
-    <div class="container">
-      <div class="classic-video-container">
-        <div class="classic-video-header">
-          <span class="classic-video-badge">EXCLUSIVE SHOWCASE</span>
-          <h2 class="classic-video-title">IQBAL FASHION</h2>
-          <p class="classic-video-subtitle">Watch our artisanal craftsmanship, tailoring &amp; fine fabrics heritage in action</p>
-        </div>
-        <div class="classic-video-wrapper">
-          <video id="classicMainVideo"
-                 class="classic-video-player"
-                 src="classic.mp4"
-                 playsinline
-                 webkit-playsinline
-                 loop
-                 preload="auto"
-                 muted
-                 controls>
-            Your browser does not support HTML5 video.
-          </video>
-          <button class="video-sound-pill" id="videoSoundBtn" onclick="toggleMainVideoSound()" aria-label="Unmute Sound">
-            <svg viewBox="0 0 24 24" id="soundIconSvg" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-            <span id="videoSoundLabel">SOUND OFF</span>
-          </button>
-        </div>
       </div>
     </div>
   </section>
@@ -746,154 +773,10 @@
     loadHomeEventBanner();
   }
 
-  // FEATURED VIDEO: AUTOPLAY ONLY WHEN SCROLLED IN VIEW, PAUSE WHEN OFF-SCREEN, RESTART WHEN RETURNING
-  let isClassicVideoInView = false;
-
-  const SOUND_MUTED_SVG = `<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>`;
-  const SOUND_ON_SVG = `<svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path class="svg-wave-pulse" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`;
-
-  function updateVideoSoundUI(isMuted) {
-    const soundBtn = document.getElementById('videoSoundBtn');
-    if (!soundBtn) return;
-    if (isMuted) {
-      soundBtn.innerHTML = `${SOUND_MUTED_SVG}<span>SOUND OFF</span>`;
-      soundBtn.setAttribute('aria-label', 'Unmute Sound');
-    } else {
-      soundBtn.innerHTML = `${SOUND_ON_SVG}<span>SOUND ON</span>`;
-      soundBtn.setAttribute('aria-label', 'Mute Sound');
-    }
-  }
-
-  function initClassicVideo() {
-    const video = document.getElementById('classicMainVideo');
-    if (!video) return;
-
-    // Initial state: ensure paused, rewind to 0, start muted
-    video.pause();
-    video.currentTime = 0;
-    video.muted = true;
-    updateVideoSoundUI(true);
-
-    let gestureListenerAttached = false;
-    const attachGestureListener = () => {
-      if (gestureListenerAttached) return;
-      gestureListenerAttached = true;
-      const onUserGesture = () => {
-        if (isClassicVideoInView && video) {
-          video.muted = false;
-          video.volume = 1.0;
-          updateVideoSoundUI(false);
-        }
-        ['pointerdown', 'touchstart', 'scroll', 'click'].forEach(evt => {
-          window.removeEventListener(evt, onUserGesture, { capture: true });
-        });
-        gestureListenerAttached = false;
-      };
-      ['pointerdown', 'touchstart', 'scroll', 'click'].forEach(evt => {
-        window.addEventListener(evt, onUserGesture, { capture: true, once: true, passive: true });
-      });
-    };
-
-    const playVideoWithSound = async () => {
-      try {
-        video.muted = false;
-        video.volume = 1.0;
-        await video.play();
-        updateVideoSoundUI(false);
-      } catch (err) {
-        // Fallback if browser autoplay policy blocks unmuted audio before user interaction
-        video.muted = true;
-        updateVideoSoundUI(true);
-        try {
-          await video.play();
-          attachGestureListener();
-        } catch (e) {
-          console.warn('Autoplay error:', e);
-        }
-      }
-    };
-
-    if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          // Play with sound automatically when >= 50% of the video is visible on screen
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.50) {
-            if (!isClassicVideoInView) {
-              isClassicVideoInView = true;
-              playVideoWithSound();
-            }
-          } else if (!entry.isIntersecting || entry.intersectionRatio < 0.50) {
-            // Mute and pause when user scrolls past / passes 50% of the video screen
-            if (isClassicVideoInView) {
-              isClassicVideoInView = false;
-              video.muted = true;
-              updateVideoSoundUI(true);
-              if (!video.paused) {
-                video.pause();
-              }
-            }
-          }
-        });
-      }, {
-        threshold: [0, 0.25, 0.50, 0.75, 1.0]
-      });
-
-      observer.observe(video);
-    } else {
-      // Fallback scroll listener for browsers without IntersectionObserver
-      const checkScroll = () => {
-        const rect = video.getBoundingClientRect();
-        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-        const visibleHeight = Math.max(0, Math.min(rect.bottom, windowHeight) - Math.max(rect.top, 0));
-        const visibleRatio = rect.height > 0 ? visibleHeight / rect.height : 0;
-
-        if (visibleRatio >= 0.50) {
-          if (!isClassicVideoInView) {
-            isClassicVideoInView = true;
-            playVideoWithSound();
-          }
-        } else if (visibleRatio < 0.50) {
-          if (isClassicVideoInView) {
-            isClassicVideoInView = false;
-            video.muted = true;
-            updateVideoSoundUI(true);
-            if (!video.paused) video.pause();
-          }
-        }
-      };
-      window.addEventListener('scroll', checkScroll, { passive: true });
-      window.addEventListener('resize', checkScroll, { passive: true });
-    }
-
-    // Pause when user switches browser tab, resume if still in view
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        if (!video.paused) video.pause();
-      } else if (isClassicVideoInView) {
-        video.play().catch(() => {});
-      }
-    });
-  }
-
-  window.toggleMainVideoSound = function() {
-    const video = document.getElementById('classicMainVideo');
-    if (!video) return;
-    if (video.muted) {
-      video.muted = false;
-      video.volume = 1.0;
-      if (video.paused) video.play().catch(() => {});
-      updateVideoSoundUI(false);
-    } else {
-      video.muted = true;
-      updateVideoSoundUI(true);
-    }
-  };
-
   document.addEventListener('DOMContentLoaded', function() {
     startHeroSlider();
     loadHomePageData();
     loadHomeEventBanner();
-    initClassicVideo();
     document.addEventListener('urSupabaseReady', function() {
       loadHomePageData();
       loadHomeEventBanner();

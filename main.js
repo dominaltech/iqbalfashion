@@ -93,26 +93,77 @@
       overlay.innerHTML = `
         <div class="hamburger-drawer">
           <div class="ham-head">
-            <img src="images/logo.png" alt="Iqbal Fashion" style="height:34px;width:auto;object-fit:contain;" />
+            <img src="images/logo.png" alt="Iqbal Fashion" style="height:36px;width:auto;object-fit:contain;" />
             <button class="ham-close" id="hamCloseBtn" onclick="closeCatDrawer()"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
           </div>
-          <div class="ham-body">
+          <div class="ham-body" style="padding-bottom: 90px;">
             <a href="index.html" class="ham-link">Home</a>
             <a href="shop.html" class="ham-link">All Products Catalog</a>
-            <div class="ham-cat-title">Categories</div>
-            <div class="ham-sublinks">
-              <a href="readymade.html">Readymade</a>
-              <a href="ethnic.html">Ethnic Wear</a>
-              <a href="casual-wear.html">Casual Wear</a>
-              <a href="cloth-material.html">Cloth Material</a>
-              <a href="linen.html">Pure Linen</a>
-              <a href="cotton.html">Pure Cotton</a>
-              <a href="silk.html">Royal Silk</a>
-              <a href="khadi.html">Handloom Khadi</a>
-              <a href="kids.html">Kids Collection</a>
-              <a href="boys.html">Boys</a>
-              <a href="girls.html">Girls</a>
+
+            <!-- 1. READYMADE -->
+            <div class="ham-cat-section">
+              <div class="ham-section-title">1. READYMADE COLLECTION</div>
+              <div class="ham-image-tiles-grid">
+                <a href="ethnic.html" class="ham-image-tile">
+                  <div class="ham-tile-thumb"><img src="images/hero2.jpg" alt="Ethnic Wear" loading="lazy" /></div>
+                  <div class="ham-tile-info"><span class="ham-tile-name">Ethnic Wear</span><span class="ham-tile-arrow">→</span></div>
+                </a>
+                <a href="casual-wear.html" class="ham-image-tile">
+                  <div class="ham-tile-thumb"><img src="images/cat-readymade.jpg" alt="Casual Wear" loading="lazy" /></div>
+                  <div class="ham-tile-info"><span class="ham-tile-name">Casual Wear</span><span class="ham-tile-arrow">→</span></div>
+                </a>
+              </div>
+              <a href="readymade.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Readymade →</a>
             </div>
+
+            <!-- 2. CLOTH MATERIAL -->
+            <div class="ham-cat-section">
+              <div class="ham-section-title">2. CLOTH MATERIAL &amp; FABRICS</div>
+              <div class="ham-image-tiles-grid">
+                <a href="suiting.html" class="ham-image-tile">
+                  <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Suiting Material" loading="lazy" /></div>
+                  <div class="ham-tile-info"><span class="ham-tile-name">Suiting</span><span class="ham-tile-arrow">→</span></div>
+                </a>
+                <a href="shirting.html" class="ham-image-tile">
+                  <div class="ham-tile-thumb"><img src="images/hero1.jpg" alt="Shirting Cloth" loading="lazy" /></div>
+                  <div class="ham-tile-info"><span class="ham-tile-name">Shirting</span><span class="ham-tile-arrow">→</span></div>
+                </a>
+                <a href="linen.html" class="ham-image-tile">
+                  <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Pure Linen" loading="lazy" /></div>
+                  <div class="ham-tile-info"><span class="ham-tile-name">Pure Linen</span><span class="ham-tile-arrow">→</span></div>
+                </a>
+                <a href="cotton.html" class="ham-image-tile">
+                  <div class="ham-tile-thumb"><img src="images/prod1.jpg" alt="Pure Cotton" loading="lazy" /></div>
+                  <div class="ham-tile-info"><span class="ham-tile-name">Pure Cotton</span><span class="ham-tile-arrow">→</span></div>
+                </a>
+                <a href="silk.html" class="ham-image-tile">
+                  <div class="ham-tile-thumb"><img src="images/hero2.jpg" alt="Royal Silk" loading="lazy" /></div>
+                  <div class="ham-tile-info"><span class="ham-tile-name">Royal Silk</span><span class="ham-tile-arrow">→</span></div>
+                </a>
+                <a href="khadi.html" class="ham-image-tile">
+                  <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Handloom Khadi" loading="lazy" /></div>
+                  <div class="ham-tile-info"><span class="ham-tile-name">Khadi</span><span class="ham-tile-arrow">→</span></div>
+                </a>
+              </div>
+              <a href="cloth-material.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Fabrics &amp; Unstitched Materials →</a>
+            </div>
+
+            <!-- 3. KIDS COLLECTION -->
+            <div class="ham-cat-section">
+              <div class="ham-section-title">3. KIDS COLLECTION</div>
+              <div class="ham-image-tiles-grid">
+                <a href="boys.html" class="ham-image-tile">
+                  <div class="ham-tile-thumb"><img src="images/cat-kids.jpg" alt="Boys Collection" loading="lazy" /></div>
+                  <div class="ham-tile-info"><span class="ham-tile-name">Boys Apparel</span><span class="ham-tile-arrow">→</span></div>
+                </a>
+                <a href="girls.html" class="ham-image-tile">
+                  <div class="ham-tile-thumb"><img src="images/cat-kids.jpg" alt="Girls Collection" loading="lazy" /></div>
+                  <div class="ham-tile-info"><span class="ham-tile-name">Girls Apparel</span><span class="ham-tile-arrow">→</span></div>
+                </a>
+              </div>
+              <a href="kids.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Kids Collection →</a>
+            </div>
+
             <div class="ham-divider" style="height:1px;background:var(--border);margin:16px 0;"></div>
             <a href="my-orders.html" class="ham-link">My Orders</a>
             <a href="cart.html" class="ham-link">My Shopping Bag</a>
@@ -574,30 +625,14 @@
       // Update Desktop Nav Links
       const navLinksContainer = document.querySelector('.site-header .nav-links');
       if (navLinksContainer) {
-        let html = '<div class="nav-item"><a href="shop.html" class="nav-link">Shop All</a></div>';
-        categories.forEach(cat => {
-          if (cat.slug === 'test-items' || (cat.name && cat.name.toLowerCase().includes('test'))) {
-            return;
-          }
-
-          // Map known slugs to specific static files or shop.html?category=slug
-          let targetUrl = `shop.html?category=${encodeURIComponent(cat.slug || cat.id)}`;
-          if (cat.slug === 'readymade' || cat.slug === 'baggy') targetUrl = 'readymade.html';
-          else if (cat.slug === 'ethnic' || cat.slug === 'hoodies') targetUrl = 'ethnic.html';
-          else if (cat.slug === 'casual-wear' || cat.slug === 'oversize' || cat.slug === 'oversized') targetUrl = 'casual-wear.html';
-          else if (cat.slug === 'cloth-material' || cat.slug === 'cloth_material' || cat.slug === 'pants' || cat.slug === 'linen-pants') targetUrl = 'cloth-material.html';
-          else if (cat.slug === 'kids' || cat.slug === 'plan-tshirt' || cat.slug === 'plain-t-shirts') targetUrl = 'kids.html';
-          else if (cat.slug === 'boys' || cat.slug === 'printing-tshirt' || cat.slug === 'printed-t-shirts') targetUrl = 'boys.html';
-          else if (cat.slug === 'girls' || cat.slug === 'women') targetUrl = 'girls.html';
-          else if (cat.slug === 'linen') targetUrl = 'linen.html';
-          else if (cat.slug === 'cotton') targetUrl = 'cotton.html';
-          else if (cat.slug === 'silk') targetUrl = 'silk.html';
-          else if (cat.slug === 'khadi') targetUrl = 'khadi.html';
-          else if (cat.slug === 'suiting') targetUrl = 'suiting.html';
-          else if (cat.slug === 'shirting') targetUrl = 'shirting.html';
-
-          html += `<div class="nav-item"><a href="${targetUrl}" class="nav-link">${cat.name}</a></div>`;
-        });
+        let html = `
+          <div class="nav-item"><a href="readymade.html" class="nav-link">Readymade</a></div>
+          <div class="nav-item"><a href="cloth-material.html" class="nav-link">Cloth Material</a></div>
+          <div class="nav-item"><a href="kids.html" class="nav-link">Kids</a></div>
+          <div class="nav-item"><a href="ethnic.html" class="nav-link">Ethnic</a></div>
+          <div class="nav-item"><a href="casual-wear.html" class="nav-link">Casual</a></div>
+          <div class="nav-item"><a href="shop.html" class="nav-link">All Collections</a></div>
+        `;
         navLinksContainer.innerHTML = html;
       }
 
