@@ -1,0 +1,10 @@
+{
+  "name": "iqbal-fashion-admin",
+  "version": "1.0.0",
+  "description": "Iqbal Fashion Admin & Store Management Portal",
+  "main": "admin.js",
+  "scripts": {
+    "start": "serve .",
+    "dev": "serve ."
+  }
+}

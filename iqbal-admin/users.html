@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registered Users — Iqbal Fashion Admin</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="images/logo.png" type="image/jpeg">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="admin.js"></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="admin-header">
+    <div class="header-left">
+      <button class="menu-trigger-btn" onclick="openDrawer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+      <div class="brand-logo"><img src="images/logo.png" alt="Iqbal Fashion" style="height:36px;width:auto;object-fit:contain;"><span class="admin-pill" style="background:rgba(212,175,55,0.15);color:#D4AF37;border:1px solid rgba(212,175,55,0.4);font-size:10px;font-weight:800;letter-spacing:1.5px;padding:3px 8px;border-radius:4px;text-transform:uppercase;">ADMIN</span></div>
+    </div>
+  </header>
+
+  <!-- DESKTOP NAV TABS -->
+  <nav class="admin-nav-tabs">
+    <a href="index.html" class="admin-nav-tab">Dashboard</a>
+    <a href="orders.html" class="admin-nav-tab">Orders</a>
+    <a href="coupons.html" class="admin-nav-tab"> Coupons &amp; Banners</a>
+    <a href="all-products.html" class="admin-nav-tab">All Products</a>
+    <a href="categories.html" class="admin-nav-tab">Categories</a>
+    <a href="sizes.html" class="admin-nav-tab">Sizes &amp; Stock</a>
+    <a href="add-product.html" class="admin-nav-tab">+ Add Product</a>
+    <a href="bulk-upload.html" class="admin-nav-tab bulk-highlight"> Bulk Upload</a>
+    <a href="add-banner.html" class="admin-nav-tab">Hero Banners</a>
+    <a href="users.html" class="admin-nav-tab active">Users</a>
+  </nav>
+
+  <main class="admin-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+      <h2 style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 800;">REGISTERED CUSTOMER ACCOUNTS</h2>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr);">
+      <div class="stat-card">
+        <div class="stat-label">TOTAL REGISTERED CUSTOMERS</div>
+        <div class="stat-val" id="totalUsersCount">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">VERIFIED ACCOUNTS</div>
+        <div class="stat-val" style="color: var(--accent-green);">100%</div>
+      </div>
+    </div>
+
+    <!-- USERS TABLE -->
+    <div class="admin-table-wrapper">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Customer ID / Name</th>
+            <th>Phone Number</th>
+            <th>Default Address</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Joined Date</th>
+          </tr>
+        </thead>
+        <tbody id="usersTableBody">
+          <tr><td colspan="6" style="text-align: center; color: #999;">Loading customer profiles...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- FIXED MOBILE BOTTOM TASKBAR -->
+  <nav class="admin-mobile-taskbar">
+    <a href="index.html" class="admin-taskbar-tab">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Dashboard</span>
+    </a>
+    <a href="orders.html" class="admin-taskbar-tab">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Orders</span>
+    </a>
+    <a href="all-products.html" class="admin-taskbar-tab">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <span>Products</span>
+    </a>
+    <a href="categories.html" class="admin-taskbar-tab">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      <span>Categories</span>
+    </a>
+    <a href="sizes.html" class="admin-taskbar-tab">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      <span>Sizes</span>
+    </a>
+    <button class="admin-taskbar-tab" onclick="openDrawer()">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0 2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span>Menu</span>
+    </button>
+  </nav>
+
+  <!-- SECTION-WISE ADMIN NAVIGATION DRAWER -->
+  <div class="drawer-overlay" id="adminDrawer" onclick="closeDrawer(event)">
+    <div class="drawer-left" onclick="event.stopPropagation()">
+      <div class="drawer-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <img src="images/logo.jpg" alt="Logo" style="height: 28px; width: auto; border-radius: 4px;" />
+          <span class="drawer-title">ADMIN MENU</span>
+        </div>
+        <button class="drawer-close-btn" onclick="closeDrawer()">×</button>
+      </div>
+      
+      <div class="drawer-scroll-body">
+        
+        <!-- SECTION 1: OVERVIEW & SALES -->
+        <div class="drawer-menu-section">
+          <div class="drawer-section-heading">OVERVIEW &amp; SALES</div>
+          <a href="index.html" class="drawer-nav-item">
+            <svg viewBox="0 0 24 24" class="drawer-icon"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span>Analytics Dashboard</span>
+          </a>
+          <a href="orders.html" class="drawer-nav-item">
+            <svg viewBox="0 0 24 24" class="drawer-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            <span>Customer Orders &amp; Slip</span>
+          </a>
+        </div>
+
+        <!-- SECTION 2: MARKETING & PROMOTIONS -->
+        <div class="drawer-menu-section">
+          <div class="drawer-section-heading">MARKETING &amp; PROMOTIONS</div>
+          <a href="coupons.html" class="drawer-nav-item highlight-item">
+            <svg viewBox="0 0 24 24" class="drawer-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+            <span>Discount Coupons</span>
+          </a>
+          <a href="coupons.html" class="drawer-nav-item">
+            <svg viewBox="0 0 24 24" class="drawer-icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>Homepage Event Banners</span>
+          </a>
+          <a href="add-banner.html" class="drawer-nav-item">
+            <svg viewBox="0 0 24 24" class="drawer-icon"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <span>Hero Slider Banners</span>
+          </a>
+        </div>
+
+        <!-- SECTION 3: CATALOG & INVENTORY -->
+        <div class="drawer-menu-section">
+          <div class="drawer-section-heading">CATALOG &amp; INVENTORY</div>
+          <a href="all-products.html" class="drawer-nav-item">
+            <svg viewBox="0 0 24 24" class="drawer-icon"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            <span>All Products Catalog</span>
+          </a>
+          <a href="add-product.html" class="drawer-nav-item">
+            <svg viewBox="0 0 24 24" class="drawer-icon"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+            <span>+ Add New Product</span>
+          </a>
+          <a href="bulk-upload.html" class="drawer-nav-item">
+            <svg viewBox="0 0 24 24" class="drawer-icon"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            <span>Bulk Product Upload</span>
+          </a>
+          <a href="categories.html" class="drawer-nav-item">
+            <svg viewBox="0 0 24 24" class="drawer-icon"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <span>Manage Categories</span>
+          </a>
+          <a href="sizes.html" class="drawer-nav-item">
+            <svg viewBox="0 0 24 24" class="drawer-icon"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            <span>Sizes &amp; Stock Matrix</span>
+          </a>
+        </div>
+
+        <!-- SECTION 4: USERS & NOTIFICATIONS -->
+        <div class="drawer-menu-section">
+          <div class="drawer-section-heading">USERS &amp; SYSTEM</div>
+          <a href="users.html" class="drawer-nav-item active">
+            <svg viewBox="0 0 24 24" class="drawer-icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <span>Registered Customers</span>
+          </a>
+          <button class="drawer-nav-item btn-push-drawer" onclick="requestAdminNotificationPermission()">
+            <svg viewBox="0 0 24 24" class="drawer-icon"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span>Enable Push Notifications</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    async function loadUsers() {
+      const tbody = document.getElementById('usersTableBody');
+      try {
+        const { data: profiles, error } = await window.fetchAdminUsers();
+
+        if (error || !profiles || profiles.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #999;">No registered customer profiles found.</td></tr>';
+          document.getElementById('totalUsersCount').textContent = 0;
+          return;
+        }
+
+        document.getElementById('totalUsersCount').textContent = profiles.length;
+
+        tbody.innerHTML = profiles.map(p => {
+          let addr = p.address || '';
+          if (!addr && p.default_address) {
+            addr = typeof p.default_address === 'object' ? (p.default_address.address || JSON.stringify(p.default_address)) : p.default_address;
+          }
+          if (p.pincode) addr += (addr ? ' - PIN: ' : 'PIN: ') + p.pincode;
+
+          return `
+            <tr>
+              <td>
+                <strong>${p.full_name || 'Urban Customer'}</strong>
+                <br><small style="color:#888;">ID: ${p.id ? p.id.substring(0,8) : 'cust'}...</small>
+              </td>
+              <td>${p.phone || '+91 9876543210'}</td>
+              <td><small>${addr || 'Bijapur, Karnataka'}</small></td>
+              <td><span class="status-badge badge-placed">${p.role || 'user'}</span></td>
+              <td><span class="status-badge badge-delivered">ACTIVE</span></td>
+              <td><small>${p.created_at ? new Date(p.created_at).toLocaleDateString() : 'Recent'}</small></td>
+            </tr>
+          `;
+        }).join('');
+      } catch(e) {
+        console.error('loadUsers error:', e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      loadUsers();
+      document.addEventListener('adminSupabaseReady', loadUsers);
+    });
+  </script>
+</body>
+</html>

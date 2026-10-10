@@ -1,0 +1,915 @@
+// IQBAL FASHION ADMIN DASHBOARD CORE JAVASCRIPT SYSTEM
+(function() {
+  'use strict';
+
+  // 1. EMBEDDED SUPABASE CREDENTIALS & BRAND CONFIG
+  const SUPABASE_URL = (window.UR_CONFIG && window.UR_CONFIG.SUPABASE_URL) || "https://yimbuvqtlbqdfggthaqt.supabase.co";
+  const SUPABASE_ANON_KEY = (window.UR_CONFIG && window.UR_CONFIG.SUPABASE_ANON_KEY) || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlpbWJ1dnF0bGJxZGZnZ3RoYXF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE2MzEyODEsImV4cCI6MjEwNzIwNzI4MX0.fnYjQ3mq13rkP-9sCyIsEt50Y5LQddwbGMtytJBajlU";
+
+  window.UR_CONFIG = window.UR_CONFIG || {};
+  window.UR_CONFIG.SUPABASE_URL = SUPABASE_URL;
+  window.UR_CONFIG.SUPABASE_ANON_KEY = SUPABASE_ANON_KEY;
+  window.UR_CONFIG.BRAND_NAME = "Iqbal Fashion Admin";
+  window.IQBAL_CONFIG = window.UR_CONFIG;
+  window.CLASSIC_CONFIG = window.UR_CONFIG;
+
+  window.urSbClient = null;
+  window.adminSupabase = null;
+
+  function createAdminSupabaseClient() {
+    if (window.adminSupabase) return window.adminSupabase;
+    if (window.supabase && typeof window.supabase.createClient === 'function') {
+      try {
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        window.urSbClient = client;
+        window.adminSupabase = client;
+        console.log('Admin Supabase client initialized successfully');
+        return client;
+      } catch (e) {
+        console.error('Error creating admin Supabase client:', e);
+      }
+    }
+    return null;
+  }
+
+  // Synchronous attempt
+  createAdminSupabaseClient();
+
+  // Retry loop for CDN script evaluation
+  let retryCount = 0;
+  const initInterval = setInterval(function() {
+    if (createAdminSupabaseClient() || retryCount > 20) {
+      clearInterval(initInterval);
+      document.dispatchEvent(new CustomEvent('adminSupabaseReady'));
+    }
+    retryCount++;
+  }, 100);
+
+  // 2. VAPID BASE64 HELPER CONVERTER
+  function urlBase64ToUint8Array(base64String) {
+    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+    const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+    const rawData = window.atob(base64);
+    const outputArray = new Uint8Array(rawData.length);
+    for (let i = 0; i < rawData.length; ++i) {
+      outputArray[i] = rawData.charCodeAt(i);
+    }
+    return outputArray;
+  }
+
+  // 3. ALLOW PUSH NOTIFICATIONS HANDLER FOR ADMIN SETTINGS (REGISTER DEVICE TO SUPABASE)
+  window.requestAdminNotificationPermission = async function() {
+    if (!("Notification" in window) || !("serviceWorker" in navigator)) {
+      window.adminToast('Web Push Notifications not supported in this browser.');
+      return;
+    }
+
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        const reg = await navigator.serviceWorker.ready;
+        const vapidPublicKey = window.UR_CONFIG.VAPID_PUBLIC_KEY;
+
+        const sub = await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+        });
+
+        const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+        if (client) {
+          await client.from('admin_push_subscriptions').upsert({
+            user_agent: navigator.userAgent,
+            endpoint: sub.endpoint,
+            keys: JSON.parse(JSON.stringify(sub.toJSON().keys)),
+            updated_at: new Date()
+          }, { onConflict: 'endpoint' });
+        }
+
+        window.adminToast('Order Notifications Allowed & Device Registered!');
+        const btn = document.getElementById('pushNotifyBtn');
+        if (btn) {
+          btn.textContent = 'NOTIFICATIONS ENABLED ';
+          btn.style.background = '#2b9348';
+        }
+      } else {
+        window.adminToast('Notification permission denied.');
+      }
+    } catch(err) {
+      console.error(err);
+      window.adminToast('Notification registration error: ' + err.message);
+    }
+  };
+
+  // 4. FETCH ADMIN USERS (PROFILES TABLE QUERY WITH ALL COLUMNS)
+  window.fetchAdminUsers = async function() {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) {
+      return { data: [], error: { message: 'Supabase client not initialized' } };
+    }
+    try {
+      const { data, error } = await client
+        .from('profiles')
+        .select('id, full_name, phone, role, default_address, address, pincode, created_at, updated_at')
+        .order('created_at', { ascending: false });
+      return { data: data || [], error };
+    } catch (err) {
+      console.error('fetchAdminUsers error:', err);
+      return { data: [], error: err };
+    }
+  };
+
+  // 5. FETCH ADMIN PRODUCTS ROUTINE
+  window.fetchAdminProducts = async function() {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) {
+      return { data: [], error: { message: 'Supabase client not initialized' } };
+    }
+    try {
+      const { data, error } = await client
+        .from('products')
+        .select('*')
+        .order('created_at', { ascending: false });
+      return { data: data || [], error };
+    } catch (err) {
+      console.error('fetchAdminProducts error:', err);
+      return { data: [], error: err };
+    }
+  };
+
+  // 6. FETCH ADMIN CATEGORIES ROUTINE
+  window.fetchAdminCategories = async function() {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) {
+      return { data: [], error: { message: 'Supabase client not initialized' } };
+    }
+    try {
+      const { data, error } = await client
+        .from('categories')
+        .select('*')
+        .order('display_order', { ascending: true });
+      return { data: data || [], error };
+    } catch (err) {
+      console.error('fetchAdminCategories error:', err);
+      return { data: [], error: err };
+    }
+  };
+
+  // 7. FETCH ADMIN ORDERS ROUTINE WITH ORDER ITEMS (PRODUCTS & SIZES)
+  window.fetchAdminOrders = async function() {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) {
+      return { data: [], error: { message: 'Supabase client not initialized' } };
+    }
+    try {
+      let { data, error } = await client
+        .from('orders')
+        .select('*, order_items(*)')
+        .order('created_at', { ascending: false });
+
+      // Fallback: If relation query encounters any issue, fetch orders & order_items separately and merge
+      if (error || !data) {
+        console.warn('Nested order_items query failed or returned error, executing fallback merge query:', error);
+        const ordersRes = await client
+          .from('orders')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (ordersRes.data) {
+          const itemsRes = await client.from('order_items').select('*');
+          const items = itemsRes.data || [];
+          data = ordersRes.data.map(order => ({
+            ...order,
+            order_items: items.filter(item => item.order_id === order.id)
+          }));
+          error = null;
+        } else {
+          return { data: [], error: ordersRes.error };
+        }
+      }
+      return { data: data || [], error };
+    } catch (err) {
+      console.error('fetchAdminOrders error:', err);
+      return { data: [], error: err };
+    }
+  };
+
+  window.updateAdminOrderStatus = async function(orderId, status) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: { message: 'Supabase not initialized' } };
+    try {
+      const { data, error } = await client
+        .from('orders')
+        .update({ order_status: status, updated_at: new Date() })
+        .eq('id', orderId)
+        .select()
+        .single();
+      return { data, error };
+    } catch (err) {
+      return { error: err };
+    }
+  };
+
+  window.updateAdminOrderTracking = async function(orderId, courierName, trackingNumber) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: { message: 'Supabase not initialized' } };
+    try {
+      const { data, error } = await client
+        .from('orders')
+        .update({ 
+          courier_name: courierName || null, 
+          tracking_number: trackingNumber || null,
+          updated_at: new Date().toISOString() 
+        })
+        .eq('id', orderId)
+        .select()
+        .single();
+      return { data, error };
+    } catch (err) {
+      return { error: err };
+    }
+  };
+
+  window.updateAdminOrderDetails = async function(orderId, updatePayload) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: { message: 'Supabase not initialized' } };
+    try {
+      const { data, error } = await client
+        .from('orders')
+        .update({ ...updatePayload, updated_at: new Date().toISOString() })
+        .eq('id', orderId)
+        .select()
+        .single();
+      return { data, error };
+    } catch (err) {
+      return { error: err };
+    }
+  };
+
+  window.deleteAdminOrder = async function(orderId) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: { message: 'Supabase not initialized' } };
+    try {
+      // 1. Delete associated order_items and payments if present
+      await client.from('order_items').delete().eq('order_id', orderId);
+      await client.from('payments').delete().eq('order_id', orderId);
+
+      // 2. Delete the order record
+      const { data, error } = await client
+        .from('orders')
+        .delete()
+        .eq('id', orderId);
+      return { data, error };
+    } catch (err) {
+      return { error: err };
+    }
+  };
+
+  // 8. COUPONS & EVENT BANNERS MANAGEMENT ROUTINES
+  window.fetchAdminCoupons = async function() {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { data: [], error: { message: 'Supabase not initialized' } };
+    try {
+      const { data, error } = await client
+        .from('coupons')
+        .select('*')
+        .order('created_at', { ascending: false });
+      return { data: data || [], error };
+    } catch (err) {
+      console.error('fetchAdminCoupons error:', err);
+      return { data: [], error: err };
+    }
+  };
+
+  window.saveAdminCoupon = async function(couponData) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: { message: 'Supabase not initialized' } };
+    try {
+      let res;
+      if (couponData.id) {
+        res = await client
+          .from('coupons')
+          .update({ ...couponData, updated_at: new Date().toISOString() })
+          .eq('id', couponData.id)
+          .select()
+          .single();
+      } else {
+        res = await client
+          .from('coupons')
+          .insert([couponData])
+          .select()
+          .single();
+      }
+      return res;
+    } catch (err) {
+      return { error: err };
+    }
+  };
+
+  window.deleteAdminCoupon = async function(couponId) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: { message: 'Supabase not initialized' } };
+    try {
+      const { data, error } = await client
+        .from('coupons')
+        .delete()
+        .eq('id', couponId);
+      return { data, error };
+    } catch (err) {
+      return { error: err };
+    }
+  };
+
+  window.toggleAdminCouponField = async function(couponId, fieldName, currentVal) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: { message: 'Supabase not initialized' } };
+    try {
+      const { data, error } = await client
+        .from('coupons')
+        .update({ [fieldName]: !currentVal, updated_at: new Date().toISOString() })
+        .eq('id', couponId)
+        .select()
+        .single();
+      return { data, error };
+    } catch (err) {
+      return { error: err };
+    }
+  };
+
+  // 9. FETCH PRODUCT GALLERY IMAGES
+  window.fetchProductImages = async function(productId) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client || !productId) return { data: [], error: null };
+    try {
+      const { data, error } = await client
+        .from('product_images')
+        .select('*')
+        .eq('product_id', productId)
+        .order('display_order', { ascending: true });
+      return { data: data || [], error };
+    } catch (err) {
+      console.error('fetchProductImages error:', err);
+      return { data: [], error: err };
+    }
+  };
+
+  // 9. TOAST UTILITY
+  window.adminToast = function(msg, isError = false) {
+    let container = document.getElementById('adminToastContainer');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'adminToastContainer';
+      container.style.cssText = 'position:fixed; top:20px; right:20px; z-index:99999; display:flex; flex-direction:column; gap:10px; max-width:380px;';
+      document.body.appendChild(container);
+    }
+    let toast = document.createElement('div');
+    const bg = isError ? '#d90429' : '#111';
+    toast.style.cssText = `background:${bg}; color:#fff; padding:12px 20px; border-radius:6px; font-weight:600; font-size:0.85rem; box-shadow:0 4px 16px rgba(0,0,0,0.2); animation:fadeIn 0.3s ease;`;
+    toast.textContent = msg;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transition = 'opacity 0.3s ease';
+      setTimeout(() => toast.remove(), 300);
+    }, 4500);
+  };
+
+  // 10. DRAWER CONTROLS
+  window.openDrawer = function() {
+    let drawer = document.getElementById('adminDrawer');
+    if (drawer) drawer.classList.add('active');
+  };
+  window.closeDrawer = function() {
+    let drawer = document.getElementById('adminDrawer');
+    if (drawer) drawer.classList.remove('active');
+  };
+
+  // 10.5 CLIENT-SIDE HIGH-PERFORMANCE CANVAS WEBP/JPEG COMPRESSION ENGINE
+  window.compressImageFile = async function(file, options = {}) {
+    if (!file || !(file instanceof File) || !file.type.startsWith('image/')) {
+      return file;
+    }
+
+    // Configurable targets (defaults: max dimension 1200px for products, 1920px for banners, quality 0.82)
+    const maxWidth = options.maxWidth || (options.isBanner ? 1920 : 1200);
+    const maxHeight = options.maxHeight || (options.isBanner ? 1000 : 1500);
+    const quality = options.quality || 0.82;
+
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const img = new Image();
+        img.onload = function() {
+          let width = img.width;
+          let height = img.height;
+
+          // Scale down proportionally if larger than target resolution
+          if (width > maxWidth || height > maxHeight) {
+            const ratio = Math.min(maxWidth / width, maxHeight / height);
+            width = Math.round(width * ratio);
+            height = Math.round(height * ratio);
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+
+          // Enable high-quality image smoothing
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = 'high';
+          ctx.drawImage(img, 0, 0, width, height);
+
+          // Determine target MIME type (WebP by default with progressive fallback)
+          let targetType = 'image/webp';
+          let extension = 'webp';
+          
+          canvas.toBlob(function(blob) {
+            if (!blob) {
+              console.warn('Canvas blob creation failed, falling back to original file');
+              return resolve(file);
+            }
+
+            // Create compressed File object with proper name and extension
+            const originalName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+            const compressedFile = new File([blob], `${originalName}.${extension}`, {
+              type: targetType,
+              lastModified: Date.now()
+            });
+
+            console.log(`[Image Compressor] Original: ${(file.size / 1024).toFixed(1)} KB -> Compressed: ${(compressedFile.size / 1024).toFixed(1)} KB (Saved ${(((file.size - compressedFile.size)/file.size)*100).toFixed(1)}%)`);
+            resolve(compressedFile);
+          }, targetType, quality);
+        };
+        img.onerror = function() {
+          console.warn('Error loading image for compression, using original');
+          resolve(file);
+        };
+        img.src = event.target.result;
+      };
+      reader.onerror = function() {
+        console.warn('FileReader error, using original file');
+        resolve(file);
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  // 11. ROBUST SUPABASE STORAGE UPLOADER WITH AUTOMATIC WEBP COMPRESSION & IMMUTABLE CDN CACHING
+  window.uploadFileToStorage = async function(fileOrInput, bucket = 'product-images', folder = 'products', options = {}) {
+    let file = null;
+    if (fileOrInput instanceof File) {
+      file = fileOrInput;
+    } else if (fileOrInput && fileOrInput.files && fileOrInput.files.length > 0) {
+      file = fileOrInput.files[0];
+    }
+
+    if (!file) return null;
+
+    // Automatic Client-Side Compression before network transfer
+    const isBanner = folder === 'banners' || folder === 'categories';
+    const compressedFile = await window.compressImageFile(file, { isBanner, ...options });
+    file = compressedFile || file;
+
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) {
+      console.warn('Supabase client unavailable. Falling back to default asset.');
+      return 'images/logo.jpg';
+    }
+
+    // Clean file extension & safe filename
+    const originalExt = (file.name.split('.').pop() || 'webp').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const cleanExt = originalExt.length > 0 ? originalExt : 'webp';
+    const timestamp = Date.now();
+    const randomStr = Math.random().toString(36).substring(2, 8);
+    const sanitizedName = file.name.replace(/[^a-zA-Z0-9_-]/g, '_').substring(0, 30);
+    const filePath = `${folder}/${timestamp}_${randomStr}_${sanitizedName}.${cleanExt}`;
+
+    try {
+      let activeBucket = bucket;
+      let uploadResult = await client.storage
+        .from(activeBucket)
+        .upload(filePath, file, {
+          cacheControl: '300, must-revalidate',
+          upsert: true,
+          contentType: file.type || 'image/webp'
+        });
+
+      // Automatic fallback to product-images if requested bucket fails
+      if (uploadResult.error && activeBucket !== 'product-images') {
+        console.warn(`Bucket ${activeBucket} failed (${uploadResult.error.message || ''}). Retrying fallback upload to 'product-images'...`);
+        activeBucket = 'product-images';
+        uploadResult = await client.storage
+          .from(activeBucket)
+          .upload(filePath, file, {
+            cacheControl: '300, must-revalidate',
+            upsert: true,
+            contentType: file.type || 'image/webp'
+          });
+      }
+
+      if (uploadResult.error) {
+        console.error(`Storage upload error (${activeBucket}):`, uploadResult.error);
+        window.adminToast(`Storage Upload Error: ${uploadResult.error.message || 'Check bucket & RLS settings'}`, true);
+        return null;
+      }
+
+      const { data: publicUrlData } = client.storage
+        .from(activeBucket)
+        .getPublicUrl(filePath);
+
+      if (publicUrlData && publicUrlData.publicUrl) {
+        return publicUrlData.publicUrl;
+      }
+      return null;
+    } catch (err) {
+      console.error('Storage Exception:', err);
+      window.adminToast(`Upload failed: ${err.message || 'Network error'}`, true);
+      return null;
+    }
+  };
+
+  // Backwards compatibility alias
+  window.uploadProductImage = async function(fileInput) {
+    const url = await window.uploadFileToStorage(fileInput, 'product-images', 'products');
+    return url || 'images/logo.jpg';
+  };
+
+  // 12. MULTI-FILE UPLOADER FOR UNLIMITED GALLERY & BULK UPLOADS
+  window.uploadMultipleFiles = async function(fileList, bucket = 'product-images', folder = 'products', onProgress = null) {
+    const files = Array.from(fileList || []);
+    if (files.length === 0) return [];
+
+    const results = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      if (onProgress && typeof onProgress === 'function') {
+        onProgress(i + 1, files.length, file.name);
+      }
+      const url = await window.uploadFileToStorage(file, bucket, folder);
+      results.push({
+        file: file,
+        fileName: file.name,
+        url: url,
+        success: !!url
+      });
+    }
+    return results;
+  };
+
+  // 13. SYNC / SAVE PRODUCT GALLERY IMAGES TO DATABASE
+  window.saveProductGalleryImages = async function(productId, imageUrls) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client || !productId || !imageUrls || imageUrls.length === 0) return { count: 0 };
+
+    try {
+      const rows = imageUrls.map((url, idx) => ({
+        product_id: productId,
+        image_url: url,
+        display_order: idx + 1,
+        created_at: new Date()
+      }));
+
+      const { data, error } = await client
+        .from('product_images')
+        .insert(rows);
+
+      if (error) {
+        console.error('Error inserting product gallery images:', error);
+        return { error };
+      }
+      return { count: rows.length, data };
+    } catch (err) {
+      console.error('saveProductGalleryImages exception:', err);
+      return { error: err };
+    }
+  };
+
+  // 14. STORE DELIVERY & SHIPPING SETTINGS MANAGEMENT
+  window.fetchStoreDeliverySettings = async function() {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { delivery_fee: 60, free_shipping_above: 999 };
+
+    try {
+      const { data, error } = await client
+        .from('store_settings')
+        .select('*')
+        .limit(1)
+        .maybeSingle();
+
+      if (error || !data) {
+        return { delivery_fee: 60, free_shipping_above: 999 };
+      }
+      return data;
+    } catch(err) {
+      console.error('fetchStoreDeliverySettings error:', err);
+      return { delivery_fee: 60, free_shipping_above: 999 };
+    }
+  };
+
+  window.saveStoreDeliverySettings = async function(deliveryFee, freeShippingAbove) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) {
+      window.adminToast('Supabase client not connected');
+      return { error: 'Not connected' };
+    }
+
+    try {
+      const fee = parseFloat(deliveryFee) || 0;
+      const threshold = parseFloat(freeShippingAbove) || 0;
+
+      // 1. Check for existing settings row (handles any UUID or string ID in database)
+      const { data: existing } = await client
+        .from('store_settings')
+        .select('id')
+        .limit(1)
+        .maybeSingle();
+
+      let result;
+      if (existing && existing.id) {
+        result = await client
+          .from('store_settings')
+          .update({
+            delivery_fee: fee,
+            free_shipping_above: threshold,
+            updated_at: new Date()
+          })
+          .eq('id', existing.id)
+          .select();
+      } else {
+        result = await client
+          .from('store_settings')
+          .insert([{
+            delivery_fee: fee,
+            free_shipping_above: threshold,
+            updated_at: new Date()
+          }])
+          .select();
+      }
+
+      if (result.error) {
+        console.error('saveStoreDeliverySettings error:', result.error);
+        window.adminToast('Error saving delivery charges: ' + result.error.message);
+        return { error: result.error };
+      }
+
+      window.adminToast(`Delivery Charge set to ₹${fee} (Free above ₹${threshold}) applied store-wide!`);
+      return { success: true, data: result.data };
+    } catch(err) {
+      console.error('saveStoreDeliverySettings exception:', err);
+      window.adminToast('Error saving delivery charges: ' + err.message);
+      return { error: err };
+    }
+  };
+
+  window.initDeliverySettingsUI = async function() {
+    const feeInput = document.getElementById('settingDeliveryFee');
+    const thresholdInput = document.getElementById('settingFreeShippingAbove');
+    if (!feeInput && !thresholdInput) return;
+
+    const settings = await window.fetchStoreDeliverySettings();
+    if (feeInput && settings.delivery_fee !== undefined) {
+      feeInput.value = settings.delivery_fee;
+    }
+    if (thresholdInput && settings.free_shipping_above !== undefined) {
+      thresholdInput.value = settings.free_shipping_above;
+    }
+  };
+
+  // 8. DYNAMIC CATEGORY MANAGEMENT HELPERS
+  window.fetchAdminCategories = async function(includeInactive = true) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { data: [], error: 'Supabase client unavailable' };
+    try {
+      let query = client.from('categories').select('*').order('display_order', { ascending: true });
+      if (!includeInactive) {
+        query = query.eq('is_active', true);
+      }
+      const { data, error } = await query;
+      return { data: data || [], error };
+    } catch (err) {
+      console.error('fetchAdminCategories error:', err);
+      return { data: [], error: err };
+    }
+  };
+
+  window.saveAdminCategory = async function(catData) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: 'Supabase client unavailable' };
+    try {
+      const isUpdate = Boolean(catData.id);
+      const payload = {
+        name: catData.name,
+        slug: catData.slug,
+        parent_id: catData.parent_id || null,
+        description: catData.description || null,
+        banner_url: catData.banner_url || null,
+        banner_image_url: catData.banner_url || null,
+        image_url: catData.thumb_image_url || catData.image_url || catData.banner_url || null,
+        thumb_image_url: catData.thumb_image_url || null,
+        display_order: parseInt(catData.display_order) || 0,
+        sort_order: parseInt(catData.display_order) || 0,
+        show_on_home: catData.show_on_home !== false,
+        is_active: catData.is_active !== false
+      };
+
+      let res;
+      if (isUpdate) {
+        res = await client.from('categories').update(payload).eq('id', catData.id).select().single();
+      } else {
+        res = await client.from('categories').insert([payload]).select().single();
+      }
+      return res;
+    } catch (err) {
+      console.error('saveAdminCategory error:', err);
+      return { error: err };
+    }
+  };
+
+  window.deleteAdminCategory = async function(catId) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: { message: 'Supabase client unavailable' } };
+    try {
+      // Unlink any products assigned to this category so foreign key doesn't block deletion
+      await client.from('products').update({ category_id: null }).eq('category_id', catId);
+      return await client.from('categories').delete().eq('id', catId);
+    } catch (err) {
+      console.error('deleteAdminCategory error:', err);
+      return { error: err };
+    }
+  };
+
+  // 8.5 HERO BANNERS MANAGEMENT ROUTINES
+  window.fetchAdminBanners = async function() {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { data: [], error: { message: 'Supabase client unavailable' } };
+    try {
+      const { data, error } = await client
+        .from('banners')
+        .select('*')
+        .order('display_order', { ascending: true });
+      return { data: data || [], error };
+    } catch (err) {
+      console.error('fetchAdminBanners error:', err);
+      return { data: [], error: err };
+    }
+  };
+
+  window.saveAdminBanner = async function(bannerData) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: { message: 'Supabase client unavailable' } };
+    try {
+      if (bannerData.id) {
+        return await client.from('banners').update({
+          title: bannerData.title,
+          subtitle: bannerData.subtitle || null,
+          badge_text: bannerData.badge_text || null,
+          link_url: bannerData.link_url || '#',
+          image_url: bannerData.image_url,
+          display_order: parseInt(bannerData.display_order) || 0,
+          is_active: bannerData.is_active !== false
+        }).eq('id', bannerData.id).select().single();
+      } else {
+        return await client.from('banners').insert([{
+          title: bannerData.title,
+          subtitle: bannerData.subtitle || null,
+          badge_text: bannerData.badge_text || null,
+          link_url: bannerData.link_url || '#',
+          image_url: bannerData.image_url,
+          display_order: parseInt(bannerData.display_order) || 0,
+          is_active: bannerData.is_active !== false
+        }]).select().single();
+      }
+    } catch (err) {
+      console.error('saveAdminBanner error:', err);
+      return { error: err };
+    }
+  };
+
+  window.deleteAdminBanner = async function(bannerId) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: { message: 'Supabase client unavailable' } };
+    try {
+      return await client.from('banners').delete().eq('id', bannerId);
+    } catch (err) {
+      console.error('deleteAdminBanner error:', err);
+      return { error: err };
+    }
+  };
+
+  // 9. FABRIC CUT LENGTHS (METERS) PRESETS MANAGEMENT HELPERS
+  window.fetchAdminSizePresets = async function() {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) {
+      // Fallback defaults for cloth material cut lengths (in meters)
+      return {
+        data: [
+          { type: 'standard', size_label: '1.2M', is_active: true, display_order: 1 },
+          { type: 'standard', size_label: '1.4M', is_active: true, display_order: 2 },
+          { type: 'standard', size_label: '1.6M', is_active: true, display_order: 3 },
+          { type: 'standard', size_label: '1.8M', is_active: true, display_order: 4 },
+          { type: 'standard', size_label: '2.0M', is_active: true, display_order: 5 },
+          { type: 'standard', size_label: '2.25M', is_active: true, display_order: 6 },
+          { type: 'standard', size_label: '2.5M', is_active: true, display_order: 7 },
+          { type: 'suit', size_label: '2.8M', is_active: true, display_order: 8 },
+          { type: 'suit', size_label: '3.0M', is_active: true, display_order: 9 },
+          { type: 'suit', size_label: '3.25M', is_active: true, display_order: 10 },
+          { type: 'suit', size_label: '3.5M', is_active: true, display_order: 11 },
+          { type: 'suit', size_label: '4.0M', is_active: true, display_order: 12 },
+          { type: 'suit', size_label: '5.0M', is_active: true, display_order: 13 }
+        ],
+        error: null
+      };
+    }
+    try {
+      const { data, error } = await client
+        .from('size_presets')
+        .select('*')
+        .order('display_order', { ascending: true });
+      if (!error && data && data.length > 0) {
+        return { data, error: null };
+      }
+      // Return cloth material cut length defaults if table empty or not present
+      return {
+        data: [
+          { type: 'standard', size_label: '1.2M', is_active: true, display_order: 1 },
+          { type: 'standard', size_label: '1.4M', is_active: true, display_order: 2 },
+          { type: 'standard', size_label: '1.6M', is_active: true, display_order: 3 },
+          { type: 'standard', size_label: '1.8M', is_active: true, display_order: 4 },
+          { type: 'standard', size_label: '2.0M', is_active: true, display_order: 5 },
+          { type: 'standard', size_label: '2.25M', is_active: true, display_order: 6 },
+          { type: 'standard', size_label: '2.5M', is_active: true, display_order: 7 },
+          { type: 'suit', size_label: '2.8M', is_active: true, display_order: 8 },
+          { type: 'suit', size_label: '3.0M', is_active: true, display_order: 9 },
+          { type: 'suit', size_label: '3.25M', is_active: true, display_order: 10 },
+          { type: 'suit', size_label: '3.5M', is_active: true, display_order: 11 },
+          { type: 'suit', size_label: '4.0M', is_active: true, display_order: 12 },
+          { type: 'suit', size_label: '5.0M', is_active: true, display_order: 13 }
+        ],
+        error: null
+      };
+    } catch (err) {
+      console.error('fetchAdminSizePresets error:', err);
+      return { data: [], error: err };
+    }
+  };
+
+  window.saveAdminSizePreset = async function(type, sizeLabel) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: 'Supabase client unavailable' };
+    try {
+      return await client.from('size_presets').upsert({
+        type: type,
+        size_label: sizeLabel.trim().toUpperCase(),
+        is_active: true,
+        display_order: Date.now() % 1000
+      }, { onConflict: 'type,size_label' }).select().single();
+    } catch (err) {
+      console.error('saveAdminSizePreset error:', err);
+      return { error: err };
+    }
+  };
+
+  window.toggleAdminSizePreset = async function(presetId, isActive) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: 'Supabase client unavailable' };
+    try {
+      return await client.from('size_presets').update({ is_active: isActive }).eq('id', presetId);
+    } catch (err) {
+      console.error('toggleAdminSizePreset error:', err);
+      return { error: err };
+    }
+  };
+
+  window.deleteAdminSizePreset = async function(presetId) {
+    const client = window.urSbClient || window.adminSupabase || createAdminSupabaseClient();
+    if (!client) return { error: 'Supabase client unavailable' };
+    try {
+      return await client.from('size_presets').delete().eq('id', presetId);
+    } catch (err) {
+      console.error('deleteAdminSizePreset error:', err);
+      return { error: err };
+    }
+  };
+
+  document.addEventListener('DOMContentLoaded', function() {
+    if ("Notification" in window && Notification.permission === "granted") {
+      const btn = document.getElementById('pushNotifyBtn');
+      if (btn) {
+        btn.textContent = 'NOTIFICATIONS ENABLED ';
+        btn.style.background = '#2b9348';
+      }
+    }
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('Admin SW registered:', reg))
+        .catch(err => console.error('Admin SW registration failed:', err));
+    }
+    window.initDeliverySettingsUI();
+  });
+
+  document.addEventListener('adminSupabaseReady', function() {
+    window.initDeliverySettingsUI();
+  });
+
+})();
+
