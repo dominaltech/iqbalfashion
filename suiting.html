@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Suiting Fabric — Iqbal Fashion</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="images/logo.png" type="image/jpeg">
-  <link rel="apple-touch-icon" href="images/logo.png">
+  <link rel="manifest" href="manifest.json?v=3">
+  <link rel="icon" href="images/logo.png?v=3" type="image/jpeg">
+  <link rel="apple-touch-icon" href="images/logo.png?v=3">
   <link rel="stylesheet" href="styles.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
@@ -37,7 +37,7 @@
       <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
     </button>
     <a href="index.html" class="logo">
-      <img src="images/logo.png" alt="Iqbal Fashion" class="logo-img" style="height:42px;width:auto;object-fit:contain;" />
+      <img src="images/logo.png?v=3" alt="Iqbal Fashion" class="logo-img" style="height:42px;width:auto;object-fit:contain;" />
     </a>
     <div class="nav-links">
       <div class="nav-item"><a href="readymade.html" class="nav-link">Readymade</a></div>
@@ -85,7 +85,7 @@
     <div class="footer-grid">
       <div>
         <a href="index.html" class="footer-logo-row logo">
-          <img src="images/logo.png" alt="Iqbal Fashion" class="logo-img" style="height:42px;width:auto;object-fit:contain;" />
+          <img src="images/logo.png?v=3" alt="Iqbal Fashion" class="logo-img" style="height:42px;width:auto;object-fit:contain;" />
         </a>
         <p class="footer-desc">Excellence in Bespoke Tailoring &amp; Fine Fabrics. Crafted with timeless precision and luxury.</p>
       </div>
@@ -175,7 +175,7 @@
         <div class="product-card">
           <div class="prod-image-wrap">
             ${p.is_new_arrival ? '<span class="prod-tag">NEW</span>' : ''}
-            <a href="product.html?id=${p.id}"><img src="${p.main_image || 'images/logo.png'}" alt="${p.name}" loading="lazy" decoding="async"></a>
+            <a href="product.html?id=${p.id}"><img src="${p.main_image || 'images/logo.png?v=3'}" alt="${p.name}" loading="lazy" decoding="async"></a>
           </div>
           <div class="prod-info">
             <div class="product-category" style="font-size:11px;color:var(--text-muted);font-weight:700;">SUITING MATERIAL</div>

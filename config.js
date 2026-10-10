@@ -8,7 +8,7 @@ window.UR_CONFIG = {
   BRAND_NAME: "Iqbal Fashion",
   TAGLINE: "Excellence in Bespoke Men's Fashion & Fine Fabrics",
   DOMAIN: "iqbalfashion.com",
-  LOGO_URL: "images/logo.png",
+  LOGO_URL: "images/logo.png?v=3",
   ENABLE_STARTUP_LOADER: true,
 
   // Supabase Database & Auth Credentials

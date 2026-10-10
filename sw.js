@@ -1,6 +1,6 @@
-// IQBAL FASHION STOREFRONT SERVICE WORKER (V1 - SNITCH UI & REALTIME CACHE)
-const STATIC_CACHE_NAME = 'iqbalfashion-storefront-v1';
-const MEDIA_CACHE_NAME = 'iqbalfashion-media-v1';
+// IQBAL FASHION STOREFRONT SERVICE WORKER (V3 - REALTIME CACHE BUSTING & SNITCH UI)
+const STATIC_CACHE_NAME = 'iqbalfashion-storefront-v3';
+const MEDIA_CACHE_NAME = 'iqbalfashion-media-v3';
 
 const STATIC_ASSETS = [
   '/',
@@ -26,9 +26,8 @@ const STATIC_ASSETS = [
   'main.js',
   'config.js',
   'manifest.json',
-  'images/logo.png',
-  'loader/startup-loader.js',
-  'loader/startup-loader.css'
+  'images/logo.png?v=3',
+  'favicon.png?v=3'
 ];
 
 self.addEventListener('install', (event) => {
