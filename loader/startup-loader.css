@@ -1,16 +1,17 @@
 /* ==============================================================================
-   IQBAL FASHION — THREAD & BUTTON STARTUP LOADER (SNITCH WHITE AESTHETIC)
-   Pure White Canvas · Luxury Jet Black & Gold Bespoke Button · Split Reveal
+   IQBAL FASHION — BESPOKE TAILOR STARTUP LOADER (PRECISION BROWN & CREAM)
+   Pure White Canvas · Rich Brown Horn Button · Dark Cream Silk Thread · Precision Needle
    ============================================================================== */
 
 :root {
   --loader-bg: #FFFFFF;
-  --loader-gold: #C5A059;
-  --loader-gold-light: #E5CF8E;
-  --loader-thread: #C5A059;
+  --loader-button-brown: #55341A;
+  --loader-button-rim: #3D220E;
+  --loader-thread: #DFCCA8;       /* Dark cream luxury silk thread */
+  --loader-thread-dark: #C9B38B;
   --loader-accent: #FF5722;
   --loader-text: #111111;
-  --loader-sub: #777777;
+  --loader-sub: #666666;
   --curtain-bezier: cubic-bezier(0.76, 0, 0.24, 1);
 }
 
@@ -58,7 +59,7 @@
   transform: translateY(100%);
 }
 
-/* Loader Center Stage */
+/* Center Stage */
 .loader-stage {
   position: relative;
   z-index: 2;
@@ -76,91 +77,170 @@
 
 /* Button & Needle Graphic Container */
 .button-anim-container {
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .button-svg {
   width: 100%;
   height: 100%;
   overflow: visible;
-  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.12));
+  filter: drop-shadow(0 14px 32px rgba(45, 25, 12, 0.14));
 }
 
-/* Thread Stitch Paths */
+/* Button Group Subtle Micro-Spin on Finish */
+.button-spin-wrap {
+  transform-origin: 70px 70px;
+}
+
+.button-spin-wrap.finished {
+  animation: buttonSettle 0.85s cubic-bezier(0.34, 1.45, 0.64, 1) forwards;
+}
+
+@keyframes buttonSettle {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  45% {
+    transform: rotate(180deg) scale(1.07);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* Stitched Dark Cream Thread Lines */
 .stitch-path {
   stroke: var(--loader-thread);
-  stroke-width: 3.5;
+  stroke-width: 4.2;
   stroke-linecap: round;
   fill: none;
-  stroke-dasharray: 60;
-  stroke-dashoffset: 60;
+  stroke-dasharray: 48;
+  stroke-dashoffset: 48;
 }
 
 .stitch-cross-1 {
-  animation: stitchDraw 0.85s ease-in-out 0.15s forwards;
+  animation: stitchDraw1 0.48s cubic-bezier(0.4, 0, 0.2, 1) 0.38s forwards;
 }
 
 .stitch-cross-2 {
-  animation: stitchDraw 0.85s ease-in-out 0.7s forwards;
+  animation: stitchDraw2 0.44s cubic-bezier(0.4, 0, 0.2, 1) 1.15s forwards;
 }
 
-@keyframes stitchDraw {
+@keyframes stitchDraw1 {
   0% {
-    stroke-dashoffset: 60;
+    stroke-dashoffset: 48;
   }
   100% {
     stroke-dashoffset: 0;
   }
 }
 
-/* Needle Animation */
-.needle-group {
-  transform-origin: 65px 65px;
-  animation: needleStitch 1.6s ease-in-out 0.1s forwards;
+@keyframes stitchDraw2 {
+  0% {
+    stroke-dashoffset: 48;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
 }
 
-@keyframes needleStitch {
+/* Precision Needle Tailoring Animation */
+.tailor-needle-stage {
+  transform-origin: 0 0;
+  animation: needleTailorMotion 2.1s cubic-bezier(0.42, 0, 0.25, 1) 0.05s forwards;
+  will-change: transform, opacity;
+}
+
+.needle-graphics {
+  transform-origin: 0 0;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.28));
+}
+
+/* Needle Trailing Silk Thread Flutter */
+.needle-trailing-thread {
+  stroke: var(--loader-thread);
+  stroke-width: 2.8;
+  stroke-linecap: round;
+  fill: none;
+  opacity: 0.95;
+  filter: drop-shadow(0 2px 4px rgba(45, 25, 12, 0.2));
+  animation: threadFlutter 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes threadFlutter {
   0% {
-    opacity: 0;
-    transform: translate(-30px, -30px) rotate(-45deg);
+    d: path("M 0 -36 C -8 -50 -16 -46 -22 -65 C -28 -78 -22 -92 -32 -110");
   }
-  20% {
+  100% {
+    d: path("M 0 -36 C -5 -52 -12 -44 -18 -68 C -24 -82 -28 -95 -26 -112");
+  }
+}
+
+/* Needle Path through ALL 4 HOLES:
+   Hole 1 (TL: 54, 54) -> Hole 3 (BR: 86, 86) -> Hole 2 (TR: 86, 54) -> Hole 4 (BL: 54, 86) */
+@keyframes needleTailorMotion {
+  /* 0%: Entry from top-left, aimed towards Hole 1 */
+  0% {
+    transform: translate(24px, 12px) rotate(-35deg) scale(0.9);
+    opacity: 0;
+  }
+  /* 8%: Gliding into approach */
+  8% {
+    transform: translate(42px, 36px) rotate(-35deg) scale(1);
     opacity: 1;
-    transform: translate(0, 0) rotate(-15deg);
   }
-  50% {
-    transform: translate(6px, 6px) rotate(15deg);
+  /* 18%: Tip lands precisely in Hole 1 (54, 54) & plunges */
+  18% {
+    transform: translate(54px, 54px) rotate(-35deg) scale(0.85);
+    opacity: 1;
   }
-  80% {
-    transform: translate(0, 0) rotate(0deg);
+  /* 24%: Lifting & angling towards Hole 3 */
+  24% {
+    transform: translate(62px, 62px) rotate(45deg) scale(1.05);
   }
+  /* 40%: Traversing diagonal to Hole 3 (86, 86) */
+  40% {
+    transform: translate(86px, 86px) rotate(45deg) scale(1);
+  }
+  /* 46%: Plunging into Hole 3 (86, 86) - Diagonal 1 complete */
+  46% {
+    transform: translate(86px, 86px) rotate(45deg) scale(0.82);
+  }
+  /* 54%: Pulling underneath button to emerge near Hole 2 (86, 54) */
+  54% {
+    transform: translate(96px, 42px) rotate(-135deg) scale(0.92);
+  }
+  /* 60%: Tip lands precisely in Hole 2 (86, 54) & plunges */
+  60% {
+    transform: translate(86px, 54px) rotate(135deg) scale(0.86);
+  }
+  /* 66%: Lifting & angling towards Hole 4 */
+  66% {
+    transform: translate(78px, 62px) rotate(135deg) scale(1.05);
+  }
+  /* 78%: Traversing diagonal to Hole 4 (54, 86) */
+  78% {
+    transform: translate(54px, 86px) rotate(135deg) scale(1);
+  }
+  /* 84%: Plunging into Hole 4 (54, 86) - Diagonal 2 complete */
+  84% {
+    transform: translate(54px, 86px) rotate(135deg) scale(0.82);
+  }
+  /* 89%: Pulling thread tight & lifting off button */
+  89% {
+    transform: translate(76px, 66px) rotate(32deg) scale(1.1);
+    opacity: 1;
+  }
+  /* 100%: Gracefully gliding off-screen upwards to right */
   100% {
+    transform: translate(150px, -28px) rotate(45deg) scale(0.8);
     opacity: 0;
-    transform: translate(35px, -35px) rotate(45deg);
-  }
-}
-
-/* 360 Spin on Completion */
-.button-spin-wrap {
-  transform-origin: center center;
-  animation: buttonSpin 0.9s cubic-bezier(0.4, 0, 0.2, 1) 1.55s forwards;
-}
-
-@keyframes buttonSpin {
-  0% {
-    transform: rotate(0deg) scale(1);
-  }
-  50% {
-    transform: rotate(180deg) scale(1.06);
-  }
-  100% {
-    transform: rotate(360deg) scale(1);
   }
 }
 

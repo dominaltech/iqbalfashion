@@ -1,7 +1,7 @@
 /**
  * ==============================================================================
  * IQBAL FASHION — STARTUP LOADER & ASSET PRELOADER
- * Thread & Button Micro-Animation with Split Curtain Reveal
+ * Precision Tailor Needle & Button Micro-Animation with Split Curtain Reveal
  * Plays on every website start/load as requested
  * ==============================================================================
  */
@@ -10,12 +10,13 @@
   'use strict';
 
   const LOADER_ID = 'iqbalStartupLoader';
-  const MAX_SAFETY_TIMEOUT = 2800; // Fast and snappy (2.8s max fallback)
+  const MAX_SAFETY_TIMEOUT = 3200;
 
   const loaderEl = document.getElementById(LOADER_ID);
   if (!loaderEl) return;
 
   const progressBar = loaderEl.querySelector('.loader-progress-bar-fill');
+  const btnWrap = document.getElementById('loaderButtonWrap');
   let isDismissed = false;
 
   function updateProgress(percent) {
@@ -23,6 +24,11 @@
       progressBar.style.width = Math.min(100, Math.max(0, percent)) + '%';
     }
   }
+
+  // Trigger button settle at end of second diagonal stitch
+  setTimeout(() => {
+    if (btnWrap) btnWrap.classList.add('finished');
+  }, 1650);
 
   // Dismiss & Curtain Split Reveal
   function dismissLoader() {
@@ -81,10 +87,10 @@
       updateProgress(90);
     } catch (err) {}
 
-    // Ensure the animation has had at least 1.8s to play smoothly
+    // Allow full precision 4-hole stitching animation to complete (2.1s)
     setTimeout(() => {
       dismissLoader();
-    }, 1800);
+    }, 2100);
   }
 
   // Safety timer
