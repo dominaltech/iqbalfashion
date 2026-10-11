@@ -98,12 +98,12 @@
       
       <!-- SNITCH TAB SWITCHER -->
       <div style="display: flex; border-bottom: 2px solid #EEEEEE; margin-bottom: 24px;">
-        <div id="tabLogin" class="auth-tab" onclick="switchAuthTab('login')" style="flex:1;text-align:center;padding:12px 6px;font-weight:700;font-size:13px;letter-spacing:0.5px;cursor:pointer;border-bottom:2px solid #111111;margin-bottom:-2px;color:#111111;">SIGN IN</div>
-        <div id="tabRegister" class="auth-tab" onclick="switchAuthTab('register')" style="flex:1;text-align:center;padding:12px 6px;font-weight:700;font-size:13px;letter-spacing:0.5px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;color:#888888;">CREATE ACCOUNT</div>
+        <div id="tabLogin" class="auth-tab" onclick="switchAuthTab('login')" style="flex:1;text-align:center;padding:12px 6px;font-weight:700;font-size:13px;letter-spacing:0.5px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;color:#888888;">SIGN IN</div>
+        <div id="tabRegister" class="auth-tab" onclick="switchAuthTab('register')" style="flex:1;text-align:center;padding:12px 6px;font-weight:700;font-size:13px;letter-spacing:0.5px;cursor:pointer;border-bottom:2px solid #111111;margin-bottom:-2px;color:#111111;">CREATE ACCOUNT</div>
       </div>
 
       <!-- SIGN IN FORM (PHONE + PASSWORD, NO OTP) -->
-      <form id="loginForm">
+      <form id="loginForm" style="display:none;">
         <div style="margin-bottom: 18px;">
           <label style="display:block;font-size:11px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;color:#111111;">Mobile Number *</label>
           <div style="display:flex;align-items:center;background:#FFFFFF;border:1px solid #D6D6D6;border-radius:2px;overflow:hidden;transition:border-color 0.2s;">
@@ -122,7 +122,7 @@
       </form>
 
       <!-- REGISTER FORM (NAME + PHONE + PASSWORD, NO OTP, NO EMAIL VERIFY) -->
-      <form id="registerForm" style="display: none;">
+      <form id="registerForm">
         <div style="margin-bottom: 16px;">
           <label style="display:block;font-size:11px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;color:#111111;">Full Name *</label>
           <input type="text" id="regName" required placeholder="e.g. John Doe" style="width:100%;padding:12px;border:1px solid #D6D6D6;border-radius:2px;font-size:14px;background:#FFFFFF;outline:none;color:#111111;">
@@ -499,6 +499,13 @@
   });
 
   document.addEventListener('DOMContentLoaded', function() {
+    // Determine which tab to show: honour ?tab=login param, otherwise default to register
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('tab') === 'login') {
+      switchAuthTab('login');
+    } else {
+      switchAuthTab('register');
+    }
     checkAuthSession();
     document.addEventListener('urSupabaseReady', checkAuthSession);
   });

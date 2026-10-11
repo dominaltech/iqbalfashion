@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -300,61 +300,10 @@
 <!-- MAIN CONTENT (SNITCH AESTHETIC: PURE WHITE, EDGE-TO-EDGE HERO, PROMO STRIP, CATEGORIES, BACKGROUND VIDEO, TRENDING PRODUCTS) -->
 <main id="MainContent">
 
-  <!-- 1. FULL-BLEED EDGE-TO-EDGE HERO IMAGE SLIDER -->
+  <!-- 1. FULL-BLEED EDGE-TO-EDGE HERO IMAGE SLIDER (populated from Supabase - no hardcoded slides) -->
   <section class="snitch-hero-slider-section" id="snitchHeroSection" aria-label="Hero Showcase">
     <div class="snitch-hero-slider" id="heroSlider">
-      <!-- High fashion slides (desktop widescreen / mobile tall portrait) -->
-      <div class="snitch-slide active">
-        <picture>
-          <source media="(max-width: 768px)" srcset="images/hero1.jpg">
-          <img src="images/hero1.jpg" alt="Iqbal Fashion Bespoke Suiting" class="snitch-slide-img" fetchpriority="high">
-        </picture>
-        <div class="snitch-slide-content">
-          <span class="snitch-slide-tag">ROYAL HERITAGE BESPOKE</span>
-          <h1 class="snitch-slide-title">FINE SUITING &amp; SHIRTING</h1>
-          <p class="snitch-slide-sub">Crafted with obsessive precision for timeless sophistication and bespoke elegance.</p>
-          <a href="cloth-material.html" class="snitch-slide-btn">EXPLORE COLLECTION</a>
-        </div>
-      </div>
-      <div class="snitch-slide">
-        <picture>
-          <source media="(max-width: 768px)" srcset="images/hero2.jpg">
-          <img src="images/hero2.jpg" alt="Iqbal Fashion Luxury Handloom" class="snitch-slide-img" loading="lazy">
-        </picture>
-        <div class="snitch-slide-content">
-          <span class="snitch-slide-tag">EXCLUSIVE HANDLOOM</span>
-          <h2 class="snitch-slide-title">PURE LINEN &amp; ROYAL SILK</h2>
-          <p class="snitch-slide-sub">Unstitched premium fabric cuts for coats, blazers, bandhgalas and trousers.</p>
-          <a href="suiting.html" class="snitch-slide-btn">SHOP FABRICS</a>
-        </div>
-      </div>
-      <div class="snitch-slide">
-        <picture>
-          <source media="(max-width: 768px)" srcset="images/hero3.jpg">
-          <img src="images/hero3.jpg" alt="Iqbal Fashion Festive Readymade" class="snitch-slide-img" loading="lazy">
-        </picture>
-        <div class="snitch-slide-content">
-          <span class="snitch-slide-tag">FESTIVE READYMADE</span>
-          <h2 class="snitch-slide-title">HANDCRAFTED ETHNIC WEAR</h2>
-          <p class="snitch-slide-sub">Tailored kurtas, regal sherwanis, festive Nehru jackets and casual shirts.</p>
-          <a href="readymade.html" class="snitch-slide-btn">VIEW READYMADE</a>
-        </div>
-      </div>
-
-      <!-- Arrow Navigation -->
-      <button class="snitch-slider-arrow prev" onclick="prevHeroSlide()" aria-label="Previous Slide">
-        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <button class="snitch-slider-arrow next" onclick="nextHeroSlide()" aria-label="Next Slide">
-        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-
-      <!-- Dots Navigation -->
-      <div class="snitch-slider-dots" id="heroSliderDots">
-        <button class="snitch-dot active" onclick="setHeroSlide(0, true)" aria-label="Slide 1"></button>
-        <button class="snitch-dot" onclick="setHeroSlide(1, true)" aria-label="Slide 2"></button>
-        <button class="snitch-dot" onclick="setHeroSlide(2, true)" aria-label="Slide 3"></button>
-      </div>
+      <!-- Slides, arrows and dots are injected by renderBanners() from Supabase -->
     </div>
   </section>
 
@@ -373,48 +322,7 @@
       </div>
 
       <div class="snitch-cat-grid" id="homeCategoryGrid">
-        <a href="readymade.html" class="snitch-cat-card">
-          <div class="snitch-cat-img-wrap"><img src="images/cat-readymade.jpg" alt="Readymade Apparel" loading="lazy"></div>
-          <div class="snitch-cat-body">
-            <span class="snitch-cat-name">READYMADE</span>
-            <span class="snitch-cat-action">EXPLORE →</span>
-          </div>
-        </a>
-        <a href="cloth-material.html" class="snitch-cat-card">
-          <div class="snitch-cat-img-wrap"><img src="images/cat-cloth-material.jpg" alt="Cloth Material &amp; Fabrics" loading="lazy"></div>
-          <div class="snitch-cat-body">
-            <span class="snitch-cat-name">CLOTH MATERIAL</span>
-            <span class="snitch-cat-action">EXPLORE →</span>
-          </div>
-        </a>
-        <a href="suiting.html" class="snitch-cat-card">
-          <div class="snitch-cat-img-wrap"><img src="images/hero1.jpg" alt="Suiting Material" loading="lazy"></div>
-          <div class="snitch-cat-body">
-            <span class="snitch-cat-name">SUITING</span>
-            <span class="snitch-cat-action">EXPLORE →</span>
-          </div>
-        </a>
-        <a href="shirting.html" class="snitch-cat-card">
-          <div class="snitch-cat-img-wrap"><img src="images/banner1.jpg" alt="Shirting Material" loading="lazy"></div>
-          <div class="snitch-cat-body">
-            <span class="snitch-cat-name">SHIRTING</span>
-            <span class="snitch-cat-action">EXPLORE →</span>
-          </div>
-        </a>
-        <a href="ethnic.html" class="snitch-cat-card">
-          <div class="snitch-cat-img-wrap"><img src="images/hero2.jpg" alt="Ethnic Festive Wear" loading="lazy"></div>
-          <div class="snitch-cat-body">
-            <span class="snitch-cat-name">ETHNIC WEAR</span>
-            <span class="snitch-cat-action">EXPLORE →</span>
-          </div>
-        </a>
-        <a href="kids.html" class="snitch-cat-card">
-          <div class="snitch-cat-img-wrap"><img src="images/cat-kids.jpg" alt="Kids Collection" loading="lazy"></div>
-          <div class="snitch-cat-body">
-            <span class="snitch-cat-name">KIDS</span>
-            <span class="snitch-cat-action">EXPLORE →</span>
-          </div>
-        </a>
+        <!-- Category cards injected from Supabase via renderCategories() -->
       </div>
     </div>
   </section>
@@ -422,11 +330,10 @@
   <!-- 4. FULL-WIDTH BACKGROUND VIDEO SHOWCASE (ADMIN MANAGEABLE VIA SUPABASE) -->
   <section class="snitch-video-section" id="snitchVideoSection">
     <div class="container">
-      <!-- Section Header / Caption Box ABOVE the video -->
+      <!-- Section Header / Caption Box ABOVE the video (single-line, admin managed) -->
       <div class="snitch-video-header-box">
-        <span class="snitch-video-pill">ROYAL HERITAGE BESPOKE</span>
+        <span class="snitch-video-pill" id="homeVideoPill">ROYAL HERITAGE BESPOKE</span>
         <h2 class="snitch-video-heading" id="homeVideoHeading">THE BESPOKE EXPERIENCE</h2>
-        <p class="snitch-video-sub" id="homeVideoSub">Master craftsmanship, hand-finished suiting &amp; shirting tailored to your exact measurements.</p>
       </div>
     </div>
 
@@ -1044,26 +951,28 @@
     const vidEl = document.getElementById('homeBgVideo');
     const containerEl = document.querySelector('.snitch-video-container');
     const headingEl = document.getElementById('homeVideoHeading');
-    const subEl = document.getElementById('homeVideoSub');
-    const pillEl = document.querySelector('.snitch-video-pill');
+    const pillEl = document.getElementById('homeVideoPill') || document.querySelector('.snitch-video-pill');
     const exploreBtn = document.getElementById('homeVideoExploreBtn');
 
     if (headingEl && videoData.title) headingEl.textContent = videoData.title;
-    if (subEl && videoData.subtitle) subEl.textContent = videoData.subtitle;
     if (pillEl && videoData.badge) pillEl.textContent = videoData.badge;
     if (exploreBtn && videoData.link) exploreBtn.href = videoData.link;
 
     if (vidEl) {
       if (vidEl.hasAttribute('poster')) vidEl.removeAttribute('poster');
-      const targetUrl = videoData.video_url;
-      const currentSrc = vidEl.currentSrc || vidEl.src || '';
-      if (!currentSrc.includes(targetUrl.split('?')[0])) {
-        let srcTag = vidEl.querySelector('source');
-        if (srcTag) {
-          srcTag.src = targetUrl;
-          srcTag.type = 'video/mp4';
-        }
-        vidEl.src = targetUrl;
+
+      // Normalize both URLs: strip query params and trailing slashes for reliable comparison
+      const normalize = url => (url || '').split('?')[0].replace(/\/+$/, '').toLowerCase();
+      const targetNorm = normalize(videoData.video_url);
+      const currentNorm = normalize(vidEl.currentSrc || vidEl.getAttribute('src') || '');
+
+      if (targetNorm && currentNorm !== targetNorm) {
+        // Source genuinely changed — reload cleanly without double-source conflict
+        vidEl.pause();
+        // Remove all <source> child elements so they don't conflict with vidEl.src
+        vidEl.querySelectorAll('source').forEach(s => s.remove());
+        vidEl.removeAttribute('src');
+        vidEl.src = videoData.video_url;
         vidEl.load();
         const p = vidEl.play();
         if (p !== undefined) p.catch(() => {});
@@ -1095,86 +1004,90 @@
         if (raw) cachedData = JSON.parse(raw);
       } catch(e) {}
 
+      // FAST PAINT from cache for categories only (they change rarely)
+      // Do NOT render cached banners or video — always fetch live to avoid stale images
       if (cachedData) {
-        if (cachedData.banners) renderBanners(cachedData.banners);
         if (cachedData.categories) renderCategories(cachedData.categories);
         if (cachedData.products) renderProducts(cachedData.products);
-        if (cachedData.video) renderVideoShowcase(cachedData.video);
-        if (cachedData.bottomBanners) renderBottomBanners(cachedData.bottomBanners);
-
       }
 
-      // 2. ALWAYS FETCH LIVE FRESH SUPABASE DATA (Realtime fresh banners, video, and products)
+      // PHASE 1 – Critical: Banners + Video + Settings (loader waits for this)
+      // Fetch banners and store_settings in parallel for fastest response
       let banners = [];
       let bottomBanners = [];
       let videoData = null;
       let settingsData = null;
 
-      try {
-        const { data: fetchedBanners } = await client
+      const [bannersRes, settingsRes] = await Promise.all([
+        client
           .from('banners')
           .select('id, title, subtitle, image_url, mobile_image_url, video_url, link_url, badge_text, display_order, is_active, section, updated_at')
           .eq('is_active', true)
-          .order('display_order', { ascending: true });
-        
-        if (fetchedBanners && fetchedBanners.length > 0) {
-          banners = fetchedBanners.filter(b => b.section !== 'video' && b.section !== 'bottom' && !b.video_url);
-          bottomBanners = fetchedBanners.filter(b => b.section === 'bottom');
-          if (bottomBanners.length > 0) renderBottomBanners(bottomBanners);
+          .order('display_order', { ascending: true })
+          .catch(() => ({ data: null })),
+        client
+          .from('store_settings')
+          .select('*')
+          .limit(1)
+          .catch(() => ({ data: null }))
+      ]);
 
-          const vidBanner = fetchedBanners.find(b => b.section === 'video' || (b.video_url && b.video_url.length > 0));
-          if (vidBanner) {
+      // Process live banners
+      if (bannersRes.data && bannersRes.data.length > 0) {
+        banners = bannersRes.data.filter(b => b.section !== 'video' && b.section !== 'bottom' && !b.video_url);
+        bottomBanners = bannersRes.data.filter(b => b.section === 'bottom');
+        if (bottomBanners.length > 0) renderBottomBanners(bottomBanners);
+
+        const vidBanner = bannersRes.data.find(b => b.section === 'video' || (b.video_url && b.video_url.length > 0));
+        if (vidBanner) {
+          videoData = {
+            video_url: vidBanner.video_url,
+            title: vidBanner.title,
+            badge: vidBanner.badge_text,
+            link: vidBanner.link_url,
+            updated_at: vidBanner.updated_at
+          };
+        }
+      }
+
+      // Process store_settings for video override
+      if (settingsRes.data && settingsRes.data[0]) {
+        settingsData = settingsRes.data[0];
+        if (settingsData.home_video_url) {
+          const sTime = settingsData.updated_at ? new Date(settingsData.updated_at).getTime() : 0;
+          const bTime = (videoData && videoData.updated_at) ? new Date(videoData.updated_at).getTime() : 0;
+          if (!videoData || sTime >= bTime || !videoData.video_url) {
             videoData = {
-              video_url: vidBanner.video_url,
-              title: vidBanner.title,
-              subtitle: vidBanner.subtitle,
-              badge: vidBanner.badge_text,
-              link: vidBanner.link_url,
-              updated_at: vidBanner.updated_at
+              video_url: settingsData.home_video_url,
+              title: settingsData.home_video_title || (videoData && videoData.title) || 'THE BESPOKE EXPERIENCE',
+              frame_mode: settingsData.home_video_frame_mode || 'auto',
+              updated_at: settingsData.updated_at
             };
           }
         }
-      } catch(e) {}
+      }
 
-      // Fetch store_settings for video showcase and settings timestamp
-      try {
-        const { data: settings } = await client
-          .from('store_settings')
-          .select('*')
-          .limit(1);
-        if (settings && settings[0]) {
-          settingsData = settings[0];
-          if (settingsData.home_video_url) {
-            const sTime = settingsData.updated_at ? new Date(settingsData.updated_at).getTime() : 0;
-            const bTime = (videoData && videoData.updated_at) ? new Date(videoData.updated_at).getTime() : 0;
-            if (!videoData || sTime >= bTime || !videoData.video_url) {
-              videoData = {
-                video_url: settingsData.home_video_url,
-                title: settingsData.home_video_title || (videoData && videoData.title) || 'THE BESPOKE EXPERIENCE',
-                subtitle: settingsData.home_video_subtitle || (videoData && videoData.subtitle) || 'Master craftsmanship, hand-finished suiting & shirting tailored to your exact measurements.',
-                frame_mode: settingsData.home_video_frame_mode || 'auto',
-                updated_at: settingsData.updated_at
-              };
-            }
-          }
-        }
-      } catch(e) {}
+      // Render critical content (banners + video) immediately
+      renderBanners(banners);
+      if (videoData) renderVideoShowcase(videoData);
 
-      const categories = await window.fetchStoreCategories();
+      // PHASE 2 – Deferred: Categories + Products (run in background, loader does NOT wait)
+      const categoriesPromise = window.fetchStoreCategories()
+        .then(cats => { renderCategories(cats); return cats; })
+        .catch(() => cachedData && cachedData.categories || []);
 
-      const { data: products } = await client
+      const productsPromise = client
         .from('products')
         .select('id, name, price, mrp, main_image, is_new_arrival, category_id, updated_at, categories:category_id(slug, name)')
         .eq('status', 'published')
         .order('created_at', { ascending: false })
-        .limit(24);
+        .limit(24)
+        .then(({ data: products }) => { if (products) renderProducts(products); return products; })
+        .catch(() => cachedData && cachedData.products || []);
 
-      renderBanners(banners);
-      renderCategories(categories);
-      renderProducts(products);
-      if (videoData) renderVideoShowcase(videoData);
+      // Wait for categories (fast) then save to cache
+      const [categories, products] = await Promise.all([categoriesPromise, productsPromise]);
 
-      // Save to localStorage with dual-vector timestamps
       const latestProdTime = (products && products[0] && products[0].updated_at) ? products[0].updated_at : new Date().toISOString();
       const latestSettingsTime = (settingsData && settingsData.updated_at) ? settingsData.updated_at : new Date().toISOString();
 

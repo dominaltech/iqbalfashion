@@ -1,4 +1,4 @@
-/**
+﻿/**
  * ==============================================================================
  * IQBAL FASHION — ADAPTIVE STARTUP LOADER & ASSET PRELOADER
  * Tailored Thread Stitching Micro-Animation with Dynamic Asset Preloading:
@@ -141,7 +141,7 @@
   async function prepareHomepageAssets() {
     updateProgress(20);
 
-    // 1. Kick off data loading
+    // 1. Kick off data loading (banners + video fetched first in the new loadHomePageData)
     let dataPromise = null;
     if (typeof window.loadHomePageData === 'function') {
       try {
@@ -151,68 +151,42 @@
 
     updateProgress(35);
 
-    // 2. Discover hero banner and top products from cache or await promise
-    let heroUrl = 'images/hero1.jpg';
-    let topProductImgs = [];
-
-    try {
-      const cached = localStorage.getItem('iqbalfashion_home_cache');
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (parsed.banners && parsed.banners[0] && parsed.banners[0].image_url) {
-          heroUrl = parsed.banners[0].image_url;
-        }
-        if (parsed.products && Array.isArray(parsed.products)) {
-          topProductImgs = parsed.products.slice(0, 4).map(p => p.main_image).filter(Boolean);
-        }
-      }
-    } catch(e) {}
-
-    // Wait on dataPromise if it's running
+    // 2. Wait for live Supabase data to arrive and render (banners + video)
+    //    Use a generous timeout so slow networks still get live content
     if (dataPromise && typeof dataPromise.then === 'function') {
       try {
         await Promise.race([
           dataPromise,
-          new Promise(r => setTimeout(r, 3000))
+          new Promise(r => setTimeout(r, 5500)) // up to 5.5s for live data
         ]);
       } catch(e) {}
-
-      // Re-check cache after fetch
-      try {
-        const cached = localStorage.getItem('iqbalfashion_home_cache');
-        if (cached) {
-          const parsed = JSON.parse(cached);
-          if (parsed.banners && parsed.banners[0] && parsed.banners[0].image_url) {
-            heroUrl = parsed.banners[0].image_url;
-          }
-          if (parsed.products && Array.isArray(parsed.products)) {
-            topProductImgs = parsed.products.slice(0, 4).map(p => p.main_image).filter(Boolean);
-          }
-        }
-      } catch(e) {}
     }
 
-    updateProgress(55);
+    updateProgress(60);
 
-    // 3. Preload hero banner image & top products in parallel with video buffer check
+    // 3. Get hero image URL from the NOW-RENDERED DOM (live Supabase images, not stale cache)
+    let heroUrl = null;
+    try {
+      const firstSlideImg = document.querySelector('#heroSlider .snitch-slide-img');
+      if (firstSlideImg && firstSlideImg.src && !firstSlideImg.src.endsWith('/') ) {
+        heroUrl = firstSlideImg.src;
+      }
+    } catch(e) {}
+
+    // 4. Preload first banner image and wait for video buffer in parallel
     const vidEl = document.getElementById('homeBgVideo');
-    if (vidEl && vidEl.hasAttribute('poster')) {
-      vidEl.removeAttribute('poster');
-    }
+    if (vidEl && vidEl.hasAttribute('poster')) vidEl.removeAttribute('poster');
 
-    const imagePreloads = [
-      preloadImage(heroUrl),
-      ...topProductImgs.map(url => preloadImage(url))
-    ];
-
-    const videoPreload = waitForVideoReady(vidEl, 4000);
+    const imagePreload = heroUrl ? preloadImage(heroUrl) : Promise.resolve();
+    // Video timeout: 3.5s — if it can't buffer by then, proceed anyway
+    const videoPreload = waitForVideoReady(vidEl, 3500);
 
     await Promise.all([
-      Promise.all(imagePreloads).then(() => updateProgress(80)),
+      imagePreload.then(() => updateProgress(85)),
       videoPreload.then(() => updateProgress(95))
     ]);
 
-    // 4. Ensure minimum animation time has elapsed for visual delight
+    // 5. Ensure minimum animation time has elapsed for visual delight
     const elapsed = Date.now() - startTime;
     const remainingTime = Math.max(0, MIN_ANIMATION_TIME - elapsed);
 
