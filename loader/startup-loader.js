@@ -28,7 +28,7 @@
   // Trigger button settle at end of second diagonal stitch
   setTimeout(() => {
     if (btnWrap) btnWrap.classList.add('finished');
-  }, 1650);
+  }, 1180);
 
   // Dismiss & Curtain Split Reveal
   function dismissLoader() {
@@ -87,10 +87,10 @@
       updateProgress(90);
     } catch (err) {}
 
-    // Allow full precision 4-hole stitching animation to complete (2.1s)
+    // Allow pure thread 4-hole stitching animation to complete gracefully (1.7s)
     setTimeout(() => {
       dismissLoader();
-    }, 2100);
+    }, 1700);
   }
 
   // Safety timer

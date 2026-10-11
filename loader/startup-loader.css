@@ -124,124 +124,13 @@
   stroke-dashoffset: 48;
 }
 
+/* Precision Thread Tailoring (Needle removed as requested, pure thread stitching) */
 .stitch-cross-1 {
-  animation: stitchDraw1 0.48s cubic-bezier(0.4, 0, 0.2, 1) 0.38s forwards;
+  animation: stitchDraw1 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
 }
 
 .stitch-cross-2 {
-  animation: stitchDraw2 0.44s cubic-bezier(0.4, 0, 0.2, 1) 1.15s forwards;
-}
-
-@keyframes stitchDraw1 {
-  0% {
-    stroke-dashoffset: 48;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes stitchDraw2 {
-  0% {
-    stroke-dashoffset: 48;
-  }
-  100% {
-    stroke-dashoffset: 0;
-  }
-}
-
-/* Precision Needle Tailoring Animation */
-.tailor-needle-stage {
-  transform-origin: 0 0;
-  animation: needleTailorMotion 2.1s cubic-bezier(0.42, 0, 0.25, 1) 0.05s forwards;
-  will-change: transform, opacity;
-}
-
-.needle-graphics {
-  transform-origin: 0 0;
-  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.28));
-}
-
-/* Needle Trailing Silk Thread Flutter */
-.needle-trailing-thread {
-  stroke: var(--loader-thread);
-  stroke-width: 2.8;
-  stroke-linecap: round;
-  fill: none;
-  opacity: 0.95;
-  filter: drop-shadow(0 2px 4px rgba(45, 25, 12, 0.2));
-  animation: threadFlutter 0.8s ease-in-out infinite alternate;
-}
-
-@keyframes threadFlutter {
-  0% {
-    d: path("M 0 -36 C -8 -50 -16 -46 -22 -65 C -28 -78 -22 -92 -32 -110");
-  }
-  100% {
-    d: path("M 0 -36 C -5 -52 -12 -44 -18 -68 C -24 -82 -28 -95 -26 -112");
-  }
-}
-
-/* Needle Path through ALL 4 HOLES:
-   Hole 1 (TL: 54, 54) -> Hole 3 (BR: 86, 86) -> Hole 2 (TR: 86, 54) -> Hole 4 (BL: 54, 86) */
-@keyframes needleTailorMotion {
-  /* 0%: Entry from top-left, aimed towards Hole 1 */
-  0% {
-    transform: translate(24px, 12px) rotate(-35deg) scale(0.9);
-    opacity: 0;
-  }
-  /* 8%: Gliding into approach */
-  8% {
-    transform: translate(42px, 36px) rotate(-35deg) scale(1);
-    opacity: 1;
-  }
-  /* 18%: Tip lands precisely in Hole 1 (54, 54) & plunges */
-  18% {
-    transform: translate(54px, 54px) rotate(-35deg) scale(0.85);
-    opacity: 1;
-  }
-  /* 24%: Lifting & angling towards Hole 3 */
-  24% {
-    transform: translate(62px, 62px) rotate(45deg) scale(1.05);
-  }
-  /* 40%: Traversing diagonal to Hole 3 (86, 86) */
-  40% {
-    transform: translate(86px, 86px) rotate(45deg) scale(1);
-  }
-  /* 46%: Plunging into Hole 3 (86, 86) - Diagonal 1 complete */
-  46% {
-    transform: translate(86px, 86px) rotate(45deg) scale(0.82);
-  }
-  /* 54%: Pulling underneath button to emerge near Hole 2 (86, 54) */
-  54% {
-    transform: translate(96px, 42px) rotate(-135deg) scale(0.92);
-  }
-  /* 60%: Tip lands precisely in Hole 2 (86, 54) & plunges */
-  60% {
-    transform: translate(86px, 54px) rotate(135deg) scale(0.86);
-  }
-  /* 66%: Lifting & angling towards Hole 4 */
-  66% {
-    transform: translate(78px, 62px) rotate(135deg) scale(1.05);
-  }
-  /* 78%: Traversing diagonal to Hole 4 (54, 86) */
-  78% {
-    transform: translate(54px, 86px) rotate(135deg) scale(1);
-  }
-  /* 84%: Plunging into Hole 4 (54, 86) - Diagonal 2 complete */
-  84% {
-    transform: translate(54px, 86px) rotate(135deg) scale(0.82);
-  }
-  /* 89%: Pulling thread tight & lifting off button */
-  89% {
-    transform: translate(76px, 66px) rotate(32deg) scale(1.1);
-    opacity: 1;
-  }
-  /* 100%: Gracefully gliding off-screen upwards to right */
-  100% {
-    transform: translate(150px, -28px) rotate(45deg) scale(0.8);
-    opacity: 0;
-  }
+  animation: stitchDraw2 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.7s forwards;
 }
 
 /* Brand Text Reveal */

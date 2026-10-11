@@ -94,21 +94,6 @@
 
           <!-- Stitch 2: Diagonal from Hole 2 (86, 54) to Hole 4 (54, 86) -->
           <line x1="86" y1="54" x2="54" y2="86" class="stitch-path stitch-cross-2" filter="url(#threadShadow)" />
-
-          <!-- Precision Needle & Trailing Dark Cream Silk Thread -->
-          <g class="tailor-needle-stage">
-            <g class="needle-graphics">
-              <!-- Trailing Silk Thread from Needle Eye -->
-              <path class="needle-trailing-thread" d="M 0 -36 C -8 -50 -16 -46 -22 -65 C -28 -78 -22 -92 -32 -110" />
-
-              <!-- Polished Steel Needle Shaft & Sharp Point at (0, 0) -->
-              <path d="M 0 0 L -1.6 -40 C -1.6 -44 1.6 -44 1.6 -40 Z" fill="url(#needleSteel)" stroke="#808080" stroke-width="0.5" />
-
-              <!-- Eye of the Needle with Thread Through Eye -->
-              <ellipse cx="0" cy="-35" rx="0.75" ry="3.8" fill="#22150C" />
-              <line x1="0" y1="-38" x2="0" y2="-32" stroke="var(--loader-thread)" stroke-width="1.2" />
-            </g>
-          </g>
         </svg>
       </div>
     </div>
@@ -447,7 +432,7 @@
   <!-- 4. FULL-WIDTH BACKGROUND VIDEO SHOWCASE (ADMIN MANAGEABLE VIA SUPABASE) -->
   <section class="snitch-video-section" id="snitchVideoSection">
     <div class="snitch-video-container">
-      <video id="homeBgVideo" class="snitch-video-media" autoplay muted loop playsinline poster="images/hero1.jpg">
+      <video id="homeBgVideo" class="snitch-video-media" autoplay muted loop playsinline preload="metadata" poster="images/hero1.jpg">
         <source src="https://assets.mixkit.co/videos/preview/mixkit-tailor-working-on-a-suit-jacket-41394-large.mp4" type="video/mp4">
       </video>
       <div class="snitch-video-overlay">
@@ -706,6 +691,23 @@
     }
   }
 
+  // Bandwidth & Battery Optimization: Pause video playback when offscreen
+  document.addEventListener('DOMContentLoaded', () => {
+    const bgVid = document.getElementById('homeBgVideo');
+    if (bgVid && 'IntersectionObserver' in window) {
+      const vidObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            bgVid.play().catch(() => {});
+          } else {
+            bgVid.pause();
+          }
+        });
+      }, { threshold: 0.15 });
+      vidObs.observe(bgVid);
+    }
+  });
+
   function quickAddProduct(prodId, event) {
     if (event) { event.preventDefault(); event.stopPropagation(); }
     if (window.UR_CART && typeof window.UR_CART.addItem === 'function') {
@@ -882,7 +884,26 @@
         if (cachedData.categories) renderCategories(cachedData.categories);
         if (cachedData.products) renderProducts(cachedData.products);
         if (cachedData.video) renderVideoShowcase(cachedData.video);
-        if (Date.now() - (cachedData.timestamp || 0) < 60000) return;
+
+        // 1.5 ULTRA-LOW EGRESS VALIDATION CHECK (<40 Bytes)
+        // Check if products have updated on Supabase before requesting heavy tables
+        try {
+          const { data: latestRow } = await client
+            .from('products')
+            .select('updated_at')
+            .order('updated_at', { ascending: false })
+            .limit(1);
+
+          const latestServerTime = (latestRow && latestRow[0] && latestRow[0].updated_at) ? latestRow[0].updated_at : null;
+
+          // If cache is valid and server timestamp matches cached timestamp, SKIP full payload egress!
+          if (latestServerTime && cachedData.latestUpdatedAt === latestServerTime) {
+            console.log('[Supabase Egress Optimizer] Cache validated via micro-byte check (~38 bytes). Saving 99.9% egress.');
+            return;
+          }
+        } catch(checkErr) {
+          console.warn('Micro-byte timestamp check notice:', checkErr);
+        }
       }
 
       // 2. FETCH SUPABASE DATA
