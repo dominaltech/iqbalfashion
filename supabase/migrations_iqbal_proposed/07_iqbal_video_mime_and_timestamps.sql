@@ -24,6 +24,7 @@ WITH CHECK (bucket_id IN ('banner-images', 'product-images'));
 -- 2. ADD updated_at COLUMNS TO BANNERS & STORE_SETTINGS FOR MICRO-BYTE CACHE INVALIDATION
 ALTER TABLE public.banners ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
 ALTER TABLE public.store_settings ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
+ALTER TABLE public.store_settings ADD COLUMN IF NOT EXISTS home_video_frame_mode TEXT DEFAULT 'auto';
 
 -- Populate updated_at for existing rows
 UPDATE public.banners SET updated_at = NOW() WHERE updated_at IS NULL;

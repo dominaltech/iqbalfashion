@@ -184,18 +184,28 @@
       overlay.classList.add('open');
       document.body.style.overflow = 'hidden';
     }, 10);
+    try {
+      if (!history.state || history.state.iqbalModal !== 'drawer') {
+        history.pushState({ iqbalModal: 'drawer' }, '');
+      }
+    } catch(e) {}
   };
 
-  window.closeCatDrawer = function(e) {
+  window.closeCatDrawer = function(e, fromPop) {
     if (e && e.target && e.target !== e.currentTarget && !e.target.classList.contains('hamburger-overlay') && !e.target.classList.contains('drawer-overlay') && !e.target.classList.contains('ham-close')) {
       return;
     }
     let overlays = document.querySelectorAll('#hamburgerOverlay, #catOverlay, .hamburger-overlay, .drawer-overlay');
+    let wasOpen = false;
     overlays.forEach(overlay => {
+      if (overlay.classList.contains('active') || overlay.classList.contains('open')) wasOpen = true;
       overlay.classList.remove('active');
       overlay.classList.remove('open');
     });
     document.body.style.overflow = '';
+    if (wasOpen && !fromPop && history.state && history.state.iqbalModal === 'drawer') {
+      try { history.back(); } catch(err) {}
+    }
   };
 
   // 3. SHOPPING CART STATE MANAGEMENT
@@ -520,14 +530,23 @@
       const input = overlay.querySelector('.search-input');
       if (input) input.focus();
     }, 10);
+    try {
+      if (!history.state || history.state.iqbalModal !== 'search') {
+        history.pushState({ iqbalModal: 'search' }, '');
+      }
+    } catch(e) {}
   };
 
-  window.closeSearchOverlay = function() {
+  window.closeSearchOverlay = function(fromPop) {
     let overlay = document.getElementById('searchOverlay');
     if (overlay) {
+      const wasOpen = overlay.classList.contains('active') || overlay.classList.contains('open');
       overlay.classList.remove('active');
       overlay.classList.remove('open');
       document.body.style.overflow = '';
+      if (wasOpen && !fromPop && history.state && history.state.iqbalModal === 'search') {
+        try { history.back(); } catch(err) {}
+      }
     }
   };
 
@@ -685,3 +704,37 @@
 
   })();
 
+
+  // ==============================================================================
+  // PRODUCTION PWA / SPA MOBILE HARDWARE & BROWSER BACK BUTTON CONTROLLER
+  // ==============================================================================
+  window.addEventListener('popstate', function(event) {
+    // 1. If search overlay is open, intercept Back to CLOSE search only
+    const searchOverlay = document.getElementById('searchOverlay');
+    if (searchOverlay && (searchOverlay.classList.contains('active') || searchOverlay.classList.contains('open'))) {
+      window.closeSearchOverlay(true);
+      return;
+    }
+
+    // 2. If mobile category drawer / hamburger menu is open, intercept Back to CLOSE menu only
+    const catOverlays = document.querySelectorAll('#hamburgerOverlay, #catOverlay, .hamburger-overlay, .drawer-overlay');
+    let drawerOpen = false;
+    catOverlays.forEach(overlay => {
+      if (overlay.classList.contains('active') || overlay.classList.contains('open')) drawerOpen = true;
+    });
+    if (drawerOpen) {
+      window.closeCatDrawer(null, true);
+      return;
+    }
+
+    // 3. If any cart / modal / popup is open, intercept Back to CLOSE modal only
+    const openModals = document.querySelectorAll('.modal.active, .modal.open, .cart-modal.open, .quickview-modal.open');
+    if (openModals.length > 0) {
+      openModals.forEach(m => {
+        m.classList.remove('active', 'open');
+        m.style.display = 'none';
+      });
+      document.body.style.overflow = '';
+      return;
+    }
+  });
