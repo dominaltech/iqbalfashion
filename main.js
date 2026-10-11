@@ -692,8 +692,11 @@
       initOverlayListeners();
       initDynamicCategoriesNav();
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js')
-          .then(reg => console.log('Storefront SW registered:', reg))
+        navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' })
+          .then(reg => {
+            console.log('Storefront SW registered:', reg);
+            reg.update();
+          })
           .catch(err => console.error('Storefront SW registration failed:', err));
       }
     });

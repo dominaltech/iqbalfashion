@@ -124,41 +124,63 @@
   stroke-dashoffset: 48;
 }
 
-/* Precision Thread Tailoring (Needle removed as requested, pure thread stitching) */
-.stitch-cross-1 {
-  animation: stitchDraw1 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.15s forwards;
+/* Precision Thread Tailoring - Looping Mode until assets load */
+.loader-stage.is-looping .stitch-cross-1 {
+  animation: stitchLoop1 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-.stitch-cross-2 {
-  animation: stitchDraw2 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.65s forwards;
+.loader-stage.is-looping .stitch-cross-2 {
+  animation: stitchLoop2 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-@keyframes stitchDraw1 {
+@keyframes stitchLoop1 {
   0% {
     stroke-dashoffset: 48;
     opacity: 0.2;
   }
-  15% {
-    opacity: 1;
-  }
-  100% {
+  28% {
     stroke-dashoffset: 0;
     opacity: 1;
+  }
+  80% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  92%, 100% {
+    stroke-dashoffset: -48;
+    opacity: 0;
   }
 }
 
-@keyframes stitchDraw2 {
-  0% {
+@keyframes stitchLoop2 {
+  0%, 26% {
     stroke-dashoffset: 48;
+    opacity: 0;
+  }
+  30% {
     opacity: 0.2;
   }
-  15% {
-    opacity: 1;
-  }
-  100% {
+  56% {
     stroke-dashoffset: 0;
     opacity: 1;
   }
+  80% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  92%, 100% {
+    stroke-dashoffset: -48;
+    opacity: 0;
+  }
+}
+
+/* Finished Mode: Lock Stitches Firmly */
+.loader-stage.is-finished .stitch-cross-1,
+.loader-stage.is-finished .stitch-cross-2 {
+  animation: none !important;
+  stroke-dashoffset: 0 !important;
+  opacity: 1 !important;
+  transition: opacity 0.25s ease;
 }
 
 /* Brand Text Reveal */

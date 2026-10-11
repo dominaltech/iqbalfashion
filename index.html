@@ -31,7 +31,7 @@
 <div id="iqbalStartupLoader" aria-hidden="true">
   <div class="loader-curtain loader-curtain-top"></div>
   <div class="loader-curtain loader-curtain-bottom"></div>
-  <div class="loader-stage">
+  <div class="loader-stage is-looping">
     <div class="button-anim-container">
       <div class="button-spin-wrap" id="loaderButtonWrap">
         <svg class="button-svg" viewBox="0 0 140 140">
@@ -421,24 +421,33 @@
 
   <!-- 4. FULL-WIDTH BACKGROUND VIDEO SHOWCASE (ADMIN MANAGEABLE VIA SUPABASE) -->
   <section class="snitch-video-section" id="snitchVideoSection">
+    <div class="container">
+      <!-- Section Header / Caption Box ABOVE the video -->
+      <div class="snitch-video-header-box">
+        <span class="snitch-video-pill">ROYAL HERITAGE BESPOKE</span>
+        <h2 class="snitch-video-heading" id="homeVideoHeading">THE BESPOKE EXPERIENCE</h2>
+        <p class="snitch-video-sub" id="homeVideoSub">Master craftsmanship, hand-finished suiting &amp; shirting tailored to your exact measurements.</p>
+      </div>
+    </div>
+
+    <!-- Video Showcase Player (100% full clarity, zero dark overlay/filter, no dummy poster) -->
     <div class="snitch-video-container">
-      <video id="homeBgVideo" class="snitch-video-media" autoplay muted loop playsinline preload="metadata" poster="images/hero1.jpg">
+      <video id="homeBgVideo" class="snitch-video-media" autoplay muted loop playsinline preload="auto">
         <source src="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/videos/1791709271196_hd1krx_1000239021_mp4.mp4" type="video/mp4">
       </video>
-      <div class="snitch-video-overlay">
-        <div class="container snitch-video-content">
-          <span class="snitch-video-pill">ROYAL HERITAGE BESPOKE</span>
-          <h2 class="snitch-video-heading" id="homeVideoHeading">THE BESPOKE EXPERIENCE</h2>
-          <p class="snitch-video-sub" id="homeVideoSub">Master craftsmanship, hand-finished suiting &amp; shirting tailored to your exact measurements.</p>
-          <div class="snitch-video-btns">
-            <a href="suiting.html" class="snitch-btn-white">EXPLORE BESPOKE SUITING</a>
-            <button class="snitch-sound-toggle-btn" id="soundToggleBtn" onclick="toggleHomeVideoAudio()" aria-label="Toggle sound">
-              <svg id="soundMuteIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-              <span id="soundLabel">UNMUTE SOUND</span>
-            </button>
-          </div>
-        </div>
-      </div>
+      <!-- ONLY sound toggle button on the video surface, positioned at the bottom-right corner -->
+      <button class="snitch-sound-toggle-btn" id="soundToggleBtn" onclick="toggleHomeVideoAudio()" aria-label="Toggle sound">
+        <svg id="soundMuteIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+        <span id="soundLabel">UNMUTE SOUND</span>
+      </button>
+    </div>
+
+    <!-- Action / Explore Button BELOW the video -->
+    <div class="container snitch-video-bottom-action">
+      <a href="suiting.html" class="snitch-video-explore-btn" id="homeVideoExploreBtn">
+        <span>EXPLORE BESPOKE SUITING</span>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
     </div>
   </section>
 
@@ -1037,12 +1046,15 @@
     const headingEl = document.getElementById('homeVideoHeading');
     const subEl = document.getElementById('homeVideoSub');
     const pillEl = document.querySelector('.snitch-video-pill');
+    const exploreBtn = document.getElementById('homeVideoExploreBtn');
 
     if (headingEl && videoData.title) headingEl.textContent = videoData.title;
     if (subEl && videoData.subtitle) subEl.textContent = videoData.subtitle;
     if (pillEl && videoData.badge) pillEl.textContent = videoData.badge;
+    if (exploreBtn && videoData.link) exploreBtn.href = videoData.link;
 
     if (vidEl) {
+      if (vidEl.hasAttribute('poster')) vidEl.removeAttribute('poster');
       const targetUrl = videoData.video_url;
       const currentSrc = vidEl.currentSrc || vidEl.src || '';
       if (!currentSrc.includes(targetUrl.split('?')[0])) {
@@ -1068,7 +1080,10 @@
     }
   }
 
-  window.loadHomePageData = async function loadHomePageData() {
+  let homePageDataPromise = null;
+  window.loadHomePageData = function loadHomePageData(forceRefresh = false) {
+    if (homePageDataPromise && !forceRefresh) return homePageDataPromise;
+    homePageDataPromise = (async () => {
     const client = window.urSupabase || (window.supabase && typeof window.supabase.createClient === 'function' ? window.supabase.createClient(window.UR_CONFIG.SUPABASE_URL, window.UR_CONFIG.SUPABASE_ANON_KEY) : null);
     if (!client) return;
 
@@ -1087,35 +1102,9 @@
         if (cachedData.video) renderVideoShowcase(cachedData.video);
         if (cachedData.bottomBanners) renderBottomBanners(cachedData.bottomBanners);
 
-        // 1.5 DUAL-VECTOR MICRO-BYTE CACHE VALIDATION (~60 bytes total)
-        // Validates BOTH product inventory AND store_settings/video timestamps!
-        try {
-          const [{ data: latestProductRow }, { data: latestSettingsRow }] = await Promise.all([
-            client.from('products').select('updated_at').order('updated_at', { ascending: false }).limit(1),
-            client.from('store_settings').select('updated_at').limit(1)
-          ]);
-
-          const serverProdTime = (latestProductRow && latestProductRow[0] && latestProductRow[0].updated_at) ? latestProductRow[0].updated_at : null;
-          const serverSettingsTime = (latestSettingsRow && latestSettingsRow[0] && latestSettingsRow[0].updated_at) ? latestSettingsRow[0].updated_at : null;
-
-          // If BOTH product inventory AND store settings (video & promo banners) match the cache, SKIP heavy payload!
-          if (
-            serverProdTime &&
-            serverSettingsTime &&
-            cachedData.latestProdTime === serverProdTime &&
-            cachedData.latestSettingsTime === serverSettingsTime &&
-            cachedData.products && cachedData.products.length > 0 &&
-            cachedData.video && cachedData.video.video_url
-          ) {
-            console.log('[Supabase Egress Optimizer] Cache verified (products & store_settings in sync). Saving 99.9% egress.');
-            return;
-          }
-        } catch(checkErr) {
-          console.warn('Micro-byte cache validation notice:', checkErr);
-        }
       }
 
-      // 2. FETCH SUPABASE DATA (When cache is empty or admin updated video/settings/products)
+      // 2. ALWAYS FETCH LIVE FRESH SUPABASE DATA (Realtime fresh banners, video, and products)
       let banners = [];
       let bottomBanners = [];
       let videoData = null;
@@ -1201,7 +1190,9 @@
       }));
 
     } catch(e) { console.error('loadHomePageData error:', e); }
-  }
+    })();
+    return homePageDataPromise;
+  };
 
     let currentActiveHomeCoupon = null;
 
@@ -1285,6 +1276,6 @@
     });
   });
 </script>
-<script src="loader/startup-loader.js?v=3"></script>
+<script src="loader/startup-loader.js?v=4"></script>
 </body>
 </html>
