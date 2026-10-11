@@ -1,6 +1,6 @@
-﻿// IQBAL FASHION STOREFRONT SERVICE WORKER
+// IQBAL FASHION STOREFRONT SERVICE WORKER
 // REAL-TIME DIRECT NETWORK FOR SUPABASE & LIVE CODE UPDATES WITHOUT MANUAL CACHE BUSTING
-const STATIC_CACHE_NAME = 'iqbalfashion-live-v5';
+const STATIC_CACHE_NAME = 'iqbalfashion-live-v6';
 
 self.addEventListener('install', (event) => {
   self.skipWaiting();

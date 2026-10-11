@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -300,10 +300,21 @@
 <!-- MAIN CONTENT (SNITCH AESTHETIC: PURE WHITE, EDGE-TO-EDGE HERO, PROMO STRIP, CATEGORIES, BACKGROUND VIDEO, TRENDING PRODUCTS) -->
 <main id="MainContent">
 
-  <!-- 1. FULL-BLEED EDGE-TO-EDGE HERO IMAGE SLIDER (populated from Supabase - no hardcoded slides) -->
+  <!-- 1. FULL-BLEED EDGE-TO-EDGE HERO IMAGE SLIDER (Live Supabase images with instant active slide) -->
   <section class="snitch-hero-slider-section" id="snitchHeroSection" aria-label="Hero Showcase">
     <div class="snitch-hero-slider" id="heroSlider">
-      <!-- Slides, arrows and dots are injected by renderBanners() from Supabase -->
+      <div class="snitch-slide active">
+        <picture>
+          <source media="(max-width: 768px)" srcset="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712627815_5c80os_1000239058_webp.webp">
+          <img src="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712627815_5c80os_1000239058_webp.webp" alt="Royal Bespoke Suiting" class="snitch-slide-img" fetchpriority="high">
+        </picture>
+        <div class="snitch-slide-content">
+          <span class="snitch-slide-tag">NEW SEASON 2026</span>
+          <h2 class="snitch-slide-title">ROYAL BESPOKE SUITING</h2>
+          <p class="snitch-slide-sub">EXCELLENCE IN BESPOKE TAILORING &amp; FINE CLOTH MATERIALS</p>
+          <a href="cloth-material.html" class="snitch-slide-btn">EXPLORE NOW</a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -486,7 +497,7 @@
     </div>
   </section>
 
-  <!-- DUAL HOMEPAGE PROMO BANNERS (ONE BELOW EACH OTHER, TEXT BELOW IMAGE) -->
+  <!-- DUAL HOMEPAGE PROMO BANNERS (ONE BELOW EACH OTHER, ADMIN-MANAGEABLE) -->
   <section class="home-bottom-banners-section" id="homeBottomBannersSection">
     <div class="container">
       <div class="bottom-banners-stack">
@@ -496,8 +507,8 @@
           <a href="ethnic.html" id="bottomBannerLink1" class="bottom-banner-link">
             <div class="bottom-banner-img-box">
               <picture>
-                <source id="bottomBannerSource1" media="(max-width: 768px)" srcset="images/hero2.jpg">
-                <img id="bottomBannerImg1" src="images/hero2.jpg" alt="Bespoke Royal Wedding &amp; Ethnic Wear" class="bottom-banner-img" loading="lazy" decoding="async">
+                <source id="bottomBannerSource1" media="(max-width: 768px)" srcset="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/bottom-banners/1791712857983_b8myew_1000239064_webp.webp">
+                <img id="bottomBannerImg1" src="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/bottom-banners/1791712857983_b8myew_1000239064_webp.webp" alt="Bespoke Royal Wedding &amp; Ethnic Wear" class="bottom-banner-img" loading="lazy" decoding="async">
               </picture>
             </div>
             <div class="bottom-banner-caption">
@@ -518,8 +529,8 @@
           <a href="suiting.html" id="bottomBannerLink2" class="bottom-banner-link">
             <div class="bottom-banner-img-box">
               <picture>
-                <source id="bottomBannerSource2" media="(max-width: 768px)" srcset="images/hero1.jpg">
-                <img id="bottomBannerImg2" src="images/hero1.jpg" alt="Luxury Italian &amp; English Suiting Fabrics" class="bottom-banner-img" loading="lazy" decoding="async">
+                <source id="bottomBannerSource2" media="(max-width: 768px)" srcset="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/bottom-banners/1791712858792_zdwhe7_1000239065_webp.webp">
+                <img id="bottomBannerImg2" src="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/bottom-banners/1791712858792_zdwhe7_1000239065_webp.webp" alt="Luxury Italian &amp; English Suiting Fabrics" class="bottom-banner-img" loading="lazy" decoding="async">
               </picture>
             </div>
             <div class="bottom-banner-caption">
@@ -839,11 +850,14 @@
     const validBanners = banners.filter(b => (b.image_url && b.image_url.trim().length > 0) && (b.section !== 'video'));
     const slider = document.getElementById('heroSlider');
     if (slider && validBanners.length > 0) {
-      slider.innerHTML = validBanners.map((b, idx) => `
+      slider.innerHTML = validBanners.map((b, idx) => {
+        const desktopImg = b.image_url;
+        const mobileImg = (b.mobile_image_url && b.mobile_image_url.startsWith('http')) ? b.mobile_image_url : desktopImg;
+        return `
         <div class="snitch-slide ${idx === 0 ? 'active' : ''}">
           <picture>
-            <source media="(max-width: 768px)" srcset="${b.mobile_image_url || b.image_url}">
-            <img src="${b.image_url}" alt="${b.title || 'Iqbal Fashion'}" class="snitch-slide-img" ${idx === 0 ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'}>
+            <source media="(max-width: 768px)" srcset="${mobileImg}">
+            <img src="${desktopImg}" alt="${b.title || 'Iqbal Fashion'}" class="snitch-slide-img" ${idx === 0 ? 'fetchpriority="high"' : 'loading="lazy" decoding="async"'}>
           </picture>
           <div class="snitch-slide-content">
             ${b.badge_text ? `<span class="snitch-slide-tag">${b.badge_text}</span>` : ''}
@@ -852,7 +866,8 @@
             ${b.link_url && b.link_url !== '#' ? `<a href="${b.link_url}" class="snitch-slide-btn">EXPLORE NOW</a>` : `<a href="shop.html" class="snitch-slide-btn">SHOP COLLECTION</a>`}
           </div>
         </div>
-      `).join('') + `
+      `;
+      }).join('') + `
         <button class="snitch-slider-arrow prev" onclick="prevHeroSlide()" aria-label="Previous slide">
           <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
@@ -920,8 +935,11 @@
       const badge1 = document.getElementById('bottomBannerBadge1');
       const link1 = document.getElementById('bottomBannerLink1');
 
-      if (img1 && b1.image_url) img1.src = b1.image_url;
-      if (src1 && (b1.mobile_image_url || b1.image_url)) src1.srcset = b1.mobile_image_url || b1.image_url;
+      const imgUrl1 = b1.image_url;
+      const mobUrl1 = (b1.mobile_image_url && b1.mobile_image_url.startsWith('http')) ? b1.mobile_image_url : imgUrl1;
+
+      if (img1 && imgUrl1) img1.src = imgUrl1;
+      if (src1 && mobUrl1) src1.srcset = mobUrl1;
       if (title1 && b1.title) title1.textContent = b1.title;
       if (sub1 && b1.subtitle) sub1.textContent = b1.subtitle;
       if (badge1 && b1.badge_text) badge1.textContent = b1.badge_text;
@@ -936,8 +954,11 @@
       const badge2 = document.getElementById('bottomBannerBadge2');
       const link2 = document.getElementById('bottomBannerLink2');
 
-      if (img2 && b2.image_url) img2.src = b2.image_url;
-      if (src2 && (b2.mobile_image_url || b2.image_url)) src2.srcset = b2.mobile_image_url || b2.image_url;
+      const imgUrl2 = b2.image_url;
+      const mobUrl2 = (b2.mobile_image_url && b2.mobile_image_url.startsWith('http')) ? b2.mobile_image_url : imgUrl2;
+
+      if (img2 && imgUrl2) img2.src = imgUrl2;
+      if (src2 && mobUrl2) src2.srcset = mobUrl2;
       if (title2 && b2.title) title2.textContent = b2.title;
       if (sub2 && b2.subtitle) sub2.textContent = b2.subtitle;
       if (badge2 && b2.badge_text) badge2.textContent = b2.badge_text;
@@ -989,12 +1010,36 @@
     }
   }
 
+  function getActiveSupabaseClient() {
+    if (window.urSupabase) return window.urSupabase;
+    if (window.supabase && typeof window.supabase.createClient === 'function' && window.UR_CONFIG) {
+      try {
+        window.urSupabase = window.supabase.createClient(window.UR_CONFIG.SUPABASE_URL, window.UR_CONFIG.SUPABASE_ANON_KEY);
+        return window.urSupabase;
+      } catch(e) {}
+    }
+    return null;
+  }
+
+  async function safeExecuteQuery(queryBuilderPromise) {
+    try {
+      const res = await queryBuilderPromise;
+      return res || { data: null, error: null };
+    } catch(err) {
+      console.warn('safeExecuteQuery notice:', err);
+      return { data: null, error: err };
+    }
+  }
+
   let homePageDataPromise = null;
   window.loadHomePageData = function loadHomePageData(forceRefresh = false) {
     if (homePageDataPromise && !forceRefresh) return homePageDataPromise;
     homePageDataPromise = (async () => {
-    const client = window.urSupabase || (window.supabase && typeof window.supabase.createClient === 'function' ? window.supabase.createClient(window.UR_CONFIG.SUPABASE_URL, window.UR_CONFIG.SUPABASE_ANON_KEY) : null);
-    if (!client) return;
+    const client = getActiveSupabaseClient();
+    if (!client) {
+      homePageDataPromise = null;
+      return;
+    }
 
     try {
       // 1. FAST INITIAL PAINT FROM CACHE (Instant 0ms display for returning visitors)
@@ -1012,31 +1057,31 @@
       }
 
       // PHASE 1 – Critical: Banners + Video + Settings (loader waits for this)
-      // Fetch banners and store_settings in parallel for fastest response
       let banners = [];
       let bottomBanners = [];
       let videoData = null;
       let settingsData = null;
 
       const [bannersRes, settingsRes] = await Promise.all([
-        client
-          .from('banners')
-          .select('id, title, subtitle, image_url, mobile_image_url, video_url, link_url, badge_text, display_order, is_active, section, updated_at')
-          .eq('is_active', true)
-          .order('display_order', { ascending: true })
-          .catch(() => ({ data: null })),
-        client
-          .from('store_settings')
-          .select('*')
-          .limit(1)
-          .catch(() => ({ data: null }))
+        safeExecuteQuery(
+          client
+            .from('banners')
+            .select('id, title, subtitle, image_url, mobile_image_url, video_url, link_url, badge_text, display_order, is_active, section, updated_at')
+            .eq('is_active', true)
+            .order('display_order', { ascending: true })
+        ),
+        safeExecuteQuery(
+          client
+            .from('store_settings')
+            .select('*')
+            .limit(1)
+        )
       ]);
 
       // Process live banners
       if (bannersRes.data && bannersRes.data.length > 0) {
         banners = bannersRes.data.filter(b => b.section !== 'video' && b.section !== 'bottom' && !b.video_url);
         bottomBanners = bannersRes.data.filter(b => b.section === 'bottom');
-        if (bottomBanners.length > 0) renderBottomBanners(bottomBanners);
 
         const vidBanner = bannersRes.data.find(b => b.section === 'video' || (b.video_url && b.video_url.length > 0));
         if (vidBanner) {
@@ -1050,7 +1095,7 @@
         }
       }
 
-      // Process store_settings for video override
+      // Process store_settings for video & bottom banners
       if (settingsRes.data && settingsRes.data[0]) {
         settingsData = settingsRes.data[0];
         if (settingsData.home_video_url) {
@@ -1067,23 +1112,54 @@
         }
       }
 
-      // Render critical content (banners + video) immediately
+      // If bottomBanners not in banners table, fall back to store_settings
+      if (!bottomBanners || bottomBanners.length === 0) {
+        if (settingsData && (settingsData.bottom_banner_1_image || settingsData.bottom_banner_2_image)) {
+          bottomBanners = [
+            {
+              display_order: 1,
+              title: settingsData.bottom_banner_1_title || 'BESPOKE ROYAL WEDDING & ETHNIC WEAR',
+              subtitle: settingsData.bottom_banner_1_subtitle,
+              badge_text: settingsData.bottom_banner_1_badge || 'WEDDING SPECIAL',
+              link_url: settingsData.bottom_banner_1_link || 'ethnic.html',
+              image_url: settingsData.bottom_banner_1_image,
+              mobile_image_url: settingsData.bottom_banner_1_image
+            },
+            {
+              display_order: 2,
+              title: settingsData.bottom_banner_2_title || 'LUXURY ITALIAN & ENGLISH SUITING FABRICS',
+              subtitle: settingsData.bottom_banner_2_subtitle,
+              badge_text: settingsData.bottom_banner_2_badge || 'FINE TEXTILES',
+              link_url: settingsData.bottom_banner_2_link || 'suiting.html',
+              image_url: settingsData.bottom_banner_2_image,
+              mobile_image_url: settingsData.bottom_banner_2_image
+            }
+          ];
+        }
+      }
+
+      // Render critical content (banners + bottom banners + video) immediately
       renderBanners(banners);
+      if (bottomBanners.length > 0) renderBottomBanners(bottomBanners);
       if (videoData) renderVideoShowcase(videoData);
 
       // PHASE 2 – Deferred: Categories + Products (run in background, loader does NOT wait)
-      const categoriesPromise = window.fetchStoreCategories()
-        .then(cats => { renderCategories(cats); return cats; })
-        .catch(() => cachedData && cachedData.categories || []);
+      const categoriesPromise = (typeof window.fetchStoreCategories === 'function' ? window.fetchStoreCategories() : Promise.resolve([]))
+        .then(cats => { if (cats && cats.length) renderCategories(cats); return cats; })
+        .catch(() => (cachedData && cachedData.categories) || []);
 
-      const productsPromise = client
-        .from('products')
-        .select('id, name, price, mrp, main_image, is_new_arrival, category_id, updated_at, categories:category_id(slug, name)')
-        .eq('status', 'published')
-        .order('created_at', { ascending: false })
-        .limit(24)
-        .then(({ data: products }) => { if (products) renderProducts(products); return products; })
-        .catch(() => cachedData && cachedData.products || []);
+      const productsPromise = safeExecuteQuery(
+        client
+          .from('products')
+          .select('id, name, price, mrp, main_image, is_new_arrival, category_id, updated_at, categories:category_id(slug, name)')
+          .eq('status', 'published')
+          .order('created_at', { ascending: false })
+          .limit(24)
+      ).then(res => {
+        const prods = (res && res.data) || (cachedData && cachedData.products) || [];
+        if (prods && prods.length) renderProducts(prods);
+        return prods;
+      });
 
       // Wait for categories (fast) then save to cache
       const [categories, products] = await Promise.all([categoriesPromise, productsPromise]);
@@ -1184,11 +1260,11 @@
       trustObs.observe(trustSec);
     }
     document.addEventListener('urSupabaseReady', function() {
-      loadHomePageData();
+      loadHomePageData(true);
       loadHomeEventBanner();
     });
   });
 </script>
-<script src="loader/startup-loader.js?v=4"></script>
+<script src="loader/startup-loader.js?v=5"></script>
 </body>
 </html>

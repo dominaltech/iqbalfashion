@@ -1,4 +1,4 @@
-﻿/**
+/**
  * ==============================================================================
  * IQBAL FASHION — ADAPTIVE STARTUP LOADER & ASSET PRELOADER
  * Tailored Thread Stitching Micro-Animation with Dynamic Asset Preloading:
@@ -164,12 +164,18 @@
 
     updateProgress(60);
 
-    // 3. Get hero image URL from the NOW-RENDERED DOM (live Supabase images, not stale cache)
+    // 3. Get hero image URL from the NOW-RENDERED DOM (live Supabase images, respecting mobile srcset)
     let heroUrl = null;
     try {
-      const firstSlideImg = document.querySelector('#heroSlider .snitch-slide-img');
-      if (firstSlideImg && firstSlideImg.src && !firstSlideImg.src.endsWith('/') ) {
-        heroUrl = firstSlideImg.src;
+      const firstSlide = document.querySelector('#heroSlider .snitch-slide');
+      if (firstSlide) {
+        const sourceEl = firstSlide.querySelector('source');
+        const imgEl = firstSlide.querySelector('.snitch-slide-img');
+        if (window.innerWidth <= 768 && sourceEl && sourceEl.srcset) {
+          heroUrl = sourceEl.srcset;
+        } else if (imgEl && imgEl.src && !imgEl.src.endsWith('/')) {
+          heroUrl = imgEl.src;
+        }
       }
     } catch(e) {}
 
