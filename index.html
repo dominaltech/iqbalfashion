@@ -475,75 +475,143 @@
     </div>
   </section>
 
-  <!-- TRUST BADGES -->
-  <section class="trust-section">
+  <!-- TRUST BADGES (SINGLE HORIZONTAL LINE ON MOBILE WITH ANIMATED SVGS) -->
+  <section class="trust-section" id="trustSection">
     <div class="container">
       <div class="trust-grid">
-        <div class="trust-item fade-up">
+        
+        <!-- 1. FAST DELIVERY (RUNNING TRUCK WITH ROTATING WHEELS & SPEED TRAILS) -->
+        <div class="trust-item">
           <div class="trust-icon-wrap" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="1" y="3" width="15" height="13"/>
-              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
-              <circle cx="5.5" cy="18.5" r="2.5"/>
-              <circle cx="18.5" cy="18.5" r="2.5"/>
+            <svg class="trust-svg-truck" viewBox="0 0 28 28" fill="none">
+              <!-- Speed trails -->
+              <line x1="1" y1="9" x2="5" y2="9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="truck-speed-line line-1"/>
+              <line x1="2" y1="13" x2="6" y2="13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="truck-speed-line line-2"/>
+              <!-- Truck Chassis & Cargo -->
+              <g class="truck-body">
+                <path d="M4 7H17V19H4V7Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M17 11H21.5L24 14V19H17V11Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <rect x="18" y="13" width="3.5" height="2.5" fill="currentColor" opacity="0.6"/>
+              </g>
+              <!-- Rotating Wheels -->
+              <g class="truck-wheel wheel-back" style="transform-origin: 8.5px 19.5px;">
+                <circle cx="8.5" cy="19.5" r="2.5" stroke="currentColor" stroke-width="1.8" fill="#111"/>
+                <circle cx="8.5" cy="19.5" r="0.8" fill="currentColor"/>
+              </g>
+              <g class="truck-wheel wheel-front" style="transform-origin: 20.5px 19.5px;">
+                <circle cx="20.5" cy="19.5" r="2.5" stroke="currentColor" stroke-width="1.8" fill="#111"/>
+                <circle cx="20.5" cy="19.5" r="0.8" fill="currentColor"/>
+              </g>
             </svg>
           </div>
-          <div>
+          <div class="trust-text-group">
             <div class="trust-title">Fast Delivery</div>
             <div class="trust-desc">All-India express shipping</div>
           </div>
         </div>
-        <div class="trust-item fade-up">
+
+        <!-- 2. SECURE PAYMENTS (LOCK SHACKLE SNAP & SECURITY PULSE) -->
+        <div class="trust-item">
           <div class="trust-icon-wrap" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="1 4 1 10 7 10"/>
-              <path d="M3.51 15a9 9 0 1 0 .49-3.46"/>
+            <svg class="trust-svg-secure" viewBox="0 0 28 28" fill="none">
+              <!-- Shield Border -->
+              <path d="M14 3L23 7V13C23 18.5 19 23.5 14 25C9 23.5 5 18.5 5 13V7L14 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" class="shield-border"/>
+              <!-- Padlock Body -->
+              <rect x="9.5" y="12.5" width="9" height="7" rx="1.5" stroke="currentColor" stroke-width="1.8" fill="#111"/>
+              <!-- Locking Shackle -->
+              <path d="M11.5 12.5V9.5C11.5 8.1 12.6 7 14 7C15.4 7 16.5 8.1 16.5 9.5V12.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="lock-shackle"/>
+              <circle cx="14" cy="15.5" r="1" fill="currentColor"/>
             </svg>
           </div>
-          <div>
-            <div class="trust-title">Easy Returns</div>
-            <div class="trust-desc">2-day easy return policy</div>
-          </div>
-        </div>
-        <div class="trust-item fade-up">
-          <div class="trust-icon-wrap" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              <polyline points="9 12 11 14 15 10"/>
-            </svg>
-          </div>
-          <div>
-            <div class="trust-title">100% Authentic</div>
-            <div class="trust-desc">Original heavy-GSM fabric</div>
-          </div>
-        </div>
-        <div class="trust-item fade-up">
-          <div class="trust-icon-wrap" aria-hidden="true">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-              <line x1="1" y1="10" x2="23" y2="10"/>
-              <circle cx="6" cy="15" r="1.5"/>
-            </svg>
-          </div>
-          <div>
+          <div class="trust-text-group">
             <div class="trust-title">Secure Payments</div>
             <div class="trust-desc">Instant UPI, Cards &amp; Netbanking</div>
           </div>
         </div>
+
+        <!-- 3. 100% AUTHENTIC (MEDALLION SEAL WITH CHECKMARK DRAW) -->
+        <div class="trust-item">
+          <div class="trust-icon-wrap" aria-hidden="true">
+            <svg class="trust-svg-authentic" viewBox="0 0 28 28" fill="none">
+              <!-- Quality Star / Medallion Rim -->
+              <path d="M14 3.5L16.6 6.1L20.2 6.6L21.3 10L24.3 12.2L23.4 15.8L24.7 19.3L21.5 21.1L20 24.5L16.5 24.3L14 26.8L11.5 24.3L8 24.5L6.5 21.1L3.3 19.3L4.6 15.8L3.7 12.2L6.7 10L7.8 6.6L11.4 6.1L14 3.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" class="authentic-badge-rim"/>
+              <!-- Inner Circle -->
+              <circle cx="14" cy="15" r="6.5" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2 2"/>
+              <!-- Verified Animated Checkmark -->
+              <path d="M11 15L13.2 17.2L17.5 12.8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="authentic-check"/>
+            </svg>
+          </div>
+          <div class="trust-text-group">
+            <div class="trust-title">100% Authentic</div>
+            <div class="trust-desc">Original heavy-GSM fabric</div>
+          </div>
+        </div>
+
+        <!-- 4. EASY RETURNS (ROTATING RECYCLE ARROW TURNING INTO DONE CHECK) -->
+        <div class="trust-item">
+          <div class="trust-icon-wrap" aria-hidden="true">
+            <svg class="trust-svg-returns" viewBox="0 0 28 28" fill="none">
+              <!-- Rotating Return Arrow Loop -->
+              <g class="return-arrow-group" style="transform-origin: 14px 14px;">
+                <path d="M7 11.5C8.3 8.3 11.5 6 15.2 6.2C19.5 6.4 23 10 23 14.3C23 18.8 19.3 22.5 14.8 22.5C11.2 22.5 8.1 20.1 7 16.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <polyline points="4 12 7.5 11.5 8 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </g>
+              <!-- Done / Checkmark Indicator In Center -->
+              <path d="M11 14.5L13 16.5L17 12.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="return-done-check"/>
+            </svg>
+          </div>
+          <div class="trust-text-group">
+            <div class="trust-title">Easy Returns</div>
+            <div class="trust-desc">2-day easy return policy</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- NEWSLETTER -->
-  <section class="section newsletter-section" style="background:#FAFAFA;">
+  <!-- DUAL HOMEPAGE PROMO BANNERS (ONE BELOW EACH OTHER, ADMIN-MANAGEABLE) -->
+  <section class="home-bottom-banners-section" id="homeBottomBannersSection">
     <div class="container">
-      <p class="nl-eyebrow" style="color:#888888;">Stay in the loop</p>
-      <h2 class="nl-title" style="color:#111111;">Get Exclusive Drops &amp; Offers</h2>
-      <p class="nl-sub" style="color:#666666;">Be the first to know about new arrivals, fabrics &amp; bespoke tailoring updates.</p>
-      <form class="nl-form" onsubmit="event.preventDefault(); window.UR_TOAST('Subscribed successfully!');">
-        <input type="email" class="nl-input" placeholder="Enter your email address" required style="border:1.5px solid #111111; background:#FFFFFF; color:#111111;" />
-        <button type="submit" class="nl-submit" style="background:#111111; color:#FFFFFF;">Subscribe</button>
-      </form>
+      <div class="bottom-banners-stack">
+        
+        <!-- Bottom Banner 1 (Upper) -->
+        <div class="bottom-banner-card" id="bottomBannerCard1">
+          <a href="ethnic.html" id="bottomBannerLink1" class="bottom-banner-link">
+            <picture>
+              <source id="bottomBannerSource1" media="(max-width: 768px)" srcset="images/hero2.jpg">
+              <img id="bottomBannerImg1" src="images/hero2.jpg" alt="Bespoke Royal Wedding &amp; Ethnic Wear" class="bottom-banner-img" loading="lazy" decoding="async">
+            </picture>
+            <div class="bottom-banner-overlay">
+              <div class="bottom-banner-content">
+                <span class="bottom-banner-pill" id="bottomBannerBadge1">WEDDING SPECIAL</span>
+                <h3 class="bottom-banner-title" id="bottomBannerTitle1">BESPOKE ROYAL WEDDING &amp; ETHNIC WEAR</h3>
+                <p class="bottom-banner-sub" id="bottomBannerSub1">Handcrafted sherwanis, kurtas &amp; bespoke regal styling for the gentleman.</p>
+                <span class="bottom-banner-cta" id="bottomBannerCta1">EXPLORE COLLECTION →</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <!-- Bottom Banner 2 (Lower) -->
+        <div class="bottom-banner-card" id="bottomBannerCard2">
+          <a href="suiting.html" id="bottomBannerLink2" class="bottom-banner-link">
+            <picture>
+              <source id="bottomBannerSource2" media="(max-width: 768px)" srcset="images/hero1.jpg">
+              <img id="bottomBannerImg2" src="images/hero1.jpg" alt="Luxury Italian &amp; English Suiting Fabrics" class="bottom-banner-img" loading="lazy" decoding="async">
+            </picture>
+            <div class="bottom-banner-overlay">
+              <div class="bottom-banner-content">
+                <span class="bottom-banner-pill" id="bottomBannerBadge2">FINE TEXTILES</span>
+                <h3 class="bottom-banner-title" id="bottomBannerTitle2">LUXURY ITALIAN &amp; ENGLISH SUITING FABRICS</h3>
+                <p class="bottom-banner-sub" id="bottomBannerSub2">Master tailor cut lengths in pure wool, linen, cashmeres &amp; fine twill.</p>
+                <span class="bottom-banner-cta" id="bottomBannerCta2">SHOP FABRICS →</span>
+              </div>
+            </div>
+          </a>
+        </div>
+
+      </div>
     </div>
   </section>
 
@@ -877,6 +945,46 @@
     }
   }
 
+  
+  // Helper: Render Bottom Promo Banners dynamically
+  function renderBottomBanners(bottomBanners) {
+    if (!bottomBanners || !bottomBanners.length) return;
+    const b1 = bottomBanners.find(b => b.display_order === 1) || bottomBanners[0];
+    const b2 = bottomBanners.find(b => b.display_order === 2) || (bottomBanners.length > 1 ? bottomBanners[1] : null);
+
+    if (b1) {
+      const img1 = document.getElementById('bottomBannerImg1');
+      const src1 = document.getElementById('bottomBannerSource1');
+      const title1 = document.getElementById('bottomBannerTitle1');
+      const sub1 = document.getElementById('bottomBannerSub1');
+      const badge1 = document.getElementById('bottomBannerBadge1');
+      const link1 = document.getElementById('bottomBannerLink1');
+
+      if (img1 && b1.image_url) img1.src = b1.image_url;
+      if (src1 && (b1.mobile_image_url || b1.image_url)) src1.srcset = b1.mobile_image_url || b1.image_url;
+      if (title1 && b1.title) title1.textContent = b1.title;
+      if (sub1 && b1.subtitle) sub1.textContent = b1.subtitle;
+      if (badge1 && b1.badge_text) badge1.textContent = b1.badge_text;
+      if (link1 && b1.link_url) link1.href = b1.link_url;
+    }
+
+    if (b2) {
+      const img2 = document.getElementById('bottomBannerImg2');
+      const src2 = document.getElementById('bottomBannerSource2');
+      const title2 = document.getElementById('bottomBannerTitle2');
+      const sub2 = document.getElementById('bottomBannerSub2');
+      const badge2 = document.getElementById('bottomBannerBadge2');
+      const link2 = document.getElementById('bottomBannerLink2');
+
+      if (img2 && b2.image_url) img2.src = b2.image_url;
+      if (src2 && (b2.mobile_image_url || b2.image_url)) src2.srcset = b2.mobile_image_url || b2.image_url;
+      if (title2 && b2.title) title2.textContent = b2.title;
+      if (sub2 && b2.subtitle) sub2.textContent = b2.subtitle;
+      if (badge2 && b2.badge_text) badge2.textContent = b2.badge_text;
+      if (link2 && b2.link_url) link2.href = b2.link_url;
+    }
+  }
+
   // Helper: Render Video Showcase dynamically with adaptive framing
   function renderVideoShowcase(videoData) {
     const vidEl = document.getElementById('homeBgVideo');
@@ -917,6 +1025,7 @@
         if (cachedData.categories) renderCategories(cachedData.categories);
         if (cachedData.products) renderProducts(cachedData.products);
         if (cachedData.video) renderVideoShowcase(cachedData.video);
+        if (cachedData.bottomBanners) renderBottomBanners(cachedData.bottomBanners);
 
         // 1.5 ULTRA-LOW EGRESS VALIDATION CHECK (<40 Bytes)
         // Check if products have updated on Supabase before requesting heavy tables
@@ -941,6 +1050,7 @@
 
       // 2. FETCH SUPABASE DATA
       let banners = [];
+      let bottomBanners = [];
       let videoData = null;
       try {
         const { data: fetchedBanners } = await client
@@ -950,7 +1060,10 @@
           .order('display_order', { ascending: true });
         
         if (fetchedBanners && fetchedBanners.length > 0) {
-          banners = fetchedBanners.filter(b => b.section !== 'video' && !b.video_url);
+          banners = fetchedBanners.filter(b => b.section !== 'video' && b.section !== 'bottom' && !b.video_url);
+          bottomBanners = fetchedBanners.filter(b => b.section === 'bottom');
+          if (bottomBanners.length > 0) renderBottomBanners(bottomBanners);
+
           const vidBanner = fetchedBanners.find(b => b.section === 'video' || (b.video_url && b.video_url.length > 0));
           if (vidBanner) {
             videoData = {
@@ -996,6 +1109,7 @@
       const latestUpdatedAt = (products && products[0] && products[0].updated_at) ? products[0].updated_at : new Date().toISOString();
       localStorage.setItem('iqbalfashion_home_cache', JSON.stringify({
         banners,
+        bottomBanners,
         categories,
         products,
         video: videoData,
@@ -1067,6 +1181,21 @@
     startHeroSlider();
     loadHomePageData();
     loadHomeEventBanner();
+
+    // Trigger Trust Badges SVG Micro-Animations when scrolled into view
+    const trustSec = document.getElementById('trustSection');
+    if (trustSec && 'IntersectionObserver' in window) {
+      const trustObs = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            trustSec.classList.add('animate-in');
+          } else {
+            trustSec.classList.remove('animate-in');
+          }
+        });
+      }, { threshold: 0.15 });
+      trustObs.observe(trustSec);
+    }
     document.addEventListener('urSupabaseReady', function() {
       loadHomePageData();
       loadHomeEventBanner();
