@@ -126,11 +126,39 @@
 
 /* Precision Thread Tailoring (Needle removed as requested, pure thread stitching) */
 .stitch-cross-1 {
-  animation: stitchDraw1 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.2s forwards;
+  animation: stitchDraw1 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.15s forwards;
 }
 
 .stitch-cross-2 {
-  animation: stitchDraw2 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.7s forwards;
+  animation: stitchDraw2 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.65s forwards;
+}
+
+@keyframes stitchDraw1 {
+  0% {
+    stroke-dashoffset: 48;
+    opacity: 0.2;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes stitchDraw2 {
+  0% {
+    stroke-dashoffset: 48;
+    opacity: 0.2;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
 }
 
 /* Brand Text Reveal */
