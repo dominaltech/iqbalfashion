@@ -423,7 +423,7 @@
   <section class="snitch-video-section" id="snitchVideoSection">
     <div class="snitch-video-container">
       <video id="homeBgVideo" class="snitch-video-media" autoplay muted loop playsinline preload="metadata" poster="images/hero1.jpg">
-        <source src="https://assets.mixkit.co/videos/preview/mixkit-tailor-working-on-a-suit-jacket-41394-large.mp4" type="video/mp4">
+        <source src="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/videos/1791709271196_hd1krx_1000239021_mp4.mp4" type="video/mp4">
       </video>
       <div class="snitch-video-overlay">
         <div class="container snitch-video-content">
@@ -786,19 +786,7 @@
       vidObs.observe(bgVid);
     }
 
-    // Auto-enable audio on first user touch/click per modern browser policy
-    const unmuteOnFirstGesture = () => {
-      const vid = document.getElementById('homeBgVideo');
-      if (vid && vid.muted) {
-        vid.muted = false;
-        const label = document.getElementById('soundLabel');
-        const icon = document.getElementById('soundMuteIcon');
-        if (label) label.textContent = 'MUTE SOUND';
-        if (icon) icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>';
-      }
-    };
-    window.addEventListener('click', unmuteOnFirstGesture, { once: true });
-    window.addEventListener('touchstart', unmuteOnFirstGesture, { once: true });
+    // Sound strictly toggled via the dedicated UNMUTE button to guarantee continuous smooth autoplay on mobile
   });
 
   function quickAddProduct(prodId, event) {
@@ -987,18 +975,34 @@
 
   // Helper: Render Video Showcase dynamically with adaptive framing
   function renderVideoShowcase(videoData) {
+    if (!videoData || !videoData.video_url) return;
     const vidEl = document.getElementById('homeBgVideo');
     const containerEl = document.querySelector('.snitch-video-container');
     const headingEl = document.getElementById('homeVideoHeading');
     const subEl = document.getElementById('homeVideoSub');
-    if (!videoData) return;
-    if (videoData.video_url && vidEl) {
-      vidEl.src = videoData.video_url;
-      vidEl.load();
-      vidEl.play().catch(() => {});
+    const pillEl = document.querySelector('.snitch-video-pill');
+
+    if (headingEl && videoData.title) headingEl.textContent = videoData.title;
+    if (subEl && videoData.subtitle) subEl.textContent = videoData.subtitle;
+    if (pillEl && videoData.badge) pillEl.textContent = videoData.badge;
+
+    if (vidEl) {
+      const targetUrl = videoData.video_url;
+      const currentSrc = vidEl.currentSrc || vidEl.src || '';
+      if (!currentSrc.includes(targetUrl.split('?')[0])) {
+        let srcTag = vidEl.querySelector('source');
+        if (srcTag) {
+          srcTag.src = targetUrl;
+          srcTag.type = 'video/mp4';
+        }
+        vidEl.src = targetUrl;
+        vidEl.load();
+        const p = vidEl.play();
+        if (p !== undefined) p.catch(() => {});
+      } else if (vidEl.paused) {
+        vidEl.play().catch(() => {});
+      }
     }
-    if (videoData.title && headingEl) headingEl.textContent = videoData.title;
-    if (videoData.subtitle && subEl) subEl.textContent = videoData.subtitle;
 
     // Apply Admin-selected framing mode (auto, cover, contain, vertical, widescreen)
     const mode = videoData.frame_mode || 'auto';
@@ -1013,7 +1017,7 @@
     if (!client) return;
 
     try {
-      // 1. FAST INITIAL PAINT FROM CACHE
+      // 1. FAST INITIAL PAINT FROM CACHE (Instant 0ms display for returning visitors)
       let cachedData = null;
       try {
         const raw = localStorage.getItem('iqbalfashion_home_cache');
@@ -1027,35 +1031,44 @@
         if (cachedData.video) renderVideoShowcase(cachedData.video);
         if (cachedData.bottomBanners) renderBottomBanners(cachedData.bottomBanners);
 
-        // 1.5 ULTRA-LOW EGRESS VALIDATION CHECK (<40 Bytes)
-        // Check if products have updated on Supabase before requesting heavy tables
+        // 1.5 DUAL-VECTOR MICRO-BYTE CACHE VALIDATION (~60 bytes total)
+        // Validates BOTH product inventory AND store_settings/video timestamps!
         try {
-          const { data: latestRow } = await client
-            .from('products')
-            .select('updated_at')
-            .order('updated_at', { ascending: false })
-            .limit(1);
+          const [{ data: latestProductRow }, { data: latestSettingsRow }] = await Promise.all([
+            client.from('products').select('updated_at').order('updated_at', { ascending: false }).limit(1),
+            client.from('store_settings').select('updated_at').limit(1)
+          ]);
 
-          const latestServerTime = (latestRow && latestRow[0] && latestRow[0].updated_at) ? latestRow[0].updated_at : null;
+          const serverProdTime = (latestProductRow && latestProductRow[0] && latestProductRow[0].updated_at) ? latestProductRow[0].updated_at : null;
+          const serverSettingsTime = (latestSettingsRow && latestSettingsRow[0] && latestSettingsRow[0].updated_at) ? latestSettingsRow[0].updated_at : null;
 
-          // If cache is valid and server timestamp matches cached timestamp, and cache has products, SKIP full payload egress!
-          if (latestServerTime && cachedData.latestUpdatedAt === latestServerTime && cachedData.products && cachedData.products.length > 0) {
-            console.log('[Supabase Egress Optimizer] Cache validated via micro-byte check (~38 bytes). Saving 99.9% egress.');
+          // If BOTH product inventory AND store settings (video & promo banners) match the cache, SKIP heavy payload!
+          if (
+            serverProdTime &&
+            serverSettingsTime &&
+            cachedData.latestProdTime === serverProdTime &&
+            cachedData.latestSettingsTime === serverSettingsTime &&
+            cachedData.products && cachedData.products.length > 0 &&
+            cachedData.video && cachedData.video.video_url
+          ) {
+            console.log('[Supabase Egress Optimizer] Cache verified (products & store_settings in sync). Saving 99.9% egress.');
             return;
           }
         } catch(checkErr) {
-          console.warn('Micro-byte timestamp check notice:', checkErr);
+          console.warn('Micro-byte cache validation notice:', checkErr);
         }
       }
 
-      // 2. FETCH SUPABASE DATA
+      // 2. FETCH SUPABASE DATA (When cache is empty or admin updated video/settings/products)
       let banners = [];
       let bottomBanners = [];
       let videoData = null;
+      let settingsData = null;
+
       try {
         const { data: fetchedBanners } = await client
           .from('banners')
-          .select('id, title, subtitle, image_url, mobile_image_url, video_url, link_url, badge_text, display_order, is_active, section')
+          .select('id, title, subtitle, image_url, mobile_image_url, video_url, link_url, badge_text, display_order, is_active, section, updated_at')
           .eq('is_active', true)
           .order('display_order', { ascending: true });
         
@@ -1069,25 +1082,36 @@
             videoData = {
               video_url: vidBanner.video_url,
               title: vidBanner.title,
-              subtitle: vidBanner.subtitle
+              subtitle: vidBanner.subtitle,
+              badge: vidBanner.badge_text,
+              link: vidBanner.link_url,
+              updated_at: vidBanner.updated_at
             };
           }
         }
       } catch(e) {}
 
-      // Check store_settings for video showcase
+      // Fetch store_settings for video showcase and settings timestamp
       try {
         const { data: settings } = await client
           .from('store_settings')
-          .select('home_video_url, home_video_title, home_video_subtitle, home_video_frame_mode')
+          .select('*')
           .limit(1);
-        if (settings && settings[0] && settings[0].home_video_url) {
-          videoData = {
-            video_url: settings[0].home_video_url,
-            title: settings[0].home_video_title || 'THE BESPOKE EXPERIENCE',
-            subtitle: settings[0].home_video_subtitle || 'Master craftsmanship, hand-finished suiting & shirting tailored to your exact measurements.',
-            frame_mode: settings[0].home_video_frame_mode || 'auto'
-          };
+        if (settings && settings[0]) {
+          settingsData = settings[0];
+          if (settingsData.home_video_url) {
+            const sTime = settingsData.updated_at ? new Date(settingsData.updated_at).getTime() : 0;
+            const bTime = (videoData && videoData.updated_at) ? new Date(videoData.updated_at).getTime() : 0;
+            if (!videoData || sTime >= bTime || !videoData.video_url) {
+              videoData = {
+                video_url: settingsData.home_video_url,
+                title: settingsData.home_video_title || (videoData && videoData.title) || 'THE BESPOKE EXPERIENCE',
+                subtitle: settingsData.home_video_subtitle || (videoData && videoData.subtitle) || 'Master craftsmanship, hand-finished suiting & shirting tailored to your exact measurements.',
+                frame_mode: settingsData.home_video_frame_mode || 'auto',
+                updated_at: settingsData.updated_at
+              };
+            }
+          }
         }
       } catch(e) {}
 
@@ -1105,22 +1129,25 @@
       renderProducts(products);
       if (videoData) renderVideoShowcase(videoData);
 
-      // Save to localStorage
-      const latestUpdatedAt = (products && products[0] && products[0].updated_at) ? products[0].updated_at : new Date().toISOString();
+      // Save to localStorage with dual-vector timestamps
+      const latestProdTime = (products && products[0] && products[0].updated_at) ? products[0].updated_at : new Date().toISOString();
+      const latestSettingsTime = (settingsData && settingsData.updated_at) ? settingsData.updated_at : new Date().toISOString();
+
       localStorage.setItem('iqbalfashion_home_cache', JSON.stringify({
         banners,
         bottomBanners,
         categories,
         products,
         video: videoData,
-        latestUpdatedAt,
+        latestProdTime,
+        latestSettingsTime,
         timestamp: Date.now()
       }));
 
     } catch(e) { console.error('loadHomePageData error:', e); }
   }
 
-  let currentActiveHomeCoupon = null;
+    let currentActiveHomeCoupon = null;
 
   async function loadHomeEventBanner() {
     const strip = document.getElementById('homeEventStrip');
