@@ -900,7 +900,7 @@
     }
   }
 
-  async function loadHomePageData() {
+  window.loadHomePageData = async function loadHomePageData() {
     const client = window.urSupabase || (window.supabase && typeof window.supabase.createClient === 'function' ? window.supabase.createClient(window.UR_CONFIG.SUPABASE_URL, window.UR_CONFIG.SUPABASE_ANON_KEY) : null);
     if (!client) return;
 
@@ -929,8 +929,8 @@
 
           const latestServerTime = (latestRow && latestRow[0] && latestRow[0].updated_at) ? latestRow[0].updated_at : null;
 
-          // If cache is valid and server timestamp matches cached timestamp, SKIP full payload egress!
-          if (latestServerTime && cachedData.latestUpdatedAt === latestServerTime) {
+          // If cache is valid and server timestamp matches cached timestamp, and cache has products, SKIP full payload egress!
+          if (latestServerTime && cachedData.latestUpdatedAt === latestServerTime && cachedData.products && cachedData.products.length > 0) {
             console.log('[Supabase Egress Optimizer] Cache validated via micro-byte check (~38 bytes). Saving 99.9% egress.');
             return;
           }
@@ -982,10 +982,10 @@
 
       const { data: products } = await client
         .from('products')
-        .select('id, name, price, mrp, main_image, is_new_arrival, category_id, updated_at, categories(slug, name)')
+        .select('id, name, price, mrp, main_image, is_new_arrival, category_id, updated_at, categories:category_id(slug, name)')
         .eq('status', 'published')
         .order('created_at', { ascending: false })
-        .limit(12);
+        .limit(24);
 
       renderBanners(banners);
       renderCategories(categories);

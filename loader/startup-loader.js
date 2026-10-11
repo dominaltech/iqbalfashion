@@ -53,8 +53,11 @@
     }, 450);
   }
 
-  // Preload Critical Assets (Hero Slider First Banner)
+  // Preload Critical Assets (Hero Slider First Banner & Products Parallel Fetch)
   async function preloadCriticalHero() {
+    if (typeof window.loadHomePageData === 'function') {
+      try { window.loadHomePageData(); } catch(e) {}
+    }
     let heroUrl = null;
 
     try {
