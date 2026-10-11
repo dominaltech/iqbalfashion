@@ -55,11 +55,6 @@
     return new Promise((resolve) => {
       if (!videoEl) return resolve();
 
-      // Ensure no dummy poster is showing
-      if (videoEl.hasAttribute('poster')) {
-        videoEl.removeAttribute('poster');
-      }
-
       // If already buffered enough data
       if (videoEl.readyState >= 2) {
         return resolve();
@@ -179,16 +174,18 @@
       }
     } catch(e) {}
 
-    // 4. Preload first banner image and wait for video buffer in parallel
+    // 4. Preload first banner image, video poster, and buffer video in parallel
     const vidEl = document.getElementById('homeBgVideo');
-    if (vidEl && vidEl.hasAttribute('poster')) vidEl.removeAttribute('poster');
+    const posterUrl = vidEl ? (vidEl.getAttribute('poster') || vidEl.poster) : null;
 
     const imagePreload = heroUrl ? preloadImage(heroUrl) : Promise.resolve();
-    // Video timeout: 3.5s — if it can't buffer by then, proceed anyway
-    const videoPreload = waitForVideoReady(vidEl, 3500);
+    const posterPreload = posterUrl ? preloadImage(posterUrl) : Promise.resolve();
+    // Video timeout: 2.5s — if slow cellular, proceed with high-res poster ready
+    const videoPreload = waitForVideoReady(vidEl, 2500);
 
     await Promise.all([
-      imagePreload.then(() => updateProgress(85)),
+      imagePreload.then(() => updateProgress(80)),
+      posterPreload.then(() => updateProgress(90)),
       videoPreload.then(() => updateProgress(95))
     ]);
 

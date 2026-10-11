@@ -601,8 +601,8 @@
 
     // 7. DYNAMIC CATEGORY NAVIGATION LOADER WITH SMART SESSION CACHING
     window.fetchStoreCategories = async function(forceRefresh = false) {
-      const cacheKey = 'ur_cached_categories';
-      const cacheTimeKey = 'ur_cached_categories_time';
+      const cacheKey = 'iqbal_cached_categories_v2';
+      const cacheTimeKey = 'iqbal_cached_categories_time_v2';
       const now = Date.now();
 
       if (!forceRefresh) {
@@ -610,7 +610,10 @@
         const cachedTime = sessionStorage.getItem(cacheTimeKey);
         if (cached && cachedTime && (now - parseInt(cachedTime, 10)) < 5000) {
           try {
-            return JSON.parse(cached);
+            const parsed = JSON.parse(cached);
+            if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].show_on_home !== undefined) {
+              return parsed;
+            }
           } catch(e) {}
         }
       }
@@ -620,7 +623,7 @@
       try {
         const { data, error } = await client
           .from('categories')
-          .select('id, name, slug, display_order, banner_url, image_url, is_active')
+          .select('id, name, slug, display_order, banner_url, image_url, thumb_image_url, banner_image_url, show_on_home, is_active')
           .eq('is_active', true)
           .order('display_order', { ascending: true });
 

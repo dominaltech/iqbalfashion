@@ -19,8 +19,9 @@
     "logo": "https://iqbalfashion.com/images/logo.png?v=3"
   }
   </script>
-  <link rel="stylesheet" href="styles.css?v=11">
+  <link rel="stylesheet" href="styles.css?v=12">
   <link rel="stylesheet" href="loader/startup-loader.css?v=3">
+  <link rel="preload" as="image" href="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712651276_rj9o6y_1000239059_webp.webp" fetchpriority="high">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="main.js"></script>
@@ -348,9 +349,9 @@
       </div>
     </div>
 
-    <!-- Video Showcase Player (100% full clarity, zero dark overlay/filter, no dummy poster) -->
+    <!-- Video Showcase Player (100% full clarity, instant high-res poster frame, zero dark overlay/filter) -->
     <div class="snitch-video-container">
-      <video id="homeBgVideo" class="snitch-video-media" autoplay muted loop playsinline preload="auto">
+      <video id="homeBgVideo" class="snitch-video-media" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712651276_rj9o6y_1000239059_webp.webp">
         <source src="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/videos/1791709271196_hd1krx_1000239021_mp4.mp4" type="video/mp4">
       </video>
       <!-- ONLY sound toggle button on the video surface, positioned at the bottom-right corner -->
@@ -690,6 +691,7 @@
     if (!vid) return;
     if (vid.muted) {
       vid.muted = false;
+      vid.play().catch(() => {});
       if (label) label.textContent = 'MUTE SOUND';
       if (icon) icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>';
     } else {
@@ -699,75 +701,32 @@
     }
   }
 
-  // Bandwidth, Battery & Auto Audio Playback Engine (Turns on sound when user visits video section)
+  // Resilient Background Video Autoplay & Intersection Observer
   document.addEventListener('DOMContentLoaded', () => {
     const bgVid = document.getElementById('homeBgVideo');
-    const label = document.getElementById('soundLabel');
-    const icon = document.getElementById('soundMuteIcon');
+    if (!bgVid) return;
 
-    function turnOnVideoAudio() {
-      if (!bgVid) return;
-      bgVid.muted = false;
-      bgVid.volume = 1.0;
-      const playPromise = bgVid.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          if (label) label.textContent = 'MUTE SOUND';
-          if (icon) icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>';
-        }).catch((err) => {
-          // If browser restricts unmuted autoplay before direct gesture
-          console.warn('Autoplay audio policy notice:', err);
-          bgVid.muted = true;
-          bgVid.play().catch(() => {});
-          if (label) label.textContent = 'UNMUTE SOUND';
-          if (icon) icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
-
-          // Unlock audio on the very next document interaction
-          const unlockSound = () => {
-            if (bgVid) {
-              bgVid.muted = false;
-              bgVid.volume = 1.0;
-              bgVid.play().then(() => {
-                if (label) label.textContent = 'MUTE SOUND';
-                if (icon) icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>';
-              }).catch(() => {});
-            }
-            window.removeEventListener('scroll', unlockSound);
-            window.removeEventListener('click', unlockSound);
-            window.removeEventListener('touchstart', unlockSound);
-          };
-          window.addEventListener('scroll', unlockSound, { once: true, passive: true });
-          window.addEventListener('click', unlockSound, { once: true });
-          window.addEventListener('touchstart', unlockSound, { once: true });
-        });
-      }
+    // Mobile & browser policy compliant: initial autoplay must always be muted
+    bgVid.muted = true;
+    const playPromise = bgVid.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {});
     }
 
-    function turnOffVideoAudio() {
-      if (!bgVid) return;
-      bgVid.muted = true;
-      if (label) label.textContent = 'UNMUTE SOUND';
-      if (icon) icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
-    }
-
-    if (bgVid && 'IntersectionObserver' in window) {
-      let hasLeftViewport = false;
+    if ('IntersectionObserver' in window) {
       const vidObs = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            // User scrolled into video section: restart if re-entering and turn on audio!
-            if (hasLeftViewport) {
-              try { bgVid.currentTime = 0; } catch(e) {}
+            // User scrolled into video section: ensure playing
+            if (bgVid.paused) {
+              bgVid.play().catch(() => {});
             }
-            turnOnVideoAudio();
           } else {
-            hasLeftViewport = true;
-            // User scrolled away from video section: pause and mute
-            turnOffVideoAudio();
+            // User scrolled away: pause to conserve mobile battery & memory
             bgVid.pause();
           }
         });
-      }, { threshold: 0.2 });
+      }, { threshold: 0.15 });
       vidObs.observe(bgVid);
     }
   });
@@ -886,7 +845,7 @@
   function renderCategories(categories) {
     const catGrid = document.getElementById('homeCategoryGrid');
     if (!categories || categories.length === 0 || !catGrid) return;
-    const validCats = categories.filter(c => c.slug !== 'test-items' && !(c.name || '').toLowerCase().includes('test'));
+    const validCats = categories.filter(c => c.show_on_home !== false && c.slug !== 'test-items' && !(c.name || '').toLowerCase().includes('test'));
     if (validCats.length > 0) {
       catGrid.innerHTML = validCats.map(cat => {
         let targetUrl = `shop.html?category=${encodeURIComponent(cat.slug || cat.id)}`;
@@ -980,20 +939,27 @@
     if (exploreBtn && videoData.link) exploreBtn.href = videoData.link;
 
     if (vidEl) {
-      if (vidEl.hasAttribute('poster')) vidEl.removeAttribute('poster');
+      const posterUrl = videoData.poster_url || videoData.image_url;
+      if (posterUrl) {
+        vidEl.poster = posterUrl;
+        if (containerEl) {
+          containerEl.style.backgroundImage = `url('${posterUrl}')`;
+        }
+      }
 
-      // Normalize both URLs: strip query params and trailing slashes for reliable comparison
+      // Check current sources cleanly without false mismatches
       const normalize = url => (url || '').split('?')[0].replace(/\/+$/, '').toLowerCase();
       const targetNorm = normalize(videoData.video_url);
-      const currentNorm = normalize(vidEl.currentSrc || vidEl.getAttribute('src') || '');
+      const sourceEl = vidEl.querySelector('source');
+      const currentNorm = normalize(sourceEl ? sourceEl.getAttribute('src') : (vidEl.getAttribute('src') || vidEl.currentSrc || ''));
 
       if (targetNorm && currentNorm !== targetNorm) {
-        // Source genuinely changed — reload cleanly without double-source conflict
-        vidEl.pause();
-        // Remove all <source> child elements so they don't conflict with vidEl.src
-        vidEl.querySelectorAll('source').forEach(s => s.remove());
-        vidEl.removeAttribute('src');
-        vidEl.src = videoData.video_url;
+        // Source genuinely changed by admin — update source cleanly
+        if (sourceEl) {
+          sourceEl.src = videoData.video_url;
+        } else {
+          vidEl.src = videoData.video_url;
+        }
         vidEl.load();
         const p = vidEl.play();
         if (p !== undefined) p.catch(() => {});
@@ -1049,6 +1015,12 @@
         if (raw) cachedData = JSON.parse(raw);
       } catch(e) {}
 
+      // Invalidate stale cache if categories do not have show_on_home
+      if (cachedData && cachedData.categories && cachedData.categories.length > 0 && cachedData.categories[0].show_on_home === undefined) {
+        cachedData = null;
+        try { localStorage.removeItem('iqbalfashion_home_cache'); } catch(e) {}
+      }
+
       // FAST PAINT from cache for categories only (they change rarely)
       // Do NOT render cached banners or video — always fetch live to avoid stale images
       if (cachedData) {
@@ -1087,6 +1059,7 @@
         if (vidBanner) {
           videoData = {
             video_url: vidBanner.video_url,
+            poster_url: vidBanner.image_url || 'https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712651276_rj9o6y_1000239059_webp.webp',
             title: vidBanner.title,
             badge: vidBanner.badge_text,
             link: vidBanner.link_url,
@@ -1104,6 +1077,7 @@
           if (!videoData || sTime >= bTime || !videoData.video_url) {
             videoData = {
               video_url: settingsData.home_video_url,
+              poster_url: (vidBanner && vidBanner.image_url) || 'https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712651276_rj9o6y_1000239059_webp.webp',
               title: settingsData.home_video_title || (videoData && videoData.title) || 'THE BESPOKE EXPERIENCE',
               frame_mode: settingsData.home_video_frame_mode || 'auto',
               updated_at: settingsData.updated_at

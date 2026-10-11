@@ -1,4 +1,4 @@
-﻿/* ============================================
+/* ============================================
    IQBAL FASHION — Global Stylesheet v1.0
    White background · Black text · Clean premium
    ============================================ */
@@ -918,7 +918,7 @@ svg { display: block; }
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000000;
+  background: #111111 url('https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712651276_rj9o6y_1000239059_webp.webp') center/cover no-repeat;
   border-radius: 8px;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
 }
@@ -932,7 +932,7 @@ svg { display: block; }
   object-position: center;
   opacity: 1 !important; /* 100% full clarity - NO DIMMING OR DULLNESS */
   filter: none !important;
-  background: #000000;
+  background: transparent;
 }
 
 /* Sound Toggle Button strictly at the Bottom-Right Corner of the video */
