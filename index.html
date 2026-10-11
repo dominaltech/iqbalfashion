@@ -570,7 +570,7 @@
     </div>
   </section>
 
-  <!-- DUAL HOMEPAGE PROMO BANNERS (ONE BELOW EACH OTHER, ADMIN-MANAGEABLE) -->
+  <!-- DUAL HOMEPAGE PROMO BANNERS (ONE BELOW EACH OTHER, TEXT BELOW IMAGE) -->
   <section class="home-bottom-banners-section" id="homeBottomBannersSection">
     <div class="container">
       <div class="bottom-banners-stack">
@@ -578,16 +578,20 @@
         <!-- Bottom Banner 1 (Upper) -->
         <div class="bottom-banner-card" id="bottomBannerCard1">
           <a href="ethnic.html" id="bottomBannerLink1" class="bottom-banner-link">
-            <picture>
-              <source id="bottomBannerSource1" media="(max-width: 768px)" srcset="images/hero2.jpg">
-              <img id="bottomBannerImg1" src="images/hero2.jpg" alt="Bespoke Royal Wedding &amp; Ethnic Wear" class="bottom-banner-img" loading="lazy" decoding="async">
-            </picture>
-            <div class="bottom-banner-overlay">
-              <div class="bottom-banner-content">
+            <div class="bottom-banner-img-box">
+              <picture>
+                <source id="bottomBannerSource1" media="(max-width: 768px)" srcset="images/hero2.jpg">
+                <img id="bottomBannerImg1" src="images/hero2.jpg" alt="Bespoke Royal Wedding &amp; Ethnic Wear" class="bottom-banner-img" loading="lazy" decoding="async">
+              </picture>
+            </div>
+            <div class="bottom-banner-caption">
+              <div class="bottom-banner-caption-top">
                 <span class="bottom-banner-pill" id="bottomBannerBadge1">WEDDING SPECIAL</span>
                 <h3 class="bottom-banner-title" id="bottomBannerTitle1">BESPOKE ROYAL WEDDING &amp; ETHNIC WEAR</h3>
                 <p class="bottom-banner-sub" id="bottomBannerSub1">Handcrafted sherwanis, kurtas &amp; bespoke regal styling for the gentleman.</p>
-                <span class="bottom-banner-cta" id="bottomBannerCta1">EXPLORE COLLECTION →</span>
+              </div>
+              <div class="bottom-banner-action">
+                <span class="bottom-banner-btn" id="bottomBannerCta1">EXPLORE COLLECTION →</span>
               </div>
             </div>
           </a>
@@ -596,16 +600,20 @@
         <!-- Bottom Banner 2 (Lower) -->
         <div class="bottom-banner-card" id="bottomBannerCard2">
           <a href="suiting.html" id="bottomBannerLink2" class="bottom-banner-link">
-            <picture>
-              <source id="bottomBannerSource2" media="(max-width: 768px)" srcset="images/hero1.jpg">
-              <img id="bottomBannerImg2" src="images/hero1.jpg" alt="Luxury Italian &amp; English Suiting Fabrics" class="bottom-banner-img" loading="lazy" decoding="async">
-            </picture>
-            <div class="bottom-banner-overlay">
-              <div class="bottom-banner-content">
+            <div class="bottom-banner-img-box">
+              <picture>
+                <source id="bottomBannerSource2" media="(max-width: 768px)" srcset="images/hero1.jpg">
+                <img id="bottomBannerImg2" src="images/hero1.jpg" alt="Luxury Italian &amp; English Suiting Fabrics" class="bottom-banner-img" loading="lazy" decoding="async">
+              </picture>
+            </div>
+            <div class="bottom-banner-caption">
+              <div class="bottom-banner-caption-top">
                 <span class="bottom-banner-pill" id="bottomBannerBadge2">FINE TEXTILES</span>
                 <h3 class="bottom-banner-title" id="bottomBannerTitle2">LUXURY ITALIAN &amp; ENGLISH SUITING FABRICS</h3>
                 <p class="bottom-banner-sub" id="bottomBannerSub2">Master tailor cut lengths in pure wool, linen, cashmeres &amp; fine twill.</p>
-                <span class="bottom-banner-cta" id="bottomBannerCta2">SHOP FABRICS →</span>
+              </div>
+              <div class="bottom-banner-action">
+                <span class="bottom-banner-btn" id="bottomBannerCta2">SHOP FABRICS →</span>
               </div>
             </div>
           </a>
@@ -764,32 +772,80 @@
     }
   }
 
-  // Bandwidth & Battery Optimization + Auto Replay & Audio Autoplay Support
+  // Bandwidth, Battery & Auto Audio Playback Engine (Turns on sound when user visits video section)
   document.addEventListener('DOMContentLoaded', () => {
     const bgVid = document.getElementById('homeBgVideo');
+    const label = document.getElementById('soundLabel');
+    const icon = document.getElementById('soundMuteIcon');
+
+    function turnOnVideoAudio() {
+      if (!bgVid) return;
+      bgVid.muted = false;
+      bgVid.volume = 1.0;
+      const playPromise = bgVid.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          if (label) label.textContent = 'MUTE SOUND';
+          if (icon) icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>';
+        }).catch((err) => {
+          // If browser restricts unmuted autoplay before direct gesture
+          console.warn('Autoplay audio policy notice:', err);
+          bgVid.muted = true;
+          bgVid.play().catch(() => {});
+          if (label) label.textContent = 'UNMUTE SOUND';
+          if (icon) icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+
+          // Unlock audio on the very next document interaction
+          const unlockSound = () => {
+            if (bgVid) {
+              bgVid.muted = false;
+              bgVid.volume = 1.0;
+              bgVid.play().then(() => {
+                if (label) label.textContent = 'MUTE SOUND';
+                if (icon) icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>';
+              }).catch(() => {});
+            }
+            window.removeEventListener('scroll', unlockSound);
+            window.removeEventListener('click', unlockSound);
+            window.removeEventListener('touchstart', unlockSound);
+          };
+          window.addEventListener('scroll', unlockSound, { once: true, passive: true });
+          window.addEventListener('click', unlockSound, { once: true });
+          window.addEventListener('touchstart', unlockSound, { once: true });
+        });
+      }
+    }
+
+    function turnOffVideoAudio() {
+      if (!bgVid) return;
+      bgVid.muted = true;
+      if (label) label.textContent = 'UNMUTE SOUND';
+      if (icon) icon.innerHTML = '<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>';
+    }
+
     if (bgVid && 'IntersectionObserver' in window) {
       let hasLeftViewport = false;
       const vidObs = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            // Whenever user scrolls back to video section, restart from beginning
+            // User scrolled into video section: restart if re-entering and turn on audio!
             if (hasLeftViewport) {
               try { bgVid.currentTime = 0; } catch(e) {}
             }
-            bgVid.play().catch(() => {});
+            turnOnVideoAudio();
           } else {
             hasLeftViewport = true;
+            // User scrolled away from video section: pause and mute
+            turnOffVideoAudio();
             bgVid.pause();
           }
         });
-      }, { threshold: 0.15 });
+      }, { threshold: 0.2 });
       vidObs.observe(bgVid);
     }
-
-    // Sound strictly toggled via the dedicated UNMUTE button to guarantee continuous smooth autoplay on mobile
   });
 
-  function quickAddProduct(prodId, event) {
+    function quickAddProduct(prodId, event) {
     if (event) { event.preventDefault(); event.stopPropagation(); }
     if (window.UR_CART && typeof window.UR_CART.addItem === 'function') {
       const prod = (window.allHomeProducts || []).find(p => p.id === prodId);
