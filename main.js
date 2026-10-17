@@ -83,7 +83,7 @@
     retryCount++;
   }, 100);
 
-  // 2. GLOBAL DRAWER CONTROLS FOR MOBILE MENU & TASKBAR (Parse-time global attachment)
+  // 2. GLOBAL DRAWER CONTROLS FOR MOBILE MENU & TASKBAR (Snitch-Style Hierarchical System)
   window.openCatDrawer = function() {
     let overlay = document.getElementById('hamburgerOverlay') || document.getElementById('catOverlay') || document.querySelector('.hamburger-overlay') || document.querySelector('.drawer-overlay');
     if (!overlay) {
@@ -92,85 +92,43 @@
       overlay.id = 'hamburgerOverlay';
       overlay.innerHTML = `
         <div class="hamburger-drawer">
-          <div class="ham-head">
-            <img src="images/logo.png" alt="Iqbal Fashion" style="height:36px;width:auto;object-fit:contain;" />
-            <button class="ham-close" id="hamCloseBtn" onclick="closeCatDrawer()"><svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+          <div class="menu-drawer-head">
+            <button class="menu-drawer-close" id="hamCloseBtn" onclick="closeCatDrawer()" aria-label="Close menu">
+              <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <span class="menu-drawer-brand">Shop - IQBAL FASHION</span>
+            <div style="width:24px;"></div>
           </div>
-          <div class="ham-body" style="padding-bottom: 90px;">
-            <a href="index.html" class="ham-link">Home</a>
-            <a href="shop.html" class="ham-link">All Products Catalog</a>
-
-            <!-- 1. READYMADE -->
-            <div class="ham-cat-section">
-              <div class="ham-section-title">1. READYMADE COLLECTION</div>
-              <div class="ham-image-tiles-grid">
-                <a href="ethnic.html" class="ham-image-tile">
-                  <div class="ham-tile-thumb"><img src="images/hero2.jpg" alt="Ethnic Wear" loading="lazy" /></div>
-                  <div class="ham-tile-info"><span class="ham-tile-name">Ethnic Wear</span><span class="ham-tile-arrow">→</span></div>
-                </a>
-                <a href="casual-wear.html" class="ham-image-tile">
-                  <div class="ham-tile-thumb"><img src="images/cat-readymade.jpg" alt="Casual Wear" loading="lazy" /></div>
-                  <div class="ham-tile-info"><span class="ham-tile-name">Casual Wear</span><span class="ham-tile-arrow">→</span></div>
-                </a>
+          <div class="menu-drawer-body">
+            <!-- Search Bar -->
+            <div class="menu-search-box">
+              <div class="menu-search-inner" onclick="window.openSearchOverlay ? window.openSearchOverlay() : (location.href='shop.html')">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <span class="menu-search-placeholder">Search "SUITING, ETHNIC..."</span>
               </div>
-              <a href="readymade.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Readymade →</a>
             </div>
 
-            <!-- 2. CLOTH MATERIAL -->
-            <div class="ham-cat-section">
-              <div class="ham-section-title">2. CLOTH MATERIAL &amp; FABRICS</div>
-              <div class="ham-image-tiles-grid">
-                <a href="suiting.html" class="ham-image-tile">
-                  <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Suiting Material" loading="lazy" /></div>
-                  <div class="ham-tile-info"><span class="ham-tile-name">Suiting</span><span class="ham-tile-arrow">→</span></div>
-                </a>
-                <a href="shirting.html" class="ham-image-tile">
-                  <div class="ham-tile-thumb"><img src="images/hero1.jpg" alt="Shirting Cloth" loading="lazy" /></div>
-                  <div class="ham-tile-info"><span class="ham-tile-name">Shirting</span><span class="ham-tile-arrow">→</span></div>
-                </a>
-                <a href="linen.html" class="ham-image-tile">
-                  <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Pure Linen" loading="lazy" /></div>
-                  <div class="ham-tile-info"><span class="ham-tile-name">Pure Linen</span><span class="ham-tile-arrow">→</span></div>
-                </a>
-                <a href="cotton.html" class="ham-image-tile">
-                  <div class="ham-tile-thumb"><img src="images/prod1.jpg" alt="Pure Cotton" loading="lazy" /></div>
-                  <div class="ham-tile-info"><span class="ham-tile-name">Pure Cotton</span><span class="ham-tile-arrow">→</span></div>
-                </a>
-                <a href="silk.html" class="ham-image-tile">
-                  <div class="ham-tile-thumb"><img src="images/hero2.jpg" alt="Royal Silk" loading="lazy" /></div>
-                  <div class="ham-tile-info"><span class="ham-tile-name">Royal Silk</span><span class="ham-tile-arrow">→</span></div>
-                </a>
-                <a href="khadi.html" class="ham-image-tile">
-                  <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Handloom Khadi" loading="lazy" /></div>
-                  <div class="ham-tile-info"><span class="ham-tile-name">Khadi</span><span class="ham-tile-arrow">→</span></div>
-                </a>
-              </div>
-              <a href="cloth-material.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Fabrics &amp; Unstitched Materials →</a>
+            <!-- Top Promotional Campaign Cards -->
+            <div class="menu-campaign-slider" id="menuCampaignSlider">
+              <!-- Dynamically populated from Supabase banners (section = 'menu') -->
             </div>
 
-            <!-- 3. KIDS COLLECTION -->
-            <div class="ham-cat-section">
-              <div class="ham-section-title">3. KIDS COLLECTION</div>
-              <div class="ham-image-tiles-grid">
-                <a href="boys.html" class="ham-image-tile">
-                  <div class="ham-tile-thumb"><img src="images/cat-kids.jpg" alt="Boys Collection" loading="lazy" /></div>
-                  <div class="ham-tile-info"><span class="ham-tile-name">Boys Apparel</span><span class="ham-tile-arrow">→</span></div>
-                </a>
-                <a href="girls.html" class="ham-image-tile">
-                  <div class="ham-tile-thumb"><img src="images/cat-kids.jpg" alt="Girls Collection" loading="lazy" /></div>
-                  <div class="ham-tile-info"><span class="ham-tile-name">Girls Apparel</span><span class="ham-tile-arrow">→</span></div>
-                </a>
-              </div>
-              <a href="kids.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Kids Collection →</a>
+            <!-- Hierarchical Category Accordion List (NO THUMBNAILS BESIDE ITEMS) -->
+            <div class="menu-accordion-list" id="menuAccordionList">
+              <a href="shop.html" class="menu-nav-link"><span>SHOP ALL</span></a>
+              <a href="shop.html?tag=bestseller" class="menu-nav-link"><span>BESTSELLERS</span></a>
+              <!-- Categories injected via initDynamicCategoriesNav() -->
             </div>
 
-            <div class="ham-divider" style="height:1px;background:var(--border);margin:16px 0;"></div>
-            <a href="my-orders.html" class="ham-link">My Orders</a>
-            <a href="cart.html" class="ham-link">My Shopping Bag</a>
-            <a href="about.html" class="ham-link">About Us</a>
-            <a href="policy.html" class="ham-link">Policy</a>
-            <a href="contact.html" class="ham-link">Contact Us</a>
-            <a href="signin.html" class="ham-link">Account / Sign In</a>
+            <!-- Footer Utility Links -->
+            <div class="menu-utility-section">
+              <a href="my-orders.html" class="menu-utility-item">My Orders</a>
+              <a href="cart.html" class="menu-utility-item">My Shopping Bag</a>
+              <a href="about.html" class="menu-utility-item">About Us</a>
+              <a href="policy.html" class="menu-utility-item">Privacy &amp; Terms</a>
+              <a href="contact.html" class="menu-utility-item">Contact Us</a>
+              <a href="signin.html" class="menu-utility-item">Account / Sign In</a>
+            </div>
           </div>
         </div>
       `;
@@ -623,7 +581,7 @@
       try {
         const { data, error } = await client
           .from('categories')
-          .select('id, name, slug, display_order, banner_url, image_url, thumb_image_url, banner_image_url, show_on_home, is_active')
+          .select('id, name, slug, parent_id, display_order, banner_url, image_url, thumb_image_url, banner_image_url, show_on_home, is_active')
           .eq('is_active', true)
           .order('display_order', { ascending: true });
 
@@ -640,51 +598,139 @@
       }
     };
 
+    // Helper: Fetch promotional campaign cards for the top of the menu drawer
+    window.fetchMenuBanners = async function() {
+      const client = window.urSupabase || createSupabaseClient();
+      if (!client) return [];
+      try {
+        const { data } = await client
+          .from('banners')
+          .select('id, title, badge_text, link_url, image_url, display_order, is_active')
+          .eq('section', 'menu')
+          .eq('is_active', true)
+          .order('display_order', { ascending: true });
+        return data || [];
+      } catch(e) {
+        return [];
+      }
+    };
+
+    // Global helper: Accordion toggle for hierarchical menu sections
+    window.toggleMenuAccordion = function(btn) {
+      const group = btn.closest('.menu-accordion-group');
+      if (!group) return;
+      const isOpen = group.classList.contains('open');
+      document.querySelectorAll('.menu-accordion-group.open').forEach(g => {
+        if (g !== group) g.classList.remove('open');
+      });
+      group.classList.toggle('open', !isOpen);
+    };
+
     async function initDynamicCategoriesNav() {
+      // 1. Populate top promotional campaign cards in drawer
+      const sliderContainer = document.getElementById('menuCampaignSlider') || document.querySelector('.menu-campaign-slider');
+      if (sliderContainer) {
+        const banners = await window.fetchMenuBanners();
+        const activeCards = (banners && banners.length > 0) ? banners : [
+          { title: 'NEW IN', badge_text: 'NEW IN', link_url: 'shop.html?tag=new', image_url: 'https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712627815_5c80os_1000239058_webp.webp' },
+          { title: 'ROYAL BESPOKE', badge_text: 'BESPOKE', link_url: 'suiting.html', image_url: 'https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712651276_rj9o6y_1000239059_webp.webp' },
+          { title: 'ETHNIC WEAR', badge_text: 'ROYAL', link_url: 'ethnic.html', image_url: 'https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712643487_c96t8r_1000239036_webp.webp' },
+          { title: 'FINE FABRICS', badge_text: 'TEXTILES', link_url: 'cloth-material.html', image_url: 'https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/bottom-banners/1791712858792_zdwhe7_1000239065_webp.webp' }
+        ];
+
+        sliderContainer.innerHTML = activeCards.map(c => `
+          <a href="${c.link_url || 'shop.html'}" class="menu-campaign-card">
+            <img src="${c.image_url}" alt="${c.title || ''}" loading="lazy">
+            <span class="menu-campaign-badge">${c.badge_text || c.title || 'DISCOVER'}</span>
+          </a>
+        `).join('');
+      }
+
+      // 2. Fetch categories and build hierarchical tree
       const categories = await window.fetchStoreCategories();
       if (!categories || categories.length === 0) return;
+
+      const validCats = categories.filter(c => c.slug !== 'test-items' && !(c.name || '').toLowerCase().includes('test'));
 
       // Update Desktop Nav Links
       const navLinksContainer = document.querySelector('.site-header .nav-links');
       if (navLinksContainer) {
-        let html = `
-          <div class="nav-item"><a href="readymade.html" class="nav-link">Readymade</a></div>
-          <div class="nav-item"><a href="cloth-material.html" class="nav-link">Cloth Material</a></div>
-          <div class="nav-item"><a href="kids.html" class="nav-link">Kids</a></div>
-          <div class="nav-item"><a href="ethnic.html" class="nav-link">Ethnic</a></div>
-          <div class="nav-item"><a href="casual-wear.html" class="nav-link">Casual</a></div>
-          <div class="nav-item"><a href="shop.html" class="nav-link">All Collections</a></div>
-        `;
+        const topCats = validCats.filter(c => !c.parent_id).slice(0, 5);
+        let html = topCats.map(c => {
+          let url = `shop.html?category=${encodeURIComponent(c.slug || c.id)}`;
+          if (c.slug === 'readymade') url = 'readymade.html';
+          else if (c.slug === 'cloth-material') url = 'cloth-material.html';
+          else if (c.slug === 'kids') url = 'kids.html';
+          else if (c.slug === 'ethnic') url = 'ethnic.html';
+          else if (c.slug === 'casual-wear') url = 'casual-wear.html';
+          return `<div class="nav-item"><a href="${url}" class="nav-link">${c.name}</a></div>`;
+        }).join('');
+        html += `<div class="nav-item"><a href="shop.html" class="nav-link">All Collections</a></div>`;
         navLinksContainer.innerHTML = html;
       }
 
-      // Update Mobile Drawer Sublinks
-      const hamSublinks = document.querySelector('.hamburger-drawer .ham-sublinks');
-      if (hamSublinks) {
-        let subHtml = '';
-        categories.forEach(cat => {
-          if (cat.slug === 'test-items' || (cat.name && cat.name.toLowerCase().includes('test'))) {
-            return;
-          }
-
-          let targetUrl = `shop.html?category=${encodeURIComponent(cat.slug || cat.id)}`;
-          if (cat.slug === 'readymade' || cat.slug === 'baggy') targetUrl = 'readymade.html';
-          else if (cat.slug === 'ethnic' || cat.slug === 'hoodies') targetUrl = 'ethnic.html';
-          else if (cat.slug === 'casual-wear' || cat.slug === 'oversize' || cat.slug === 'oversized') targetUrl = 'casual-wear.html';
-          else if (cat.slug === 'cloth-material' || cat.slug === 'cloth_material' || cat.slug === 'pants' || cat.slug === 'linen-pants') targetUrl = 'cloth-material.html';
-          else if (cat.slug === 'kids' || cat.slug === 'plan-tshirt' || cat.slug === 'plain-t-shirts') targetUrl = 'kids.html';
-          else if (cat.slug === 'boys' || cat.slug === 'printing-tshirt' || cat.slug === 'printed-t-shirts') targetUrl = 'boys.html';
-          else if (cat.slug === 'girls' || cat.slug === 'women') targetUrl = 'girls.html';
-          else if (cat.slug === 'linen') targetUrl = 'linen.html';
-          else if (cat.slug === 'cotton') targetUrl = 'cotton.html';
-          else if (cat.slug === 'silk') targetUrl = 'silk.html';
-          else if (cat.slug === 'khadi') targetUrl = 'khadi.html';
-          else if (cat.slug === 'suiting') targetUrl = 'suiting.html';
-          else if (cat.slug === 'shirting') targetUrl = 'shirting.html';
-
-          subHtml += `<a href="${targetUrl}">${cat.name}</a>`;
+      // Update Mobile Drawer Hierarchical Accordion (NO THUMBNAILS BESIDE LIST ITEMS)
+      const accordionList = document.getElementById('menuAccordionList') || document.querySelector('.menu-accordion-list');
+      if (accordionList) {
+        const topLevelCats = validCats.filter(c => !c.parent_id);
+        const childrenMap = {};
+        validCats.filter(c => c.parent_id).forEach(c => {
+          if (!childrenMap[c.parent_id]) childrenMap[c.parent_id] = [];
+          childrenMap[c.parent_id].push(c);
         });
-        hamSublinks.innerHTML = subHtml;
+
+        let listHtml = `
+          <a href="shop.html" class="menu-nav-link"><span>SHOP ALL</span></a>
+          <a href="shop.html?tag=bestseller" class="menu-nav-link"><span>BESTSELLERS</span></a>
+        `;
+
+        topLevelCats.forEach(cat => {
+          const children = childrenMap[cat.id] || [];
+          let targetUrl = `shop.html?category=${encodeURIComponent(cat.slug || cat.id)}`;
+          if (cat.slug === 'readymade') targetUrl = 'readymade.html';
+          else if (cat.slug === 'cloth-material') targetUrl = 'cloth-material.html';
+          else if (cat.slug === 'kids') targetUrl = 'kids.html';
+          else if (cat.slug === 'ethnic') targetUrl = 'ethnic.html';
+          else if (cat.slug === 'casual-wear') targetUrl = 'casual-wear.html';
+
+          if (children.length > 0) {
+            // Main category with expandable sub-categories
+            listHtml += `
+              <div class="menu-accordion-group">
+                <button type="button" class="menu-accordion-header" onclick="window.toggleMenuAccordion(this)">
+                  <span class="menu-nav-title">${cat.name}</span>
+                  <svg viewBox="0 0 24 24" class="menu-chevron"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="menu-accordion-panel">
+                  <a href="${targetUrl}" class="menu-sub-item menu-sub-item-all">ALL ${cat.name.toUpperCase()}</a>
+                  ${children.map(sub => {
+                    let subUrl = `shop.html?category=${encodeURIComponent(sub.slug || sub.id)}`;
+                    if (sub.slug === 'suiting') subUrl = 'suiting.html';
+                    else if (sub.slug === 'shirting') subUrl = 'shirting.html';
+                    else if (sub.slug === 'linen') subUrl = 'linen.html';
+                    else if (sub.slug === 'cotton') subUrl = 'cotton.html';
+                    else if (sub.slug === 'silk') subUrl = 'silk.html';
+                    else if (sub.slug === 'khadi') subUrl = 'khadi.html';
+                    else if (sub.slug === 'boys') subUrl = 'boys.html';
+                    else if (sub.slug === 'girls') subUrl = 'girls.html';
+                    else if (sub.slug === 'ethnic') subUrl = 'ethnic.html';
+                    else if (sub.slug === 'casual-wear') subUrl = 'casual-wear.html';
+                    return `<a href="${subUrl}" class="menu-sub-item">${sub.name}</a>`;
+                  }).join('')}
+                </div>
+              </div>
+            `;
+          } else {
+            // Direct category item
+            listHtml += `
+              <a href="${targetUrl}" class="menu-nav-link">
+                <span class="menu-nav-title">${cat.name}</span>
+              </a>
+            `;
+          }
+        });
+
+        accordionList.innerHTML = listHtml;
       }
     }
 

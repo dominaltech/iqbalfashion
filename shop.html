@@ -99,88 +99,46 @@
   </nav>
 </header>
 
-<!-- HAMBURGER DRAWER WITH SNITCH VISUAL CATEGORY IMAGE TILES -->
+<!-- HAMBURGER DRAWER WITH SNITCH HIERARCHICAL SYSTEM & PROMOTIONAL CARDS -->
 <div class="hamburger-overlay" id="hamburgerOverlay">
   <div class="hamburger-drawer">
-    <div class="ham-head">
-      <img src="images/logo.png?v=3" alt="Iqbal Fashion" style="height:36px;width:auto;object-fit:contain;" />
-      <button class="ham-close" onclick="closeCatDrawer()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="menu-drawer-head">
+      <button class="menu-drawer-close" id="hamCloseBtn" onclick="closeCatDrawer()" aria-label="Close menu">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <span class="menu-drawer-brand">Shop - IQBAL FASHION</span>
+      <div style="width:24px;"></div>
     </div>
-    <div class="ham-body" style="padding-bottom: 90px;">
-      <a href="index.html" class="ham-link">Home</a>
-      <a href="shop.html" class="ham-link active">All Products Catalog</a>
-
-      <!-- 1. READYMADE -->
-      <div class="ham-cat-section">
-        <div class="ham-section-title">1. READYMADE COLLECTION</div>
-        <div class="ham-image-tiles-grid">
-          <a href="ethnic.html" class="ham-image-tile">
-            <div class="ham-tile-thumb"><img src="images/hero2.jpg" alt="Ethnic Wear" loading="lazy" /></div>
-            <div class="ham-tile-info"><span class="ham-tile-name">Ethnic Wear</span><span class="ham-tile-arrow">→</span></div>
-          </a>
-          <a href="casual-wear.html" class="ham-image-tile">
-            <div class="ham-tile-thumb"><img src="images/cat-readymade.jpg" alt="Casual Wear" loading="lazy" /></div>
-            <div class="ham-tile-info"><span class="ham-tile-name">Casual Wear</span><span class="ham-tile-arrow">→</span></div>
-          </a>
+    <div class="menu-drawer-body">
+      <!-- Search Bar -->
+      <div class="menu-search-box">
+        <div class="menu-search-inner" onclick="document.getElementById('shopSearch') ? document.getElementById('shopSearch').focus() : (window.openSearchOverlay ? window.openSearchOverlay() : null)">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span class="menu-search-placeholder">Search "SUITING, ETHNIC..."</span>
         </div>
-        <a href="readymade.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Readymade →</a>
       </div>
 
-      <!-- 2. CLOTH MATERIAL -->
-      <div class="ham-cat-section">
-        <div class="ham-section-title">2. CLOTH MATERIAL &amp; FABRICS</div>
-        <div class="ham-image-tiles-grid">
-          <a href="suiting.html" class="ham-image-tile">
-            <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Suiting Material" loading="lazy" /></div>
-            <div class="ham-tile-info"><span class="ham-tile-name">Suiting</span><span class="ham-tile-arrow">→</span></div>
-          </a>
-          <a href="shirting.html" class="ham-image-tile">
-            <div class="ham-tile-thumb"><img src="images/hero1.jpg" alt="Shirting Cloth" loading="lazy" /></div>
-            <div class="ham-tile-info"><span class="ham-tile-name">Shirting</span><span class="ham-tile-arrow">→</span></div>
-          </a>
-          <a href="linen.html" class="ham-image-tile">
-            <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Pure Linen" loading="lazy" /></div>
-            <div class="ham-tile-info"><span class="ham-tile-name">Pure Linen</span><span class="ham-tile-arrow">→</span></div>
-          </a>
-          <a href="cotton.html" class="ham-image-tile">
-            <div class="ham-tile-thumb"><img src="images/prod1.jpg" alt="Pure Cotton" loading="lazy" /></div>
-            <div class="ham-tile-info"><span class="ham-tile-name">Pure Cotton</span><span class="ham-tile-arrow">→</span></div>
-          </a>
-          <a href="silk.html" class="ham-image-tile">
-            <div class="ham-tile-thumb"><img src="images/hero2.jpg" alt="Royal Silk" loading="lazy" /></div>
-            <div class="ham-tile-info"><span class="ham-tile-name">Royal Silk</span><span class="ham-tile-arrow">→</span></div>
-          </a>
-          <a href="khadi.html" class="ham-image-tile">
-            <div class="ham-tile-thumb"><img src="images/cat-cloth-material.jpg" alt="Handloom Khadi" loading="lazy" /></div>
-            <div class="ham-tile-info"><span class="ham-tile-name">Khadi</span><span class="ham-tile-arrow">→</span></div>
-          </a>
-        </div>
-        <a href="cloth-material.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Fabrics &amp; Unstitched Materials →</a>
+      <!-- Top Promotional Campaign Cards -->
+      <div class="menu-campaign-slider" id="menuCampaignSlider">
+        <!-- Dynamically populated from Supabase banners (section = 'menu') -->
       </div>
 
-      <!-- 3. KIDS COLLECTION -->
-      <div class="ham-cat-section">
-        <div class="ham-section-title">3. KIDS COLLECTION</div>
-        <div class="ham-image-tiles-grid">
-          <a href="boys.html" class="ham-image-tile">
-            <div class="ham-tile-thumb"><img src="images/cat-kids.jpg" alt="Boys Collection" loading="lazy" /></div>
-            <div class="ham-tile-info"><span class="ham-tile-name">Boys Apparel</span><span class="ham-tile-arrow">→</span></div>
-          </a>
-          <a href="girls.html" class="ham-image-tile">
-            <div class="ham-tile-thumb"><img src="images/cat-kids.jpg" alt="Girls Collection" loading="lazy" /></div>
-            <div class="ham-tile-info"><span class="ham-tile-name">Girls Apparel</span><span class="ham-tile-arrow">→</span></div>
-          </a>
-        </div>
-        <a href="kids.html" class="ham-link" style="font-size:12px;font-weight:700;color:#000;border-bottom:1px dashed #eee;padding:6px 0 10px;">Explore All Kids Collection →</a>
+      <!-- Hierarchical Category Accordion List (NO THUMBNAILS BESIDE ITEMS) -->
+      <div class="menu-accordion-list" id="menuAccordionList">
+        <a href="shop.html" class="menu-nav-link"><span>SHOP ALL</span></a>
+        <a href="shop.html?tag=bestseller" class="menu-nav-link"><span>BESTSELLERS</span></a>
+        <!-- Categories injected via initDynamicCategoriesNav() -->
       </div>
 
-      <div class="ham-divider" style="height:1px;background:var(--border);margin:16px 0;"></div>
-      <a href="my-orders.html" class="ham-link">My Orders</a>
-      <a href="cart.html" class="ham-link">My Shopping Bag</a>
-      <a href="about.html" class="ham-link">About Us</a>
-      <a href="policy.html" class="ham-link">Policy</a>
-      <a href="contact.html" class="ham-link">Contact Us</a>
-      <a href="signin.html" class="ham-link">Account / Sign In</a>
+      <!-- Footer Utility Links -->
+      <div class="menu-utility-section">
+        <a href="my-orders.html" class="menu-utility-item">My Orders</a>
+        <a href="cart.html" class="menu-utility-item">My Shopping Bag</a>
+        <a href="about.html" class="menu-utility-item">About Us</a>
+        <a href="policy.html" class="menu-utility-item">Privacy &amp; Terms</a>
+        <a href="contact.html" class="menu-utility-item">Contact Us</a>
+        <a href="signin.html" class="menu-utility-item">Account / Sign In</a>
+      </div>
     </div>
   </div>
 </div>
