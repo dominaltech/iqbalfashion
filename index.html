@@ -19,7 +19,7 @@
     "logo": "https://iqbalfashion.com/images/logo.png?v=3"
   }
   </script>
-  <link rel="stylesheet" href="styles.css?v=12">
+  <link rel="stylesheet" href="styles.css?v=13">
   <link rel="stylesheet" href="loader/startup-loader.css?v=3">
   <link rel="preload" as="image" href="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712651276_rj9o6y_1000239059_webp.webp" fetchpriority="high">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -259,19 +259,61 @@
 <!-- MAIN CONTENT (SNITCH AESTHETIC: PURE WHITE, EDGE-TO-EDGE HERO, PROMO STRIP, CATEGORIES, BACKGROUND VIDEO, TRENDING PRODUCTS) -->
 <main id="MainContent">
 
-  <!-- 1. FULL-BLEED EDGE-TO-EDGE HERO IMAGE SLIDER (Live Supabase images with instant active slide) -->
+  <!-- 1. SPLIT HERO SECTION (Desktop: Text Left, Square Slider Right | Mobile: Responsive Stack) -->
   <section class="snitch-hero-slider-section" id="snitchHeroSection" aria-label="Hero Showcase">
-    <div class="snitch-hero-slider" id="heroSlider">
-      <div class="snitch-slide active">
-        <picture>
-          <source media="(max-width: 768px)" srcset="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712627815_5c80os_1000239058_webp.webp">
-          <img src="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712627815_5c80os_1000239058_webp.webp" alt="Royal Bespoke Suiting" class="snitch-slide-img" fetchpriority="high">
-        </picture>
-        <div class="snitch-slide-content">
-          <span class="snitch-slide-tag">NEW SEASON 2026</span>
-          <h2 class="snitch-slide-title">ROYAL BESPOKE SUITING</h2>
-          <p class="snitch-slide-sub">EXCELLENCE IN BESPOKE TAILORING &amp; FINE CLOTH MATERIALS</p>
-          <a href="cloth-material.html" class="snitch-slide-btn">EXPLORE NOW</a>
+    <div class="container hero-split-container">
+      <!-- Left Column: Editorial Brand & Shop Text -->
+      <div class="hero-text-col">
+        <span class="hero-eyebrow">BESPOKE &amp; FINE FABRICS</span>
+        <h1 class="hero-brand-title">IQBAL FASHION</h1>
+        <p class="hero-brand-sub">Excellence in Bespoke Men's Fashion &amp; Fine Cloth Materials</p>
+        <p class="hero-brand-desc">
+          Discover our curated collection of luxury bespoke suits, festive ethnic ensembles, and premium unstitched fabrics tailored to your exact measurements.
+        </p>
+
+        <!-- Shop Buttons Group -->
+        <div class="hero-action-group">
+          <a href="shop.html" class="hero-btn-primary">
+            <span>SHOP ALL</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="readymade.html" class="hero-btn-secondary">READYMADE</a>
+          <a href="cloth-material.html" class="hero-btn-secondary">CLOTH MATERIAL</a>
+          <a href="kids.html" class="hero-btn-secondary">KIDS</a>
+        </div>
+
+        <!-- Trust Badges Row -->
+        <div class="hero-trust-chips">
+          <span class="hero-trust-chip">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            Master Tailoring
+          </span>
+          <span class="hero-trust-chip">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            100% Genuine Fabrics
+          </span>
+          <span class="hero-trust-chip">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            All-India Express Delivery
+          </span>
+        </div>
+      </div>
+
+      <!-- Right Column: Contained Slider (Square / Aspect-Ratio Box) -->
+      <div class="hero-slider-col">
+        <div class="snitch-hero-slider square-slider" id="heroSlider">
+          <div class="snitch-slide active">
+            <picture>
+              <source media="(max-width: 768px)" srcset="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712627815_5c80os_1000239058_webp.webp">
+              <img src="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712627815_5c80os_1000239058_webp.webp" alt="Royal Bespoke Suiting" class="snitch-slide-img" fetchpriority="high">
+            </picture>
+            <div class="snitch-slide-content">
+              <span class="snitch-slide-tag">NEW SEASON 2026</span>
+              <h2 class="snitch-slide-title">ROYAL BESPOKE SUITING</h2>
+              <p class="snitch-slide-sub">EXCELLENCE IN BESPOKE TAILORING &amp; FINE CLOTH MATERIALS</p>
+              <a href="cloth-material.html" class="snitch-slide-btn">EXPLORE NOW</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -299,34 +341,57 @@
     </div>
   </section>
 
-  <!-- 4. FULL-WIDTH BACKGROUND VIDEO SHOWCASE (ADMIN MANAGEABLE VIA SUPABASE) -->
+  <!-- 4. SPLIT VIDEO SHOWCASE (Desktop: Video Left, Text Right | Mobile: Responsive Stack) -->
   <section class="snitch-video-section" id="snitchVideoSection">
-    <div class="container">
-      <!-- Section Header / Caption Box ABOVE the video (single-line, admin managed) -->
-      <div class="snitch-video-header-box">
-        <span class="snitch-video-pill" id="homeVideoPill">ROYAL HERITAGE BESPOKE</span>
-        <h2 class="snitch-video-heading" id="homeVideoHeading">THE BESPOKE EXPERIENCE</h2>
+    <div class="container video-split-container">
+      <!-- Left Column: Contained Video Player -->
+      <div class="video-media-col">
+        <div class="snitch-video-container">
+          <video id="homeBgVideo" class="snitch-video-media" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712651276_rj9o6y_1000239059_webp.webp">
+            <source src="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/videos/1791709271196_hd1krx_1000239021_mp4.mp4" type="video/mp4">
+          </video>
+          <!-- Sound toggle button on the video surface, positioned at the bottom-right corner -->
+          <button class="snitch-sound-toggle-btn" id="soundToggleBtn" onclick="toggleHomeVideoAudio()" aria-label="Toggle sound">
+            <svg id="soundMuteIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+            <span id="soundLabel">UNMUTE SOUND</span>
+          </button>
+        </div>
       </div>
-    </div>
 
-    <!-- Video Showcase Player (100% full clarity, instant high-res poster frame, zero dark overlay/filter) -->
-    <div class="snitch-video-container">
-      <video id="homeBgVideo" class="snitch-video-media" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/banners/1791712651276_rj9o6y_1000239059_webp.webp">
-        <source src="https://yimbuvqtlbqdfggthaqt.supabase.co/storage/v1/object/public/banner-images/videos/1791709271196_hd1krx_1000239021_mp4.mp4" type="video/mp4">
-      </video>
-      <!-- ONLY sound toggle button on the video surface, positioned at the bottom-right corner -->
-      <button class="snitch-sound-toggle-btn" id="soundToggleBtn" onclick="toggleHomeVideoAudio()" aria-label="Toggle sound">
-        <svg id="soundMuteIcon" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-        <span id="soundLabel">UNMUTE SOUND</span>
-      </button>
-    </div>
+      <!-- Right Column: Editorial Text & Action -->
+      <div class="video-text-col">
+        <div class="snitch-video-header-box">
+          <span class="snitch-video-pill" id="homeVideoPill">ROYAL HERITAGE BESPOKE</span>
+          <h2 class="snitch-video-heading" id="homeVideoHeading">THE BESPOKE EXPERIENCE</h2>
+          <p class="snitch-video-sub" id="homeVideoDesc">
+            Step into the art of master bespoke tailoring. From luxury Italian &amp; English suiting fabrics to handcrafted ceremonial kurtas and tuxedos, experience craftsmanship tailored exclusively to your silhouette.
+          </p>
+        </div>
 
-    <!-- Action / Explore Button BELOW the video -->
-    <div class="container snitch-video-bottom-action">
-      <a href="suiting.html" class="snitch-video-explore-btn" id="homeVideoExploreBtn">
-        <span>EXPLORE BESPOKE SUITING</span>
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
+        <div class="video-feature-list">
+          <div class="video-feature-item">
+            <span class="feat-bullet">◆</span>
+            <div>
+              <strong>Bespoke Master Craftsmanship</strong>
+              <p>Precision cut &amp; hand-stitched by generational master tailors.</p>
+            </div>
+          </div>
+          <div class="video-feature-item">
+            <span class="feat-bullet">◆</span>
+            <div>
+              <strong>Pure Textiles &amp; Fine Fabrics</strong>
+              <p>Imported Italian wools, Irish linens, combed Egyptian Giza cotton &amp; mulberry silks.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="video-action-wrap">
+          <a href="suiting.html" class="snitch-video-explore-btn" id="homeVideoExploreBtn">
+            <span>EXPLORE BESPOKE SUITING</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -895,10 +960,12 @@
     const headingEl = document.getElementById('homeVideoHeading');
     const pillEl = document.getElementById('homeVideoPill') || document.querySelector('.snitch-video-pill');
     const exploreBtn = document.getElementById('homeVideoExploreBtn');
+    const descEl = document.getElementById('homeVideoDesc');
 
     if (headingEl && videoData.title) headingEl.textContent = videoData.title;
     if (pillEl && videoData.badge) pillEl.textContent = videoData.badge;
     if (exploreBtn && videoData.link) exploreBtn.href = videoData.link;
+    if (descEl && videoData.subtitle) descEl.textContent = videoData.subtitle;
 
     if (vidEl) {
       const posterUrl = videoData.poster_url || videoData.image_url;
